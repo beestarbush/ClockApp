@@ -1,1 +1,1 @@
-sudo docker run --rm -it -v $(pwd)/src:/workdir appbuilder ./build.sh #"--clean"
+sudo docker run --rm -i -v $(pwd)/src:/workdir appbuilder ./build.sh #"--clean"
