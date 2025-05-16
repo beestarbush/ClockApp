@@ -60,7 +60,7 @@ RUN apt-get update && apt-get install -y \
 
 # Download and install Qt 6.9.0 using the official installer
 WORKDIR /tmp
-RUN wget https://download.qt.io/official_releases/qt/6.9/6.9.0/single/qt-everywhere-src-6.9.0.tar.xz && \
+RUN wget -q  https://download.qt.io/official_releases/qt/6.9/6.9.0/single/qt-everywhere-src-6.9.0.tar.xz && \
 	tar xf qt-everywhere-src-6.9.0.tar.xz && \
 	mkdir -p build && \
 	cd build && \
