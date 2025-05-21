@@ -33,7 +33,7 @@ Circle {
 	Rectangle {
 		id: minutePointer
 		width: parent.width / minuteHandWidthScale
-		height: clock.height / 3
+		height: clock.height / 2.5
 		anchors.horizontalCenter: clock.horizontalCenter
 		y: clock.y + clock.height / 2 - height
 

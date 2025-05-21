@@ -3,7 +3,7 @@ import QtQuick
 
 QtObject {
 	id: value
-	
+
 	readonly property int hourInMinutes: 60
 	readonly property int minuteInSeconds: 60
 	readonly property int secondInMilliseconds: 1000
@@ -31,4 +31,13 @@ QtObject {
 	property bool dragAndOvershootBounds: false
 	readonly property int boundsBehavior: dragAndOvershootBounds ? Flickable.DragAndOvershootBounds : Flickable.StopAtBounds
 	readonly property int flickDeceleration: 4500
+
+	readonly property int smallTextSize: 18
+	readonly property int defaultTextSize: 20
+	readonly property int largeTextSize: 32
+	readonly property int veryLargeTextSize: 56
+
+	function defaultWidthRatio(referenceItem) {
+		return referenceItem.width * 0.7
+	}
 }

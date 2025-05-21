@@ -8,11 +8,14 @@ set(regular_qml_components
 	Button.qml
 	Circle.qml
 	Clock.qml
+	Dialog.qml
+	DialogOverlay.qml
 	Flickable.qml
 	Panel.qml
 	PanelContainer.qml
 	Pendulum.qml
 	RoundPanel.qml
+	Spacer.qml
 	ToggleButton.qml
 )
 
