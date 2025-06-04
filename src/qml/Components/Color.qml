@@ -11,6 +11,7 @@ QtObject {
 	readonly property color lightGray: "#BBBBBB"
 	readonly property color blue: "#005099"
 	readonly property color red: "#995000"
+	readonly property color yellow: "#999950"
 	readonly property color disabledToggleActive: "#66c296"
 	readonly property color disabledToggleInactive: "#666666"
 	readonly property color transparent: "transparent"

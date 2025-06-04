@@ -15,6 +15,7 @@ set(regular_qml_components
 	PanelContainer.qml
 	Pendulum.qml
 	RoundPanel.qml
+	RoundProgressBar.qml
 	Spacer.qml
 	ToggleButton.qml
 )

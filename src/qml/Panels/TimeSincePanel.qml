@@ -1,71 +1,96 @@
 import QtQuick
-import QtQuick.Layouts
 
 import Components
 
 RoundPanel {
     id: timeSincePanel
 
-    backgroundColor: Color.lightGray
-
     property alias happening: happeningLabel.text
+    property int years
+    property int weeks
     property int days
+    property int daysDivisor: 365
     property int hours
     property int minutes
     property int seconds
+    property bool showYearsInCenter: true
+
+    backgroundColor: Color.lightGray
+    property int barThickness: width / 15
+
     signal clicked()
 
-    ColumnLayout {
-        id: column
+    RoundProgressBar {
+        id: secondsProgressBar
 
-        anchors.fill: parent
         anchors.centerIn: parent
-        spacing: Value.defaultMargin
+        anchors.fill: parent
+        color: Color.green1
+        thickness: barThickness
+        showLabel: false
 
-        Item {
-            Layout.fillHeight: true
-        }
+        progress: seconds
+        divisor: 60
+    }
 
-        Text {
-            id: happeningLabel
+    RoundProgressBar {
+        id: minutesProgressBar
 
-            Layout.alignment: Qt.AlignHCenter
-            font.bold: true
-            font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.10 : Value.defaultTextSize
-        }
+        anchors.centerIn: parent
+        width: secondsProgressBar.width - (barThickness * 2)
+        height: secondsProgressBar.height - (barThickness * 2)
+        color: Color.blue
+        thickness: barThickness
 
-        Text {
-            id: daysLabel
+        progress: minutes
+        divisor: 60
+    }
+    RoundProgressBar {
+        id: hoursProgressBar
 
-            Layout.alignment: Qt.AlignHCenter
-            font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
-            text: "%1 dagen".arg(days)
-        }
-        Text {
-            id: hoursLabel
+        anchors.centerIn: parent
+        width: minutesProgressBar.width - (barThickness * 2)
+        height: minutesProgressBar.height - (barThickness * 2)
+        color: Color.red
+        thickness: barThickness
 
-            Layout.alignment: Qt.AlignHCenter
-            font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
-            text: "%1 uren".arg(hours)
-        }
-        Text {
-            id: minutesLabel
+        progress: hours
+        divisor: 24
+    }
+    RoundProgressBar {
+        id: daysProgressBar
 
-            Layout.alignment: Qt.AlignHCenter
-            font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
-            text: "%1 minuten".arg(minutes)
-        }
-        Text {
-            id: secondsLabel
+        anchors.centerIn: parent
+        width: hoursProgressBar.width - (barThickness * 2)
+        height: hoursProgressBar.height - (barThickness * 2)
+        color: Color.yellow
+        thickness: barThickness
 
-            Layout.alignment: Qt.AlignHCenter
-            font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
-            text: "%1 seconden".arg(seconds)
-        }
+        progress: days
+        divisor: daysDivisor
+    }
+    Text {
+        id: happeningLabel
 
-        Item {
-            Layout.fillHeight: true
-        }
+        anchors.bottom: centerValue.top
+        anchors.horizontalCenter: centerValue.horizontalCenter
+        font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
+    }
+    Text {
+        id: centerValue
+
+        anchors.centerIn: parent
+        font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.10 : Value.defaultTextSize
+        font.bold: true
+        text: showYearsInCenter ? years : weeks
+    }
+    Text {
+        id: centerLabel
+
+        anchors.top: centerValue.bottom
+        anchors.horizontalCenter: centerValue.horizontalCenter
+        font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.05 : Value.defaultTextSize
+        text: showYearsInCenter ? "jaar" : "weken"
     }
 
     MouseArea {

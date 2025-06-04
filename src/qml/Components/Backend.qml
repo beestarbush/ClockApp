@@ -10,7 +10,7 @@ Item {
 	readonly property var interfaceNames: [
 		"FunkyClass"
 	]
-	readonly property bool interfacesAvailable: {
+	function interfacesAvailable() {
 		for (var i in interfaceNames) {
 			var interfaceName = interfaceNames[i]
 			if (!Bee[interfaceName]) {
@@ -22,7 +22,7 @@ Item {
 		return true
 	}
 
-	//readonly property bool testBool: Bee.FunkyClass.qTestBool
+	readonly property int screenRotation: FunkyClass.rotationDegrees
 	function greetings() {
 		FunkyClass.getGreeting()
 	}

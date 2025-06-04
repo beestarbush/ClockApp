@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd build
-./helloworldapp -platform xcb
+./clockapp -platform xcb

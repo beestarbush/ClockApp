@@ -11,9 +11,9 @@ Circle {
         id: panelContainer
         anchors.fill: parent
 
-        property Panel targetPanel: pendulumPanel
+        property Panel initialPanel: pendulumPanel
 
-        currentIndex: indexOfPanel(targetPanel)
+        currentIndex: indexOfPanel(initialPanel)
 
         PendulumPanel {
             id: pendulumPanel

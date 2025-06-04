@@ -1,35 +1,45 @@
 import QtQuick
+
 import Components
 import Panels
 
 Window {
 	id: window
 
-	width: 600
-	height: 1024
+	width: 480
+	height: 800
 	visible: true
-	title: qsTr("Hello World")
+	title: qsTr("Clock application")
 	color: Color.black
 
-	Column {
-		id: column
-		anchors.horizontalCenter: parent.horizontalCenter
-		anchors.verticalCenter: parent.verticalCenter
-		spacing: Value.largeMargin
+	Item {
+		id: contentRoot
 
-		UpperMainPanel {
-			id: upperMainPanel
+		anchors.fill: parent
+		rotation: Backend.screenRotation
 
-			width: window.width - (Value.defaultMargin * 2)
-			height: width
+		Column {
+			id: column
+			anchors.topMargin: Value.defaultMargin
 			anchors.horizontalCenter: parent.horizontalCenter
-		}
-		LowerMainPanel {
-			id: lowerMainPanel
+			anchors.verticalCenter: parent.verticalCenter
+			anchors.fill: parent
+			spacing: Value.largeMargin
 
-			width: window.width / 2.5
-			height: width
-			anchors.horizontalCenter: parent.horizontalCenter
+			UpperMainPanel {
+				id: upperMainPanel
+
+				width: Math.min(contentRoot.width, contentRoot.height) - (Value.defaultMargin * 2)
+				height: width
+				anchors.horizontalCenter: parent.horizontalCenter
+			}
+			LowerMainPanel {
+				id: lowerMainPanel
+
+				width: Math.min(contentRoot.width, contentRoot.height) / 2.5
+				height: width
+				anchors.horizontalCenter: parent.horizontalCenter
+			}
 		}
 	}
 }

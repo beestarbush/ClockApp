@@ -11,9 +11,9 @@ Circle {
 	property int minutes
 	property int seconds
 
-	readonly property int hourHandWidthScale: 30
+	readonly property int hourHandWidthScale: 25
 	readonly property int minuteHandWidthScale: 30
-	readonly property int secondHandWidthScale: 30
+	readonly property int secondHandWidthScale: 35
 	readonly property int centerPointScale: 15
 
 	function timeChanged() {

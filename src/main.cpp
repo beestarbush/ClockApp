@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include "FunkyClass.h"
 
 int main(int argc, char *argv[])
@@ -9,6 +10,9 @@ int main(int argc, char *argv[])
 	QQmlApplicationEngine engine;
 
 	FunkyClass funkyClass(&app);
+#ifdef PLATFORM_IS_TARGET
+	funkyClass.setRotationDegrees(270);
+#endif
 	qmlRegisterSingletonInstance("Bee", 1, 0, "FunkyClass", &funkyClass);
 
 	QObject::connect(
@@ -18,7 +22,7 @@ int main(int argc, char *argv[])
 		[]() { QCoreApplication::exit(-1); },
 		Qt::QueuedConnection);
 
-	engine.loadFromModule("HelloWorldApp", "Main");
+	engine.loadFromModule("ClockApp", "Main");
 
 	return app.exec();
 }
