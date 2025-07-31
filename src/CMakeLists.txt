@@ -10,8 +10,11 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
     main.cpp
-    FunkyClass.cpp
-    FunkyClass.h
+    RoundAnimatedImage.cpp
+    RoundAnimatedImage.h
+    Version.cpp
+    Version.h
+    git_version.h
 )
 
 qt_add_qml_module(clockapp
@@ -21,7 +24,13 @@ qt_add_qml_module(clockapp
         qml/Main.qml
 )
 
-if (CMAKE_CXX_COMPILER MATCHES "aarch64-oe-linux")
+qt_add_resources(clockapp "animations"
+    PREFIX "/"
+    FILES
+        "animations/test.gif"
+)
+
+if (CMAKE_CXX_COMPILER MATCHES "aarch64-poky-linux")
     set(PLATFORM "target")
     add_definitions(-DPLATFORM_IS_TARGET)
 elseif(UNIX AND NOT APPLE)

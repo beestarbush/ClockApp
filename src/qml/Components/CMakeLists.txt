@@ -11,9 +11,12 @@ set(regular_qml_components
 	Dialog.qml
 	DialogOverlay.qml
 	Flickable.qml
+	MenuDialog.qml
 	Panel.qml
 	PanelContainer.qml
 	Pendulum.qml
+	RoundButton.qml
+	RoundLayout.qml
 	RoundPanel.qml
 	RoundProgressBar.qml
 	Spacer.qml

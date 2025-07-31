@@ -6,8 +6,8 @@ import Panels
 Window {
 	id: window
 
-	width: 480
-	height: 800
+	width: 720
+	height: 1280
 	visible: true
 	title: qsTr("Clock application")
 	color: Color.black
@@ -16,14 +16,12 @@ Window {
 		id: contentRoot
 
 		anchors.fill: parent
-		rotation: Backend.screenRotation
 
 		Column {
 			id: column
 			anchors.topMargin: Value.defaultMargin
 			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.verticalCenter: parent.verticalCenter
-			anchors.fill: parent
 			spacing: Value.largeMargin
 
 			UpperMainPanel {

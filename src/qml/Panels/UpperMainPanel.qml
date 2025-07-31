@@ -27,6 +27,7 @@ Circle {
             id: clockPanel
 
             anchors.fill: parent
+            enabled: Backend.clockEnabled
 
             onClicked: dialogOverlay.visible = true
         }
@@ -35,6 +36,7 @@ Circle {
             id: timeSinceMarriedPanel
 
             anchors.fill: parent
+            enabled: Backend.marriedTimerEnabled
             onClicked: dialogOverlay.visible = true
             happening: "Getrouwd"
             years: 0
@@ -48,6 +50,7 @@ Circle {
             id: timeSinceKuikenPanel
 
             anchors.fill: parent
+            enabled: Backend.kuikenTimerEnabled
             onClicked: dialogOverlay.visible = true
             happening: "Kuiken"
             showYearsInCenter: false

@@ -1,7 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "FunkyClass.h"
+#include "Version.h"
+#include "RoundAnimatedImage.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,11 +10,9 @@ int main(int argc, char *argv[])
 
 	QQmlApplicationEngine engine;
 
-	FunkyClass funkyClass(&app);
-#ifdef PLATFORM_IS_TARGET
-	funkyClass.setRotationDegrees(270);
-#endif
-	qmlRegisterSingletonInstance("Bee", 1, 0, "FunkyClass", &funkyClass);
+	Version version(&app);
+	qmlRegisterSingletonInstance("Bee", 1, 0, "Version", &version);
+	qmlRegisterType<RoundAnimatedImage>("Bee", 1, 0, "RoundAnimatedImage");
 
 	QObject::connect(
 		&engine,

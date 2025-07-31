@@ -1,2 +1,3 @@
 src/build
 .vscode
+src/git_version.h

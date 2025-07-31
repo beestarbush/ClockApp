@@ -1,6 +1,7 @@
 import QtQuick
 
 import Components
+import Bee
 
 RoundPanel {
 	id: clockPanel
@@ -8,6 +9,14 @@ RoundPanel {
     backgroundColor: Color.lightGray
 
     signal clicked()
+
+    RoundAnimatedImage {
+        id: clockBackgroundAnimation
+
+        anchors.fill: parent
+        source: "qrc:/animations/test.gif"
+        opacity: Backend.clockBackgroundAnimationOpacity
+    }
 
     Clock {
         id: clock

@@ -8,7 +8,7 @@ Item {
 	id: backend
 
 	readonly property var interfaceNames: [
-		"FunkyClass"
+		"Version"
 	]
 	function interfacesAvailable() {
 		for (var i in interfaceNames) {
@@ -22,8 +22,9 @@ Item {
 		return true
 	}
 
-	readonly property int screenRotation: FunkyClass.rotationDegrees
-	function greetings() {
-		FunkyClass.getGreeting()
-	}
+	readonly property string tag: Version.tag
+	property real clockBackgroundAnimationOpacity: 0.75
+	property bool marriedTimerEnabled: false
+	property bool kuikenTimerEnabled: false
+	property bool clockEnabled: true
 }

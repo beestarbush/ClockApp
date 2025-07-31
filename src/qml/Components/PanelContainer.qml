@@ -17,21 +17,27 @@ Item {
 	readonly property bool transitionRunning: currentPanel && currentPanel.transitionRunning
 
 	function previousPanel() {
-		if (firstPanel) {
-			return false
+		var previousPanelIndex = currentIndex - 1
+		while (previousPanelIndex >= 0) {
+			if (children[previousPanelIndex].enabled !== false) {
+				currentIndex = previousPanelIndex
+				return true
+			}
+			previousPanelIndex--
 		}
-
-		currentIndex--
-		return true
+		return false
 	}
 
 	function nextPanel() {
-		if (lastPanel) {
-			return false
+		var nextPanelIndex = currentIndex + 1
+		while (nextPanelIndex < children.length) {
+			if (children[nextPanelIndex].enabled === true) {
+				currentIndex = nextPanelIndex
+				return true
+			}
+			nextPanelIndex++
 		}
-
-		currentIndex++
-		return true
+		return false
 	}
 
 	function indexOfPanel(panel) {
