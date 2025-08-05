@@ -32,13 +32,12 @@ Circle {
             onClicked: dialogOverlay.visible = true
         }
 
-        TimeSincePanel {
+        SevenSegmentPanel {
             id: timeSinceMarriedPanel
 
             anchors.fill: parent
             enabled: Backend.marriedTimerEnabled
             onClicked: dialogOverlay.visible = true
-            happening: "Getrouwd"
             years: 0
             days: 0
             hours: 0

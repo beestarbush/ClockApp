@@ -19,6 +19,7 @@ set(regular_qml_components
 	RoundLayout.qml
 	RoundPanel.qml
 	RoundProgressBar.qml
+	SevenSegmentDisplay.qml
 	Spacer.qml
 	ToggleButton.qml
 )

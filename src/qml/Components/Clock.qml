@@ -6,6 +6,7 @@ Circle {
 	id: clock
 
 	color: Color.transparent
+	property string locale: "nl_NL"
 
 	property int hours
 	property int minutes
@@ -18,9 +19,14 @@ Circle {
 
 	function timeChanged() {
 		var date = new Date();
-		hours = date.getHours();
-		minutes = date.getMinutes();
-		seconds = date.getSeconds();
+		var localeTime = date.toLocaleTimeString(Qt.locale(locale));
+
+		// localeTime is in "HH:MM:SS" format
+		var parts = localeTime.split(":");
+
+		hours = parseInt(parts[0]);
+		minutes = parseInt(parts[1]);
+		seconds = parseInt(parts[2]);
 	}
 
 	Timer {

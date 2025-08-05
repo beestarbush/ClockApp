@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "Screen.h"
 #include "Version.h"
 #include "RoundAnimatedImage.h"
 
@@ -9,8 +10,10 @@ int main(int argc, char *argv[])
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
-
+	Screen screen(&app);
 	Version version(&app);
+
+	qmlRegisterSingletonInstance("Bee", 1, 0, "Screen", &screen);
 	qmlRegisterSingletonInstance("Bee", 1, 0, "Version", &version);
 	qmlRegisterType<RoundAnimatedImage>("Bee", 1, 0, "RoundAnimatedImage");
 

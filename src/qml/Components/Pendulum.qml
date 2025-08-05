@@ -7,6 +7,8 @@ Item {
 	id: pendulum
 
 	readonly property int pendulumAngle: 10
+	property alias pendulumRodColor: pendulumRod.color
+	property alias pendulumBobColor: pendulumBob.color
 
 	Rectangle {
 		id: pendulumRod

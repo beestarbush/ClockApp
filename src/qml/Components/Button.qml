@@ -19,6 +19,7 @@ Rectangle {
 	Text {
 		id: label
 		anchors.centerIn: parent
+		width: parent.width - Value.smallMargin
 		color: Color.white
 		font.pixelSize: 16
 		wrapMode: Text.Wrap

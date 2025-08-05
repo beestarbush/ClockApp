@@ -12,6 +12,8 @@ qt_add_executable(clockapp
     main.cpp
     RoundAnimatedImage.cpp
     RoundAnimatedImage.h
+    Screen.cpp
+    Screen.h
     Version.cpp
     Version.h
     git_version.h

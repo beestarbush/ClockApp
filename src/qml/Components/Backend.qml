@@ -2,13 +2,14 @@ pragma Singleton
 import QtQuick
 
 import Components
-import Bee
+import Bee as Bee
 
 Item {
 	id: backend
 
 	readonly property var interfaceNames: [
-		"Version"
+		"Version",
+		"Screen"
 	]
 	function interfacesAvailable() {
 		for (var i in interfaceNames) {
@@ -22,9 +23,25 @@ Item {
 		return true
 	}
 
-	readonly property string tag: Version.tag
-	property real clockBackgroundAnimationOpacity: 0.75
+	readonly property ScreenQmlObject screen: ScreenQmlObject {}
+	readonly property VersionQmlObject version: VersionQmlObject {}
+
+	property real clockBackgroundAnimationOpacity: 0.50
 	property bool marriedTimerEnabled: false
 	property bool kuikenTimerEnabled: false
 	property bool clockEnabled: true
+
+	component ScreenQmlObject: QtObject {
+		readonly property QtObject screen: Bee.Screen
+
+		readonly property int brightness: Bee.Screen.brightness
+
+		function setBrightness(brightness) {
+			Bee.Screen.brightness = brightness
+		}
+	}
+
+	component VersionQmlObject: QtObject {
+		readonly property string tag: Bee.Version.tag
+	}
 }

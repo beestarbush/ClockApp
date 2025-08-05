@@ -22,19 +22,19 @@ PanelContainer {
 
             RoundButton {
                 color: Color.green1
-                text: "S"
+                text: "Settings"
                 onClicked: menuDialog.openSettingsDialog()
             }
 
             RoundButton {
                 color: Color.green1
-                text: "I"
+                text: "Info"
                 onClicked: menuDialog.openInfoDialog()
             }
 
             RoundButton {
                 color: Color.green1
-                text: "X"
+                text: "Close"
                 onClicked: dialogOverlay.close()
             }
         }
@@ -53,12 +53,12 @@ PanelContainer {
 
             RoundButton {
                 color: Color.green1
-                text: "Version:\n" + Backend.tag
+                text: "Version:\n" + Backend.version.tag
             }
 
             RoundButton {
                 color: Color.green1
-                text: "X"
+                text: "Close"
 
                 onClicked: infoDialog.closeDialog()
             }
@@ -74,6 +74,58 @@ PanelContainer {
 
         RoundLayout {
             anchors.fill: parent
+
+            RoundButton {
+                id: brightnessButton
+
+                property real minValue: 0
+                property real maxValue: 100
+                property real step: 1
+                property bool incrementMode: true // true: increment, false: decrement
+
+                // The value you want to control
+                property real value: Backend.screen.brightness
+
+                // Interpolate between Color.gray and Color.green1
+                function lerpColor(a, b, t) {
+                    return Qt.rgba(
+                        a.r + (b.r - a.r) * t,
+                        a.g + (b.g - a.g) * t,
+                        a.b + (b.b - a.b) * t,
+                        a.a + (b.a - a.a) * t
+                    )
+                }
+                color: lerpColor(Color.gray, Color.green1, value / 100)
+
+                text: "Brightness: " + Math.round(value) + "%"
+
+                Timer {
+                    id: brightnessHoldTimer
+                    interval: 60
+                    repeat: true
+                    running: false
+                    onTriggered: {
+                        if (brightnessButton.incrementMode) {
+                            if (brightnessButton.value < brightnessButton.maxValue) {
+                                brightnessButton.value = Math.min(brightnessButton.value + brightnessButton.step, brightnessButton.maxValue)
+                            }
+                        } else {
+                            if (brightnessButton.value > brightnessButton.minValue) {
+                                brightnessButton.value = Math.max(brightnessButton.value - brightnessButton.step, brightnessButton.minValue)
+                            }
+                        }
+
+                        Backend.screen.setBrightness(brightnessButton.value)
+                    }
+                }
+
+                onPressed: brightnessHoldTimer.start()
+                onReleased: {
+                    brightnessHoldTimer.stop()
+                    // Toggle increment/decrement mode
+                    incrementMode = !incrementMode
+                }
+            }
 
             RoundButton {
                 id: opacityButton
@@ -97,10 +149,10 @@ PanelContainer {
                 }
                 color: lerpColor(Color.gray, Color.green1, value)
 
-                text: Math.round(value * 100) + "%"
+                text: "Background: " + Math.round(value * 100) + "%"
 
                 Timer {
-                    id: holdTimer
+                    id: opacityHoldTimer
                     interval: 60
                     repeat: true
                     running: false
@@ -118,9 +170,9 @@ PanelContainer {
                     }
                 }
 
-                onPressed: holdTimer.start()
+                onPressed: opacityHoldTimer.start()
                 onReleased: {
-                    holdTimer.stop()
+                    opacityHoldTimer.stop()
                     // Toggle increment/decrement mode
                     incrementMode = !incrementMode
                 }
@@ -128,7 +180,7 @@ PanelContainer {
 
             RoundButton {
                 color: Backend.kuikenTimerEnabled ? Color.green1 : Color.red
-                text: "Kuiken"
+                text: "Kuiken timer"
 
                 onClicked: {
                     if (Backend.kuikenTimerEnabled) {
@@ -142,7 +194,7 @@ PanelContainer {
 
             RoundButton {
                 color: Backend.marriedTimerEnabled ? Color.green1 : Color.red
-                text: "Wedding"
+                text: "Marry timer"
 
                 onClicked: {
                     if (Backend.marriedTimerEnabled) {
@@ -156,7 +208,7 @@ PanelContainer {
 
             RoundButton {
                 color: Color.green1
-                text: "X"
+                text: "Close"
 
                 onClicked: settingsDialog.closeDialog()
             }

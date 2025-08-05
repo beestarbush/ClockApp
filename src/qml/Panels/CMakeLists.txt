@@ -11,6 +11,7 @@ qt_add_qml_module(PanelLib
         DebugPanel.qml
         LowerMainPanel.qml
         PendulumPanel.qml
+        SevenSegmentPanel.qml
         TimeSincePanel.qml
         UpperMainPanel.qml
 )
