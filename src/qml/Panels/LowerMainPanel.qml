@@ -6,6 +6,7 @@ Circle {
     id: lowerMainPanel
 
     color: Color.blue // This should not be visible, if it is then some formatting is wrong.
+    property alias menuOverlay: menuOverlay
 
     PanelContainer {
         id: panelContainer
@@ -20,5 +21,14 @@ Circle {
 
             //onDebugButtonClicked: panelContainer.showPanel(debugPanel)
         }
+    }
+
+    LowerMenuOverlay {
+        id: menuOverlay
+
+        visible: false
+        anchors.fill: parent
+
+        onClose: menuOverlay.visible = false
     }
 }

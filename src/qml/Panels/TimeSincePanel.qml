@@ -95,9 +95,6 @@ RoundPanel {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: {
-            timeSincePanel.clicked()
-            console.log("timesince Clicked")
-        }
+        onClicked: timeSincePanel.clicked()
     }
 }

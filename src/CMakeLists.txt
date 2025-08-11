@@ -9,11 +9,17 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
+    DateTime.cpp
+    DateTime.h
     main.cpp
+    QmlInterface.cpp
+    QmlInterface.h
     RoundAnimatedImage.cpp
     RoundAnimatedImage.h
     Screen.cpp
     Screen.h
+    TimeSince.cpp
+    TimeSince.h
     Version.cpp
     Version.h
     git_version.h

@@ -15,6 +15,7 @@ set(regular_qml_components
 	Panel.qml
 	PanelContainer.qml
 	Pendulum.qml
+	RingMenu.qml
 	RoundButton.qml
 	RoundLayout.qml
 	RoundPanel.qml

@@ -9,9 +9,16 @@ qt_add_qml_module(PanelLib
     QML_FILES
         ClockPanel.qml
         DebugPanel.qml
+        Debug/GalleryPanel.qml
+        Debug/InterfacePanel.qml
+        Debug/LoggingPanel.qml
+        Debug/SimulationPanel.qml
+        Debug/UtilityPanel.qml
         LowerMainPanel.qml
+        LowerMenuOverlay.qml
         PendulumPanel.qml
         SevenSegmentPanel.qml
         TimeSincePanel.qml
         UpperMainPanel.qml
+        UpperMenuOverlay.qml
 )

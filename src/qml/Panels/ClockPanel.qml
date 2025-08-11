@@ -29,9 +29,6 @@ RoundPanel {
 
     MouseArea {
 		anchors.fill: parent
-		onClicked: {
-            clockPanel.clicked()
-            console.log("clockPanel Clicked")
-        }
+		onClicked: clockPanel.clicked()
 	}
 }

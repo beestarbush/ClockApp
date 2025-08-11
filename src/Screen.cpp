@@ -3,7 +3,7 @@
 #include <QDebug>
 
 #ifdef PLATFORM_IS_TARGET
-const QString BRIGHTNESS_FILE_PATH = QStringLiteral("/sys/devices/platform/axi/1000120000.pcie/1f00088000.i2c/i2c-10/10-0045/backlight/10-0045/brightness");
+const QString BRIGHTNESS_FILE_PATH = QStringLiteral("/sys/class/backlight/11-0045/brightness");
 #else
 const QString BRIGHTNESS_FILE_PATH = QStringLiteral("/tmp/brightness");
 #endif

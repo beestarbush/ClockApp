@@ -1,7 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "DateTime.h"
+#include "QmlInterface.h"
 #include "Screen.h"
+#include "TimeSince.h"
 #include "Version.h"
 #include "RoundAnimatedImage.h"
 
@@ -10,12 +13,20 @@ int main(int argc, char *argv[])
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
+	QmlInterface qmlInterface(&app);
+	DateTime dateTime(&app);
 	Screen screen(&app);
+	TimeSince timeSinceMarried(1730382722, false, &app);
+	TimeSince timeSinceKuiken(1738195200, true, &app);
 	Version version(&app);
 
-	qmlRegisterSingletonInstance("Bee", 1, 0, "Screen", &screen);
-	qmlRegisterSingletonInstance("Bee", 1, 0, "Version", &version);
-	qmlRegisterType<RoundAnimatedImage>("Bee", 1, 0, "RoundAnimatedImage");
+	qmlInterface.registerObject("DateTime", &dateTime);
+	qmlInterface.registerObject("Screen", &screen);
+	qmlInterface.registerObject("Version", &version);
+	qmlInterface.registerObject("TimeSinceMarried", &timeSinceMarried);
+	qmlInterface.registerObject("TimeSinceKuiken", &timeSinceKuiken);
+	qmlInterface.registerObject("QmlInterface", &qmlInterface);
+	qmlInterface.registerType<RoundAnimatedImage>("RoundAnimatedImage");
 
 	QObject::connect(
 		&engine,

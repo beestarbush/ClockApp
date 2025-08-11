@@ -6,6 +6,7 @@ import Components
 Panel {
     id: dialog
 
+    property alias backgroundOpacity: background.opacity
     signal close()
 
     transition: PanelTransition.scale

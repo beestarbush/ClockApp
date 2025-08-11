@@ -30,6 +30,7 @@ Item {
 	property bool marriedTimerEnabled: false
 	property bool kuikenTimerEnabled: false
 	property bool clockEnabled: true
+	property bool debugPanelEnabled: false
 
 	component ScreenQmlObject: QtObject {
 		readonly property QtObject screen: Bee.Screen

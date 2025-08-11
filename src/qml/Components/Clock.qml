@@ -1,12 +1,12 @@
 import QtQuick
 
+import Bee as Bee
 import Components
 
 Circle {
 	id: clock
 
 	color: Color.transparent
-	property string locale: "nl_NL"
 
 	property int hours
 	property int minutes
@@ -18,11 +18,9 @@ Circle {
 	readonly property int centerPointScale: 15
 
 	function timeChanged() {
-		var date = new Date();
-		var localeTime = date.toLocaleTimeString(Qt.locale(locale));
+		var now = Bee.DateTime.localTime
 
-		// localeTime is in "HH:MM:SS" format
-		var parts = localeTime.split(":");
+		var parts = now.split(":");
 
 		hours = parseInt(parts[0]);
 		minutes = parseInt(parts[1]);
