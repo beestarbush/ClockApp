@@ -2,8 +2,10 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "DateTime.h"
+#include "Network.h"
 #include "QmlInterface.h"
 #include "Screen.h"
+#include "Temperature.h"
 #include "TimeSince.h"
 #include "Version.h"
 #include "RoundAnimatedImage.h"
@@ -15,13 +17,17 @@ int main(int argc, char *argv[])
 	QQmlApplicationEngine engine;
 	QmlInterface qmlInterface(&app);
 	DateTime dateTime(&app);
+	Network network(&app);
 	Screen screen(&app);
+	Temperature temperature(&app);
 	TimeSince timeSinceMarried(1730382722, false, &app);
 	TimeSince timeSinceKuiken(1738195200, true, &app);
 	Version version(&app);
 
 	qmlInterface.registerObject("DateTime", &dateTime);
+	qmlInterface.registerObject("Network", &network);
 	qmlInterface.registerObject("Screen", &screen);
+	qmlInterface.registerObject("Temperature", &temperature);
 	qmlInterface.registerObject("Version", &version);
 	qmlInterface.registerObject("TimeSinceMarried", &timeSinceMarried);
 	qmlInterface.registerObject("TimeSinceKuiken", &timeSinceKuiken);

@@ -12,12 +12,16 @@ qt_add_executable(clockapp
     DateTime.cpp
     DateTime.h
     main.cpp
+    Network.cpp
+    Network.h
     QmlInterface.cpp
     QmlInterface.h
     RoundAnimatedImage.cpp
     RoundAnimatedImage.h
     Screen.cpp
     Screen.h
+    Temperature.cpp
+    Temperature.h
     TimeSince.cpp
     TimeSince.h
     Version.cpp
