@@ -20,6 +20,8 @@ qt_add_executable(clockapp
     RoundAnimatedImage.h
     Screen.cpp
     Screen.h
+    System.cpp
+    System.h
     Temperature.cpp
     Temperature.h
     TimeSince.cpp

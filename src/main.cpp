@@ -5,6 +5,7 @@
 #include "Network.h"
 #include "QmlInterface.h"
 #include "Screen.h"
+#include "System.h"
 #include "Temperature.h"
 #include "TimeSince.h"
 #include "Version.h"
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
 	DateTime dateTime(&app);
 	Network network(&app);
 	Screen screen(&app);
+	System system(&app);
 	Temperature temperature(&app);
 	TimeSince timeSinceMarried(1730382722, false, &app);
 	TimeSince timeSinceKuiken(1738195200, true, &app);
@@ -27,6 +29,7 @@ int main(int argc, char *argv[])
 	qmlInterface.registerObject("DateTime", &dateTime);
 	qmlInterface.registerObject("Network", &network);
 	qmlInterface.registerObject("Screen", &screen);
+	qmlInterface.registerObject("System", &system);
 	qmlInterface.registerObject("Temperature", &temperature);
 	qmlInterface.registerObject("Version", &version);
 	qmlInterface.registerObject("TimeSinceMarried", &timeSinceMarried);
