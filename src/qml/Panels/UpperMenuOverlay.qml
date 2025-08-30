@@ -48,6 +48,10 @@ PanelContainer {
                 if (index == 1) {
                     settingsRingMenu.visible = true
                 }
+                else if (index == 3) {
+                    // Backgrounds option
+                    lowerMenuOverlay.showAnimationSelection()
+                }
                 else if (index == 5)
                 {
                     lowerMenuOverlay.showVersion(Backend.version.tag)

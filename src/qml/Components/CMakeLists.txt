@@ -4,6 +4,7 @@ set_target_properties(ComponentLib PROPERTIES AUTOMOC ON)
 target_link_libraries(ComponentLib PRIVATE Qt6::Quick)
 
 set(regular_qml_components
+	AnimationCarousel.qml
 	BehaviorWhenVisible.qml
 	Button.qml
 	Circle.qml

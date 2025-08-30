@@ -32,6 +32,24 @@ Item {
 	property bool clockEnabled: true
 	property bool debugPanelEnabled: false
 
+	// Animation management properties
+	property var availableAnimations: Bee.AnimationManager.availableAnimations
+	property string selectedAnimation: Bee.AnimationManager.selectedAnimation
+	property string selectedAnimationPath: {
+		if (selectedAnimation) {
+			return Bee.AnimationManager.getAnimationPath(selectedAnimation)
+		}
+		return "qrc:/animations/test.gif" // fallback to default
+	}
+
+	function setSelectedAnimation(animationName) {
+		Bee.AnimationManager.selectedAnimation = animationName
+	}
+
+	function scanAnimationDirectory() {
+		Bee.AnimationManager.scanAnimationDirectory()
+	}
+
 	component ScreenQmlObject: QtObject {
 		readonly property QtObject screen: Bee.Screen
 

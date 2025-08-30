@@ -24,11 +24,14 @@ void RoundAnimatedImage::setSource(const QString &path)
         return;
     }
 
-    // Convert qrc:/ to :/ for Qt resource compatibility
-    QString m_source = path;
-    if (m_source.startsWith("qrc:/"))
+    // Store the original path
+    m_source = path;
+
+    // Convert qrc:/ to :/ for Qt resource compatibility, but use local variable
+    QString actualPath = path;
+    if (actualPath.startsWith("qrc:/"))
     {
-        m_source.replace(0, 4, ":");
+        actualPath.replace(0, 4, ":");
     }
 
     emit sourceChanged();
@@ -37,12 +40,23 @@ void RoundAnimatedImage::setSource(const QString &path)
     {
         m_movie->stop();
         delete m_movie;
+        m_movie = nullptr;
     }
 
-    m_movie = new QMovie(m_source);
+    // Handle empty path gracefully
+    if (actualPath.isEmpty())
+    {
+        update(); // Clear the display
+        return;
+    }
+
+    m_movie = new QMovie(actualPath);
     if (!m_movie->isValid())
     {
-        qWarning() << "Invalid movie source:" << m_source;
+        qWarning() << "Invalid movie source:" << actualPath;
+        delete m_movie;
+        m_movie = nullptr;
+        update(); // Clear the display
         return;
     }
     connect(m_movie, &QMovie::frameChanged, this, &RoundAnimatedImage::onFrameChanged);
