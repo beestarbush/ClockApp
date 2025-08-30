@@ -10,6 +10,7 @@
 #include "TimeSince.h"
 #include "Version.h"
 #include "RoundAnimatedImage.h"
+#include "AnimationManager.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +26,7 @@ int main(int argc, char *argv[])
 	TimeSince timeSinceMarried(1730382722, false, &app);
 	TimeSince timeSinceKuiken(1738195200, true, &app);
 	Version version(&app);
+	AnimationManager animationManager(&app);
 
 	qmlInterface.registerObject("DateTime", &dateTime);
 	qmlInterface.registerObject("Network", &network);
@@ -35,6 +37,7 @@ int main(int argc, char *argv[])
 	qmlInterface.registerObject("TimeSinceMarried", &timeSinceMarried);
 	qmlInterface.registerObject("TimeSinceKuiken", &timeSinceKuiken);
 	qmlInterface.registerObject("QmlInterface", &qmlInterface);
+	qmlInterface.registerObject("AnimationManager", &animationManager);
 	qmlInterface.registerType<RoundAnimatedImage>("RoundAnimatedImage");
 
 	QObject::connect(

@@ -14,7 +14,7 @@ RoundPanel {
         id: clockBackgroundAnimation
 
         anchors.fill: parent
-        source: "qrc:/animations/test.gif"
+        source: AnimationManager.getAnimationPath(Backend.clockBackgroundAnimation)
         opacity: Backend.clockBackgroundAnimationOpacity
     }
 

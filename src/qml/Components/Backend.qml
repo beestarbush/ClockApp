@@ -32,6 +32,14 @@ Item {
 	property bool clockEnabled: true
 	property bool debugPanelEnabled: false
 
+	// Animation management properties
+	property var availableAnimations: Bee.AnimationManager.availableAnimations
+	property string clockBackgroundAnimation: "test.gif"
+
+	function setSelectedAnimation(animationName) {
+		clockBackgroundAnimation = animationName
+	}
+
 	component ScreenQmlObject: QtObject {
 		readonly property QtObject screen: Bee.Screen
 

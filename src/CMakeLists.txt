@@ -9,6 +9,8 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
+    AnimationManager.cpp
+    AnimationManager.h
     DateTime.cpp
     DateTime.h
     main.cpp
@@ -38,6 +40,7 @@ qt_add_qml_module(clockapp
         qml/Main.qml
 )
 
+# This only contains default animations (when lookup on filesystem is not possible)
 qt_add_resources(clockapp "animations"
     PREFIX "/"
     FILES

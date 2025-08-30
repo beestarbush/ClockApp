@@ -31,6 +31,10 @@ PanelContainer {
         dialogOverlay.showPanel(backgroundOpacityDialog)
     }
 
+    function showAnimationSelection() {
+        dialogOverlay.showPanel(animationSelectionDialog)
+    }
+
     function closePanels() {
         dialogOverlay.showPanel(emptyDialog)
     }
@@ -238,6 +242,22 @@ PanelContainer {
                 opacityHoldTimer.stop()
                 // Toggle increment/decrement mode
                 incrementMode = !incrementMode
+            }
+        }
+    }
+
+    MenuDialog {
+        id: animationSelectionDialog
+
+        anchors.fill: parent
+        anchors.centerIn: parent
+
+        AnimationCarousel {
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            onAnimationSelected: (animationName) => {
+                Backend.setSelectedAnimation(animationName)
             }
         }
     }
