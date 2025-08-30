@@ -8,11 +8,6 @@ Item {
     property real rotationAngle: 0
     property int selectedIndex: 0
 
-    onRotationAngleChanged: {
-        console.log("ra onchanged: " + rotationAngle)
-    }
-
-
     signal itemSelected(int index)
 
     function reset() {
@@ -43,16 +38,10 @@ Item {
 
                 property real angle: index * itemAngle - 90
                 property real radius: ring.width / 2 - ring.border.width / 2
-                property real absoluteAngle: angle + rotationAngle
+                property real absoluteAngle: angle
 
                 x: ring.width / 2 + Math.cos(absoluteAngle * Math.PI / 180) * radius - width / 2
                 y: ring.height / 2 + Math.sin(absoluteAngle * Math.PI / 180) * radius - height / 2
-
-                /*transform: Rotation {
-                    origin.x: width / 2
-                    origin.y: height / 2
-                    angle: angle
-                }*/
 
                 Text {
                     anchors.centerIn: parent
@@ -64,8 +53,6 @@ Item {
                     transform: Rotation {
                         origin.x: width / 2
                         origin.y: height / 2
-                        //angle: -rotationAngle
-                        //angle: rotationAngle +90
                         angle: absoluteAngle + 90
                     }
 
@@ -117,55 +104,27 @@ MouseArea {
             lastAngle = currentAngle;
         }
 
-onReleased: {
-    if (!dragging) return;
+        onReleased: {
+            if (!dragging) return;
 
-    // Normalize rotationAngle to [0, 360)
-    let normalizedAngle = ((rotationAngle % 360) + 360) % 360;
-    console.log("Normalized angle: " + normalizedAngle)
-    console.log("rotationAngle: " + rotationAngle)
-    console.log("itemangle: " + itemAngle)
-
-    let rawIndex = Math.abs(rotationAngle / (itemAngle / 2))
-    console.log("rawindex: " + rawIndex)
-    rawIndex += 0.5
-    rawIndex = Math.floor(rawIndex)
-    console.log("rawindex: " + rawIndex)
-
-    selectedIndex = rawIndex % itemCount
-    rotationAngle = -1 * (selectedIndex * (itemAngle / 2))
-    console.log("rotationAngle: " + rotationAngle)
-    itemSelected(selectedIndex)
-
-    
-/*
-    // Compute raw index
-    let rawIndex = normalizedAngle / itemAngle;
-    console.log("rawIndex: " + rawIndex)
-
-    // Determine direction of rotation
-    let snappedIndex;
-    if ((rotationAngle - lastAngle * 180 / Math.PI) > 0) {
-        // Rotated clockwise → snap forward
-        snappedIndex = Math.ceil(rawIndex);
-    } else {
-        // Rotated counter-clockwise → snap backward
-        snappedIndex = Math.floor(rawIndex);
-    }
-    console.log("snappedIndex: " + snappedIndex)
-
-    snappedIndex = snappedIndex % itemCount;
-
-    // Snap rotation so that this item is at the top
-    rotationAngle = snappedIndex * itemAngle;
-    console.log("rotationAngle: " + rotationAngle)
-
-    // Update selected index
-    selectedIndex = (itemCount - snappedIndex) % itemCount;
-
-    itemSelected(selectedIndex);*/
-    dragging = false;
-}
-
+            // With single rotation system: ring rotates, items stay fixed
+            // Find which item is closest to the top position
+            // When ring rotates by rotationAngle, item positions shift by -rotationAngle
+            
+            // Calculate how many steps we've rotated
+            let steps = Math.round(rotationAngle / itemAngle);
+            
+            // The selected index: positive rotation moves ring clockwise,
+            // which brings lower-indexed items to the top (direction is inverted)
+            selectedIndex = ((-steps % itemCount) + itemCount) % itemCount;
+            
+            // Snap to align selected item at top
+            // We want: item selectedIndex to be at the top position
+            // Ring rotation needed: -selectedIndex * itemAngle (negative because direction is inverted)
+            rotationAngle = -selectedIndex * itemAngle;
+            
+            itemSelected(selectedIndex);
+            dragging = false;
+        }
     }
 }

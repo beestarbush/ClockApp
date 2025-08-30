@@ -78,7 +78,7 @@ Circle {
 
 			origin.x: hourPointer.width / 2
 			origin.y: hourPointer.height
-			angle: (clock.hours * 30)
+			angle: (clock.hours * 30) + (clock.minutes * 0.5)
 			
 			Behavior on angle {
 				SpringAnimation {

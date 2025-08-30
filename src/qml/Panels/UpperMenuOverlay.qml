@@ -45,7 +45,6 @@ PanelContainer {
             model: mainMenuModel
 
             onItemSelected: (index) => {
-                //console.log("Selected: " + model.get(index).label)
                 if (index == 1) {
                     settingsRingMenu.visible = true
                 }
