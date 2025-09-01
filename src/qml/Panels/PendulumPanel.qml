@@ -12,8 +12,8 @@ RoundPanel {
     Pendulum {
         id: pendulum
 
-        bobColor: Backend.pendulumBobColor
-        rodColor: Backend.pendulumRodColor
+        bobColor: Backend.clock.pendulumBobColor
+        rodColor: Backend.clock.pendulumRodColor
         anchors.fill: parent
     }
 }

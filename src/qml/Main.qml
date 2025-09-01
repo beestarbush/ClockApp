@@ -42,7 +42,7 @@ Window {
 		id: debugPanel
 
 		anchors.fill: parent
-		visible: Backend.debugPanelEnabled
+		visible: Backend.debugging.panelEnabled
 		onCloseButtonClicked: debugPanel.visible = false
 	}
 }

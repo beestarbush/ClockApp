@@ -136,7 +136,7 @@ PanelContainer {
                 property bool incrementMode: true // true: increment, false: decrement
 
                 // The value you want to control
-                property real value: Backend.clockBackgroundAnimationOpacity
+                property real value: Backend.clock.backgroundOpacity
 
                 // Interpolate between Color.gray and Color.green1
                 function lerpColor(a, b, t) {
@@ -166,7 +166,7 @@ PanelContainer {
                                 opacityButton.value = Math.max(opacityButton.value - opacityButton.step, opacityButton.minValue)
                             }
                         }
-                        Backend.clockBackgroundAnimationOpacity = opacityButton.value
+                        Backend.clock.backgroundOpacity = opacityButton.value
                     }
                 }
 
@@ -179,29 +179,29 @@ PanelContainer {
             }
 
             RoundButton {
-                color: Backend.kuikenTimerEnabled ? Color.green1 : Color.red
+                color: Backend.kuikenTimer.enabled ? Color.green1 : Color.red
                 text: "Kuiken timer"
 
                 onClicked: {
-                    if (Backend.kuikenTimerEnabled) {
-                        Backend.kuikenTimerEnabled = false
+                    if (Backend.kuikenTimer.enabled) {
+                        Backend.kuikenTimer.enabled = false
                     }
                     else {
-                        Backend.kuikenTimerEnabled = true
+                        Backend.kuikenTimer.enabled = true
                     }
                 }
             }
 
             RoundButton {
-                color: Backend.marriedTimerEnabled ? Color.green1 : Color.red
+                color: Backend.marriedTimer.enabled ? Color.green1 : Color.red
                 text: "Marry timer"
 
                 onClicked: {
-                    if (Backend.marriedTimerEnabled) {
-                        Backend.marriedTimerEnabled = false
+                    if (Backend.marriedTimer.enabled) {
+                        Backend.marriedTimer.enabled = false
                     }
                     else {
-                        Backend.marriedTimerEnabled = true
+                        Backend.marriedTimer.enabled = true
                     }
                 }
             }

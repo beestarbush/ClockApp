@@ -41,7 +41,7 @@ Rectangle {
 
 			Button {
 				text: "Close"
-				onClicked: Backend.debugPanelEnabled = false
+				onClicked: Backend.debugging.panelEnabled = false
 			}
 		}
 

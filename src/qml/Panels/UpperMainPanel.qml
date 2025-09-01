@@ -21,7 +21,7 @@ Circle {
             id: clockPanel
 
             anchors.fill: parent
-            enabled: Backend.clockEnabled
+            enabled: Backend.clock.enabled
 
             onClicked: menuOverlay.visible = true
         }
@@ -30,7 +30,7 @@ Circle {
             id: timeSinceMarriedPanel
 
             anchors.fill: parent
-            enabled: Backend.marriedTimerEnabled
+            enabled: Backend.marriedTimer.enabled
             onClicked: menuOverlay.visible = true
             years: Bee.TimeSinceMarried.years
             days: Bee.TimeSinceMarried.days
@@ -43,7 +43,7 @@ Circle {
             id: timeSinceKuikenPanel
 
             anchors.fill: parent
-            enabled: Backend.kuikenTimerEnabled
+            enabled: Backend.kuikenTimer.enabled
             onClicked: menuOverlay.visible = true
             happening: "Kuiken"
             showYearsInCenter: false

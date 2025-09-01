@@ -14,16 +14,17 @@ RoundPanel {
         id: clockBackgroundAnimation
 
         anchors.fill: parent
-        source: AnimationManager.getAnimationPath(Backend.clockBackgroundAnimation)
-        opacity: Backend.clockBackgroundAnimationOpacity
+        
+        source: AnimationManager.getAnimationPath(Backend.clock.backgroundAnimation)
+        opacity: Backend.clock.backgroundOpacity
     }
 
     Clock {
         id: clock
 
-        hourColor: Backend.hourColor
-        minuteColor: Backend.minuteColor
-        secondColor: Backend.secondColor
+        hourColor: Backend.clock.hourColor
+        minuteColor: Backend.clock.minuteColor
+        secondColor: Backend.clock.secondColor
 
         anchors.fill: parent
         anchors.horizontalCenter: parent.horizontalCenter
