@@ -17,6 +17,10 @@ Circle {
 	readonly property int secondHandWidthScale: 35
 	readonly property int centerPointScale: 15
 
+	property alias hourColor: hourPointer.color
+	property alias minuteColor: minutePointer.color
+	property alias secondColor: secondPointer.color
+
 	function timeChanged() {
 		var now = Bee.DateTime.localTime
 

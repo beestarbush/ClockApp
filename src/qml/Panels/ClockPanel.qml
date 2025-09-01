@@ -21,6 +21,10 @@ RoundPanel {
     Clock {
         id: clock
 
+        hourColor: Backend.hourColor
+        minuteColor: Backend.minuteColor
+        secondColor: Backend.secondColor
+
         anchors.fill: parent
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - (Value.defaultMargin * 2)

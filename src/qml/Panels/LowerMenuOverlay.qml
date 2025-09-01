@@ -35,6 +35,11 @@ PanelContainer {
         dialogOverlay.showPanel(animationSelectionDialog)
     }
 
+    function showColorSelection(clockPointerIndex) {
+        colorSelectionDialog.setClockPointerIndex(clockPointerIndex)
+        dialogOverlay.showPanel(colorSelectionDialog)
+    }
+
     function closePanels() {
         dialogOverlay.showPanel(emptyDialog)
     }
@@ -258,6 +263,47 @@ PanelContainer {
 
             onAnimationSelected: (animationName) => {
                 Backend.setSelectedAnimation(animationName)
+            }
+        }
+    }
+
+    MenuDialog {
+        id: colorSelectionDialog
+
+        anchors.fill: parent
+        anchors.centerIn: parent
+
+        property int clockPointerIndex: 0
+
+        function setClockPointerIndex(clockPointerIndex) {
+            colorSelectionDialog.clockPointerIndex = clockPointerIndex
+            if (clockPointerIndex == 0) {
+                colorWheel.startColor = Backend.hourColor
+            } else if (clockPointerIndex == 1) {
+                colorWheel.startColor = Backend.minuteColor
+            } else if (clockPointerIndex == 2) {
+                colorWheel.startColor = Backend.secondColor
+            } else if (clockPointerIndex == 3) {
+                colorWheel.startColor = Backend.pendulumBobColor
+            }
+        }
+
+        ColorWheel {
+            id: colorWheel
+
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            onColorSelected: (selectedColor) => {       
+                if (colorSelectionDialog.clockPointerIndex == 0) {
+                    Backend.hourColor = selectedColor
+                } else if (colorSelectionDialog.clockPointerIndex == 1) {
+                    Backend.minuteColor = selectedColor
+                } else if (colorSelectionDialog.clockPointerIndex == 2) {
+                    Backend.secondColor = selectedColor
+                } else if (colorSelectionDialog.clockPointerIndex == 3) {
+                    Backend.pendulumBobColor = selectedColor
+                }
             }
         }
     }

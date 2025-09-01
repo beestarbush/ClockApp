@@ -32,6 +32,12 @@ Item {
 	property bool clockEnabled: true
 	property bool debugPanelEnabled: false
 
+	property color hourColor: Color.red
+	property color minuteColor: Color.blue
+	property color secondColor: Color.green1
+	property color pendulumBobColor: Color.green1
+	property color pendulumRodColor: Color.black
+
 	// Animation management properties
 	property var availableAnimations: Bee.AnimationManager.availableAnimations
 	property string clockBackgroundAnimation: "test.gif"

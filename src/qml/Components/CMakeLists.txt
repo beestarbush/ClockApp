@@ -9,6 +9,7 @@ set(regular_qml_components
 	Button.qml
 	Circle.qml
 	Clock.qml
+	ColorWheel.qml
 	Dialog.qml
 	DialogOverlay.qml
 	Flickable.qml
