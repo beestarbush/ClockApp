@@ -22,6 +22,8 @@ qt_add_executable(clockapp
     RoundAnimatedImage.h
     Screen.cpp
     Screen.h
+    Settings.cpp
+    Settings.h
     System.cpp
     System.h
     Temperature.cpp

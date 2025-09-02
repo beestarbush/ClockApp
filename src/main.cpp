@@ -5,6 +5,7 @@
 #include "Network.h"
 #include "QmlInterface.h"
 #include "Screen.h"
+#include "Settings.h"
 #include "System.h"
 #include "Temperature.h"
 #include "TimeSince.h"
@@ -18,12 +19,15 @@ constexpr quint64 KUIKEN_TIMESTAMP = 1738195200;
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
+	app.setOrganizationName("bee");
+    app.setApplicationName("clockapp");
 
 	QQmlApplicationEngine engine;
 	QmlInterface qmlInterface(&app);
 	DateTime dateTime(&app);
 	Network network(&app);
 	Screen screen(&app);
+	Settings settings(&app);
 	System system(&app);
 	Temperature temperature(&app);
 	TimeSince timeSinceMarried(MARRIED_TIMESTAMP, false, &app);
@@ -34,6 +38,7 @@ int main(int argc, char *argv[])
 	qmlInterface.registerObject("DateTime", &dateTime);
 	qmlInterface.registerObject("Network", &network);
 	qmlInterface.registerObject("Screen", &screen);
+	qmlInterface.registerObject("Settings", &settings);
 	qmlInterface.registerObject("System", &system);
 	qmlInterface.registerObject("Temperature", &temperature);
 	qmlInterface.registerObject("Version", &version);

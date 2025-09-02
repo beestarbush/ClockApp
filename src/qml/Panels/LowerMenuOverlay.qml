@@ -100,10 +100,10 @@ PanelContainer {
 
             onClicked: {
                 if (Backend.kuikenTimer.enabled) {
-                    Backend.kuikenTimer.enabled = false
+                    Backend.kuikenTimer.setEnabled(false)
                 }
                 else {
-                    Backend.kuikenTimer.enabled = true
+                    Backend.kuikenTimer.setEnabled(true)
                 }
             }
         }     
@@ -121,10 +121,10 @@ PanelContainer {
 
             onClicked: {
                 if (Backend.marriedTimer.enabled) {
-                    Backend.marriedTimer.enabled = false
+                    Backend.marriedTimer.setEnabled(false)
                 }
                 else {
-                    Backend.marriedTimer.enabled = true
+                    Backend.marriedTimer.setEnabled(true)
                 }
             }
         }     
@@ -296,13 +296,13 @@ PanelContainer {
 
             onColorSelected: (selectedColor) => {       
                 if (colorSelectionDialog.clockPointerIndex == 0) {
-                    Backend.clock.hourColor = selectedColor
+                    Backend.clock.setHourColor(selectedColor)
                 } else if (colorSelectionDialog.clockPointerIndex == 1) {
-                    Backend.clock.minuteColor = selectedColor
+                    Backend.clock.setMinuteColor(selectedColor)
                 } else if (colorSelectionDialog.clockPointerIndex == 2) {
-                    Backend.clock.secondColor = selectedColor
+                    Backend.clock.setSecondColor(selectedColor)
                 } else if (colorSelectionDialog.clockPointerIndex == 3) {
-                    Backend.clock.pendulumBobColor = selectedColor
+                    Backend.clock.setPendulumColor(selectedColor)
                 }
             }
         }

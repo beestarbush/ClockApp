@@ -59,7 +59,8 @@ PanelContainer {
                     settingsRingMenu.visible = true
                 }
                 else if (index == 3) {
-                    // Backgrounds option
+                    colorRingMenu.visible = false
+                    settingsRingMenu.visible = false
                     lowerMenuOverlay.showAnimationSelection()
                 }
                 else if (index == 4) {
@@ -68,6 +69,8 @@ PanelContainer {
                 }
                 else if (index == 5)
                 {
+                    colorRingMenu.visible = false
+                    settingsRingMenu.visible = false
                     lowerMenuOverlay.showVersion(Backend.version.tag)
                 }
                 else {

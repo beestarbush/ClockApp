@@ -1,6 +1,7 @@
 import QtQuick
 
 import Components
+import Bee
 
 RoundPanel {
     id: sevenSegmentPanel
@@ -17,6 +18,15 @@ RoundPanel {
     backgroundColor: Color.black
 
     signal clicked()
+
+    RoundAnimatedImage {
+        id: backgroundAnimation
+
+        anchors.fill: parent
+        
+        source: AnimationManager.getAnimationPath(Backend.marriedTimer.backgroundAnimation)
+        opacity: Backend.marriedTimer.backgroundOpacity
+    }
     
     Item {
         id: daysSegments
