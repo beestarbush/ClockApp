@@ -8,13 +8,13 @@ constexpr quint64 SECONDS_IN_A_DAY = SECONDS_IN_HOUR * 24;
 constexpr quint64 DAYS_IN_A_WEEK = 7;
 constexpr quint64 DAYS_IN_YEAR = 365;
 
-TimeSince::TimeSince(quint64 epochUtcTimestamp, bool daysClear, QObject *parent) :
+TimeSince::TimeSince(quint64 epochUtcTimestamp, QObject *parent) :
     QObject(parent),
     m_epochUtcTimestamp(epochUtcTimestamp),
-    m_daysClear(daysClear),
     m_timer(this),
     m_years(0),
     m_days(0),
+    m_daysInWeek(0),
     m_weeks(0),
     m_hours(0),
     m_minutes(0),
@@ -32,6 +32,11 @@ quint64 TimeSince::years() const
 quint64 TimeSince::days() const
 {
     return m_days;
+}
+
+quint64 TimeSince::daysInWeek() const
+{
+    return m_daysInWeek;
 }
 
 quint64 TimeSince::weeks() const
@@ -67,6 +72,14 @@ void TimeSince::setDays(const quint64 days)
     if (m_days != days) {
         m_days = days;
         emit daysChanged(m_days);
+    }
+}
+
+void TimeSince::setDaysInWeek(const quint64 daysInWeek)
+{
+    if (m_daysInWeek != daysInWeek) {
+        m_daysInWeek = daysInWeek;
+        emit daysInWeekChanged(m_daysInWeek);
     }
 }
 
@@ -111,23 +124,21 @@ quint64 TimeSince::calculate()
     qint64 diffSeconds = now.toSecsSinceEpoch() - referenceDate.toSecsSinceEpoch();
     quint64 years = diffSeconds / (SECONDS_IN_A_DAY * DAYS_IN_YEAR);
     quint64 days = diffSeconds / (SECONDS_IN_A_DAY);
+    quint64 daysInWeek = days % DAYS_IN_A_WEEK;
     quint64 weeks = days / DAYS_IN_A_WEEK;
-
-    if (m_daysClear) {
-        // This will clear the days after weeks calculation, so that we see the remaining days after weeks.
-        days %= DAYS_IN_A_WEEK; // Remaining days after weeks
-    }
-    
     quint64 hours = (diffSeconds % (SECONDS_IN_A_DAY)) / (SECONDS_IN_HOUR);
     quint64 minutes = (diffSeconds % (SECONDS_IN_HOUR)) / SECONDS_IN_MINUTE;
     quint64 seconds = diffSeconds % SECONDS_IN_MINUTE;
 
     setYears(years);
     setDays(days);
+    setDaysInWeek(daysInWeek);
     setWeeks(weeks);
     setHours(hours);
     setMinutes(minutes);
     setSeconds(seconds);
+
+    emit timeChanged();
 
     /*qDebug() << "Years:" << years
              << "Weeks:" << weeks

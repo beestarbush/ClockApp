@@ -13,9 +13,6 @@
 #include "RoundAnimatedImage.h"
 #include "AnimationManager.h"
 
-constexpr quint64 MARRIED_TIMESTAMP = 1730382722;
-constexpr quint64 KUIKEN_TIMESTAMP = 1738195200;
-
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
@@ -30,8 +27,8 @@ int main(int argc, char *argv[])
 	Settings settings(&app);
 	System system(&app);
 	Temperature temperature(&app);
-	TimeSince timeSinceMarried(MARRIED_TIMESTAMP, false, &app);
-	TimeSince timeSinceKuiken(KUIKEN_TIMESTAMP, true, &app);
+	TimeSince timeSinceMarried(settings.marriedTimerTimestamp(), &app);
+	TimeSince timeSinceKuiken(settings.kuikenTimerTimestamp(), &app);
 	Version version(&app);
 	AnimationManager animationManager(&app);
 

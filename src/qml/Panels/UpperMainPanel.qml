@@ -45,11 +45,9 @@ Circle {
             anchors.fill: parent
             enabled: Backend.kuikenTimer.enabled
             onClicked: menuOverlay.visible = true
-            happening: "Kuiken"
-            showYearsInCenter: false
             years: Bee.TimeSinceKuiken.years
             days: Bee.TimeSinceKuiken.days
-            daysDivisor: 7
+            daysInWeek: Bee.TimeSinceKuiken.daysInWeek
             hours: Bee.TimeSinceKuiken.hours
             minutes: Bee.TimeSinceKuiken.minutes
             seconds: Bee.TimeSinceKuiken.seconds

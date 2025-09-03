@@ -74,6 +74,10 @@ Item {
 
 	component KuikenQmlObject : QtObject {
 		property bool enabled: Bee.Settings.kuikenTimerEnabled
+		property real backgroundOpacity: Bee.Settings.kuikenTimerBackgroundOpacity
+		property string backgroundAnimation: Bee.Settings.kuikenTimerBackgroundAnimation
+		property color barColor: Color.green2
+		property color textColor: Color.lightGray
 
 		function setEnabled(enable) {
 			Bee.Settings.kuikenTimerEnabled = enable

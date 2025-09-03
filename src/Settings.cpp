@@ -20,6 +20,8 @@ const QColor CLOCK_SECOND_COLOR_DEFAULT = QColor(Qt::green);
 const QString CLOCK_PENDULUM_COLOR_KEY = QStringLiteral("pendulum-bob-color");
 const QColor CLOCK_PENDULUM_COLOR_DEFAULT = QColor(Qt::green);
 const QString MARRIED_TIMER_GROUP = QStringLiteral("married-timer");
+const QString MARRIED_TIMER_TIMESTAMP_KEY = QStringLiteral("timestamp");
+constexpr quint64 MARRIED_TIMER_TIMESTAMP_DEFAULT = 1730382722;
 const QString MARRIED_TIMER_ENABLED_KEY = QStringLiteral("enabled");
 const bool MARRIED_TIMER_ENABLED_DEFAULT = false;
 const QString MARRIED_TIMER_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
@@ -27,8 +29,14 @@ const qreal MARRIED_TIMER_BACKGROUND_OPACITY_DEFAULT = 0.3;
 const QString MARRIED_TIMER_BACKGROUND_ANIMATION_KEY = QStringLiteral("background-animation");
 const QString MARRIED_TIMER_BACKGROUND_ANIMATION_DEFAULT = QStringLiteral("married_bw.gif");
 const QString KUIKEN_TIMER_GROUP = QStringLiteral("kuiken-timer");
+const QString KUIKEN_TIMER_TIMESTAMP_KEY = QStringLiteral("timestamp");
+constexpr quint64 KUIKEN_TIMER_TIMESTAMP_DEFAULT = 1738195200;
 const QString KUIKEN_TIMER_ENABLED_KEY = QStringLiteral("enabled");
 const bool KUIKEN_TIMER_ENABLED_DEFAULT = false;
+const QString KUIKEN_TIMER_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
+const qreal KUIKEN_TIMER_BACKGROUND_OPACITY_DEFAULT = 0.5;
+const QString KUIKEN_TIMER_BACKGROUND_ANIMATION_KEY = QStringLiteral("background-animation");
+const QString KUIKEN_TIMER_BACKGROUND_ANIMATION_DEFAULT = QStringLiteral("kuiken.gif");
 
 Settings::Settings(QObject *parent) :
     QObject(parent)
@@ -53,13 +61,17 @@ bool Settings::load()
     settings.endGroup();
 
     settings.beginGroup(MARRIED_TIMER_GROUP);
+    m_marriedTimerTimestamp = settings.value(MARRIED_TIMER_TIMESTAMP_KEY, MARRIED_TIMER_TIMESTAMP_DEFAULT).toULongLong();
     m_marriedTimerEnabled = settings.value(MARRIED_TIMER_ENABLED_KEY, MARRIED_TIMER_ENABLED_DEFAULT).toBool();
     m_marriedTimerBackgroundOpacity = settings.value(MARRIED_TIMER_BACKGROUND_OPACITY_KEY, MARRIED_TIMER_BACKGROUND_OPACITY_DEFAULT).toReal();
     m_marriedTimerBackgroundAnimation = settings.value(MARRIED_TIMER_BACKGROUND_ANIMATION_KEY, MARRIED_TIMER_BACKGROUND_ANIMATION_DEFAULT).toString();
     settings.endGroup();
 
     settings.beginGroup(KUIKEN_TIMER_GROUP);
+    m_kuikenTimerTimestamp = settings.value(KUIKEN_TIMER_TIMESTAMP_KEY, KUIKEN_TIMER_TIMESTAMP_DEFAULT).toULongLong();
     m_kuikenTimerEnabled = settings.value(KUIKEN_TIMER_ENABLED_KEY, KUIKEN_TIMER_ENABLED_DEFAULT).toBool();
+    m_kuikenTimerBackgroundOpacity = settings.value(KUIKEN_TIMER_BACKGROUND_OPACITY_KEY, KUIKEN_TIMER_BACKGROUND_OPACITY_DEFAULT).toReal();
+    m_kuikenTimerBackgroundAnimation = settings.value(KUIKEN_TIMER_BACKGROUND_ANIMATION_KEY, KUIKEN_TIMER_BACKGROUND_ANIMATION_DEFAULT).toString();
     settings.endGroup();
 
     return true;
@@ -155,6 +167,24 @@ QColor Settings::clockPendulumColor() const
     return m_clockPendulumColor;
 }
 
+void Settings::setMarriedTimerTimestamp(quint64 timestamp)
+{
+    if (m_marriedTimerTimestamp != timestamp) {
+        static QSettings settings;
+        settings.beginGroup(MARRIED_TIMER_GROUP);
+        settings.setValue(MARRIED_TIMER_TIMESTAMP_KEY, timestamp);
+        settings.endGroup();
+
+        m_marriedTimerTimestamp = timestamp;
+        emit marriedTimerTimestampChanged();
+    }
+}
+
+quint64 Settings::marriedTimerTimestamp() const
+{
+    return m_marriedTimerTimestamp;
+}
+
 void Settings::setMarriedTimerEnabled(bool enabled)
 {
     if (m_marriedTimerEnabled != enabled) {
@@ -209,6 +239,24 @@ QString Settings::marriedTimerBackgroundAnimation() const
     return m_marriedTimerBackgroundAnimation;
 }
 
+void Settings::setKuikenTimerTimestamp(quint64 timestamp)
+{
+    if (m_kuikenTimerTimestamp != timestamp) {
+        static QSettings settings;
+        settings.beginGroup(KUIKEN_TIMER_GROUP);
+        settings.setValue(KUIKEN_TIMER_TIMESTAMP_KEY, timestamp);
+        settings.endGroup();
+
+        m_kuikenTimerTimestamp = timestamp;
+        emit kuikenTimerTimestampChanged();
+    }
+}
+
+quint64 Settings::kuikenTimerTimestamp() const
+{
+    return m_kuikenTimerTimestamp;
+}
+
 void Settings::setKuikenTimerEnabled(bool enabled)
 {
     if (m_kuikenTimerEnabled != enabled) {
@@ -225,4 +273,40 @@ void Settings::setKuikenTimerEnabled(bool enabled)
 bool Settings::kuikenTimerEnabled() const
 {
     return m_kuikenTimerEnabled;
+}
+
+void Settings::setKuikenTimerBackgroundOpacity(qreal opacity)
+{
+    if (!qFuzzyCompare(m_kuikenTimerBackgroundOpacity, opacity)) {
+        static QSettings settings;
+        settings.beginGroup(KUIKEN_TIMER_GROUP);
+        settings.setValue(KUIKEN_TIMER_BACKGROUND_OPACITY_KEY, opacity);
+        settings.endGroup();
+
+        m_kuikenTimerBackgroundOpacity = opacity;
+        emit kuikenTimerBackgroundOpacityChanged();
+    }
+}
+
+qreal Settings::kuikenTimerBackgroundOpacity() const
+{
+    return m_kuikenTimerBackgroundOpacity;
+}
+
+void Settings::setKuikenTimerBackgroundAnimation(const QString &animation)
+{
+    if (m_kuikenTimerBackgroundAnimation != animation) {
+        static QSettings settings;
+        settings.beginGroup(KUIKEN_TIMER_GROUP);
+        settings.setValue(KUIKEN_TIMER_BACKGROUND_ANIMATION_KEY, animation);
+        settings.endGroup();
+
+        m_kuikenTimerBackgroundAnimation = animation;
+        emit kuikenTimerBackgroundAnimationChanged();
+    }
+}
+
+QString Settings::kuikenTimerBackgroundAnimation() const
+{
+    return m_kuikenTimerBackgroundAnimation;
 }

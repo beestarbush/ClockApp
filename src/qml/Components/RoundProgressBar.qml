@@ -41,7 +41,7 @@ Shape {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         visible: true
-        font.pointSize: timeSincePanel.width > 0 ? timeSincePanel.width * 0.04 : Value.defaultTextSize
+        font.pointSize: progressBar.thickness > 0 ? progressBar.thickness * 0.5 : Value.smallTextSize
         text: "%1".arg(progress)
         color: Qt.darker(shapePath.strokeColor, 1.3)
     }
