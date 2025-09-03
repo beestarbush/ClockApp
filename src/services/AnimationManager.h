@@ -1,5 +1,5 @@
-#ifndef ANIMATIONMANAGER_H
-#define ANIMATIONMANAGER_H
+#ifndef SERVICES_ANIMATIONMANAGER_H
+#define SERVICES_ANIMATIONMANAGER_H
 
 #include <QObject>
 #include <QStringList>
@@ -34,4 +34,4 @@ private:
     QTimer m_scanTimer;
 };
 
-#endif // ANIMATIONMANAGER_H
+#endif // SERVICES_ANIMATIONMANAGER_H

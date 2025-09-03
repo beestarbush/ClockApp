@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import Components
+import Bee
 
 Item {
     id: galleryTab
@@ -12,5 +13,9 @@ Item {
         Button {}
 
         RoundButton{}
+
+        Text {
+            text: HAL.temperature.processorTemperature
+        }
     }
 }

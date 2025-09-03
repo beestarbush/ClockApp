@@ -18,17 +18,17 @@ Item {
 	property var availableAnimations: Bee.AnimationManager.availableAnimations
 
 	component ScreenQmlObject: QtObject {
-		readonly property QtObject screen: Bee.Screen
+		readonly property QtObject screen: Bee.HAL.screen
 
-		readonly property int brightness: Bee.Screen.brightness
+		readonly property int brightness: Bee.HAL.screen.brightness
 
 		function setBrightness(brightness) {
-			Bee.Screen.brightness = brightness
+			Bee.HAL.screen.brightness = brightness
 		}
 	}
 
 	component VersionQmlObject: QtObject {
-		readonly property string tag: Bee.Version.tag
+		readonly property string tag: Bee.Services.version.tag
 	}
 
 	component ClockQmlObject : QtObject {

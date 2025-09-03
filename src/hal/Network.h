@@ -1,3 +1,6 @@
+#ifndef HAL_NETWORK_H
+#define HAL_NETWORK_H
+
 #include <QObject>
 #include <QTimer>
 
@@ -36,3 +39,5 @@ private:
 	QString m_ipAddress;
 	QString m_subnetMask;
 };
+
+#endif // HAL_NETWORK_H

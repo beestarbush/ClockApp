@@ -1,3 +1,6 @@
+#ifndef SERVICES_SETTINGS_H
+#define SERVICES_SETTINGS_H
+
 #include <QObject>
 #include <QColor>
 
@@ -87,3 +90,5 @@ private:
 	qreal m_kuikenTimerBackgroundOpacity;
 	QString m_kuikenTimerBackgroundAnimation;
 };
+
+#endif // SERVICES_SETTINGS_H

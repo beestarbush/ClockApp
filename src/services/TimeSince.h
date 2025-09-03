@@ -1,3 +1,6 @@
+#ifndef SERVICES_TIMESINCE_H
+#define SERVICES_TIMESINCE_H
+
 #include <QObject>
 #include <QTimer>
 
@@ -55,3 +58,5 @@ signals:
 	void minutesChanged(quint64 minutes);
 	void secondsChanged(quint64 seconds);
 };
+
+#endif // SERVICES_TIMESINCE_H

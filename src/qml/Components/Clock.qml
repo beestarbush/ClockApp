@@ -22,7 +22,7 @@ Circle {
 	property alias secondColor: secondPointer.color
 
 	function timeChanged() {
-		var now = Bee.DateTime.localTime
+		var now = Bee.Services.dateTime.localTime
 
 		var parts = now.split(":");
 

@@ -1,3 +1,6 @@
+#ifndef HAL_SYSTEM_H
+#define HAL_SYSTEM_H
+
 #include <QObject>
 #include <QProcess>
 
@@ -19,3 +22,5 @@ private:
 	QProcess m_rebootProcess;
 
 };
+
+#endif // HAL_SYSTEM_H

@@ -9,30 +9,34 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
-    AnimationManager.cpp
-    AnimationManager.h
-    DateTime.cpp
-    DateTime.h
     main.cpp
-    Network.cpp
-    Network.h
-    QmlInterface.cpp
-    QmlInterface.h
     RoundAnimatedImage.cpp
     RoundAnimatedImage.h
-    Screen.cpp
-    Screen.h
-    Settings.cpp
-    Settings.h
-    System.cpp
-    System.h
-    Temperature.cpp
-    Temperature.h
-    TimeSince.cpp
-    TimeSince.h
-    Version.cpp
-    Version.h
     git_version.h
+    hal/HAL.cpp
+    hal/HAL.h
+    hal/Network.cpp
+    hal/Network.h
+    hal/Screen.cpp
+    hal/Screen.h
+    hal/System.cpp
+    hal/System.h
+    hal/Temperature.cpp
+    hal/Temperature.h
+    services/AnimationManager.cpp
+    services/AnimationManager.h
+    services/DateTime.cpp
+    services/DateTime.h
+    services/QmlInterface.cpp
+    services/QmlInterface.h
+    services/Services.cpp
+    services/Services.h
+    services/Settings.cpp
+    services/Settings.h
+    services/TimeSince.cpp
+    services/TimeSince.h
+    services/Version.cpp
+    services/Version.h
 )
 
 qt_add_qml_module(clockapp

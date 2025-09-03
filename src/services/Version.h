@@ -1,3 +1,6 @@
+#ifndef SERVICES_VERSION_H
+#define SERVICES_VERSION_H
+
 #include <QObject>
 
 class Version : public QObject
@@ -16,3 +19,5 @@ public:
 	QString shortCommitHash() const;
 	QString dirty() const;
 };
+
+#endif // SERVICES_VERSION_H

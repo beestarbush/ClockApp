@@ -1,3 +1,6 @@
+#ifndef SERVICES_QMLINTERFACE_H
+#define SERVICES_QMLINTERFACE_H
+
 #include <QObject>
 #include <QQmlApplicationEngine>
 
@@ -19,3 +22,5 @@ public:
 private:
     QStringList m_registeredObjectsNames;
 };
+
+#endif // SERVICES_QMLINTERFACE_H

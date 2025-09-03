@@ -1,3 +1,6 @@
+#ifndef HAL_TEMPERATURE_H
+#define HAL_TEMPERATURE_H
+
 #include <QObject>
 #include <QTimer>
 
@@ -24,3 +27,5 @@ private:
 	qint32 m_processorTemperature;
 	bool m_valid;
 };
+
+#endif // HAL_TEMPERATURE_H

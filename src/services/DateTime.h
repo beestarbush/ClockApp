@@ -1,3 +1,6 @@
+#ifndef SERVICES_DATETIME_H
+#define SERVICES_DATETIME_H
+
 #include <QObject>
 #include <QTimeZone>
 
@@ -19,3 +22,5 @@ signals:
 private:
     QTimeZone m_timeZone;
 };
+
+#endif // SERVICES_DATETIME_H

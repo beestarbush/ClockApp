@@ -1,3 +1,6 @@
+#ifndef HAL_SCREEN_H
+#define HAL_SCREEN_H
+
 #include <QObject>
 
 class Screen : public QObject
@@ -19,3 +22,5 @@ private:
     qint8 readBrightnessFromFile(const QString &filePath) const;
     void writeBrightnessToFile(const QString &filePath, qint8 value) const;
 };
+
+#endif // HAL_SCREEN_H
