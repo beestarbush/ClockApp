@@ -17,8 +17,8 @@ qt_add_qml_module(PanelLib
         LowerMainPanel.qml
         LowerMenuOverlay.qml
         PendulumPanel.qml
+        RoundProgressBarPanel.qml
         SevenSegmentPanel.qml
-        TimeSincePanel.qml
         UpperMainPanel.qml
         UpperMenuOverlay.qml
 )

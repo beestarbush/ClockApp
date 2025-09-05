@@ -5,6 +5,7 @@
 #include "RoundAnimatedImage.h"
 #include "hal/HAL.h"
 #include "services/Services.h"
+#include "applications/Applications.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,10 +18,12 @@ int main(int argc, char *argv[])
 
 	HAL hal(&app);
 	Services services(&app);
+	Applications applications(services, &app);
 
 	qmlInterface.registerObject("QmlInterface", &qmlInterface);
 	qmlInterface.registerObject("HAL", &hal);
 	qmlInterface.registerObject("Services", &services);
+	qmlInterface.registerObject("Applications", &applications);
 	qmlInterface.registerType<RoundAnimatedImage>("RoundAnimatedImage");
 
 	QObject::connect(

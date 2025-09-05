@@ -33,10 +33,18 @@ qt_add_executable(clockapp
     services/Services.h
     services/Settings.cpp
     services/Settings.h
-    services/TimeSince.cpp
-    services/TimeSince.h
     services/Version.cpp
     services/Version.h
+    applications/Applications.cpp
+    applications/Applications.h
+    applications/BirthdayTimer.cpp
+    applications/BirthdayTimer.h
+    applications/Clock.cpp
+    applications/Clock.h
+    applications/MarriedTimer.cpp
+    applications/MarriedTimer.h
+    applications/TimeElapsedTimer.cpp
+    applications/TimeElapsedTimer.h
 )
 
 qt_add_qml_module(clockapp

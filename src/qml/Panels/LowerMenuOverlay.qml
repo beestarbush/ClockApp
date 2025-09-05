@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
+import Bee as BeeBackend
 
 PanelContainer {
     id: dialogOverlay
@@ -96,14 +97,14 @@ PanelContainer {
         RoundButton {
 		    anchors.fill: parent
             anchors.centerIn: parent           
-            color: Backend.kuikenTimer.enabled ? Color.green1 : Color.red
+            color: BeeBackend.Applications.kuikenTimer.enabled ? Color.green1 : Color.red
 
             onClicked: {
-                if (Backend.kuikenTimer.enabled) {
-                    Backend.kuikenTimer.setEnabled(false)
+                if (BeeBackend.Applications.kuikenTimer.enabled) {
+                    BeeBackend.Applications.kuikenTimer.enabled = false
                 }
                 else {
-                    Backend.kuikenTimer.setEnabled(true)
+                    BeeBackend.Applications.kuikenTimer.enabled = true
                 }
             }
         }     
@@ -117,14 +118,14 @@ PanelContainer {
         RoundButton {
 		    anchors.fill: parent
             anchors.centerIn: parent           
-            color: Backend.marriedTimer.enabled ? Color.green1 : Color.red
+            color: BeeBackend.Applications.marriedTimer.enabled ? Color.green1 : Color.red
 
             onClicked: {
-                if (Backend.marriedTimer.enabled) {
-                    Backend.marriedTimer.setEnabled(false)
+                if (BeeBackend.Applications.marriedTimer.enabled) {
+                    BeeBackend.Applications.marriedTimer.enabled = false
                 }
                 else {
-                    Backend.marriedTimer.setEnabled(true)
+                    BeeBackend.Applications.marriedTimer.enabled = true
                 }
             }
         }     
@@ -208,7 +209,7 @@ PanelContainer {
             property bool incrementMode: true // true: increment, false: decrement
 
             // The value you want to control
-            property real value: Backend.clock.backgroundOpacity
+            property real value: BeeBackend.Applications.clock.backgroundOpacity
 
             // Interpolate between Color.gray and Color.green1
             function lerpColor(a, b, t) {
@@ -238,7 +239,7 @@ PanelContainer {
                             opacityButton.value = Math.max(opacityButton.value - opacityButton.step, opacityButton.minValue)
                         }
                     }
-                    Backend.clock.backgroundOpacity = opacityButton.value
+                    BeeBackend.Applications.clock.backgroundOpacity = opacityButton.value
                 }
             }
 
@@ -262,7 +263,7 @@ PanelContainer {
             anchors.centerIn: parent
 
             onAnimationSelected: (animationName) => {
-                Backend.clock.setSelectedAnimation(animationName)
+                BeeBackend.Applications.clock.backgroundAnimation = animationName
             }
         }
     }
@@ -278,13 +279,13 @@ PanelContainer {
         function setClockPointerIndex(clockPointerIndex) {
             colorSelectionDialog.clockPointerIndex = clockPointerIndex
             if (clockPointerIndex == 0) {
-                colorWheel.startColor = Backend.clock.hourColor
+                colorWheel.startColor = BeeBackend.Applications.clock.hourColor
             } else if (clockPointerIndex == 1) {
-                colorWheel.startColor = Backend.clock.minuteColor
+                colorWheel.startColor = BeeBackend.Applications.clock.minuteColor
             } else if (clockPointerIndex == 2) {
-                colorWheel.startColor = Backend.clock.secondColor
+                colorWheel.startColor = BeeBackend.Applications.clock.secondColor
             } else if (clockPointerIndex == 3) {
-                colorWheel.startColor = Backend.clock.pendulumBobColor
+                colorWheel.startColor = BeeBackend.Applications.clock.pendulumBobColor
             }
         }
 
@@ -296,13 +297,13 @@ PanelContainer {
 
             onColorSelected: (selectedColor) => {       
                 if (colorSelectionDialog.clockPointerIndex == 0) {
-                    Backend.clock.setHourColor(selectedColor)
+                    BeeBackend.Applications.clock.hourColor = selectedColor
                 } else if (colorSelectionDialog.clockPointerIndex == 1) {
-                    Backend.clock.setMinuteColor(selectedColor)
+                    BeeBackend.Applications.clock.minuteColor = selectedColor
                 } else if (colorSelectionDialog.clockPointerIndex == 2) {
-                    Backend.clock.setSecondColor(selectedColor)
+                    BeeBackend.Applications.clock.secondColor = selectedColor
                 } else if (colorSelectionDialog.clockPointerIndex == 3) {
-                    Backend.clock.setPendulumColor(selectedColor)
+                    BeeBackend.Applications.clock.pendulumBobColor = selectedColor
                 }
             }
         }

@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee
+import Bee as BeeBackend
 
 RoundPanel {
 	id: clockPanel
@@ -10,21 +10,21 @@ RoundPanel {
 
     signal clicked()
 
-    RoundAnimatedImage {
+    BeeBackend.RoundAnimatedImage {
         id: clockBackgroundAnimation
 
         anchors.fill: parent
         
-        source: AnimationManager.getAnimationPath(Backend.clock.backgroundAnimation)
-        opacity: Backend.clock.backgroundOpacity
+        source: BeeBackend.Applications.clock.backgroundAnimation
+        opacity: BeeBackend.Applications.clock.backgroundOpacity
     }
 
     Clock {
         id: clock
 
-        hourColor: Backend.clock.hourColor
-        minuteColor: Backend.clock.minuteColor
-        secondColor: Backend.clock.secondColor
+        hourColor: BeeBackend.Applications.clock.hourColor
+        minuteColor: BeeBackend.Applications.clock.minuteColor
+        secondColor: BeeBackend.Applications.clock.secondColor
 
         anchors.fill: parent
         anchors.horizontalCenter: parent.horizontalCenter

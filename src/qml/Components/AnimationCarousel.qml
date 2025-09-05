@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
-import Bee
+import Bee as BeeBackend
 
 Item {
     id: animationCarousel
@@ -68,10 +68,10 @@ Item {
                     property string animationName: modelData
 
                     // Full screen animation preview
-                    RoundAnimatedImage {
+                    BeeBackend.RoundAnimatedImage {
                         id: previewImage
                         anchors.fill: parent
-                        source: AnimationManager.getAnimationPath(animationName)
+                        source: BeeBackend.Services.animationManager.getAnimationPath(animationName)
                         opacity: isSelected ? 1.0 : 0.3
                         visible: isSelected // Only the selected image is visible (and thus playing).
 
