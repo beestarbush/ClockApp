@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
+import Bee as BeeBackend
 
 PanelContainer {
     id: dialogOverlay
@@ -136,7 +137,7 @@ PanelContainer {
                 property bool incrementMode: true // true: increment, false: decrement
 
                 // The value you want to control
-                property real value: Backend.clock.backgroundOpacity
+                property real value: Applications.clock.backgroundOpacity
 
                 // Interpolate between Color.gray and Color.green1
                 function lerpColor(a, b, t) {
@@ -166,7 +167,7 @@ PanelContainer {
                                 opacityButton.value = Math.max(opacityButton.value - opacityButton.step, opacityButton.minValue)
                             }
                         }
-                        Backend.clock.backgroundOpacity = opacityButton.value
+                        BeeBackend.Applications.clock.backgroundOpacity = opacityButton.value
                     }
                 }
 
@@ -179,29 +180,29 @@ PanelContainer {
             }
 
             RoundButton {
-                color: Backend.kuikenTimer.enabled ? Color.green1 : Color.red
+                color: BeeBackend.Applications.kuikenTimer.enabled ? Color.green1 : Color.red
                 text: "Kuiken timer"
 
                 onClicked: {
-                    if (Backend.kuikenTimer.enabled) {
-                        Backend.kuikenTimer.enabled = false
+                    if (BeeBackend.Applications.kuikenTimer.enabled) {
+                        BeeBackend.Applications.kuikenTimer.enabled = false
                     }
                     else {
-                        Backend.kuikenTimer.enabled = true
+                        BeeBackend.Applications.kuikenTimer.enabled = true
                     }
                 }
             }
 
             RoundButton {
-                color: Backend.marriedTimer.enabled ? Color.green1 : Color.red
+                color: BeeBackend.Applications.marriedTimer.enabled ? Color.green1 : Color.red
                 text: "Marry timer"
 
                 onClicked: {
-                    if (Backend.marriedTimer.enabled) {
-                        Backend.marriedTimer.enabled = false
+                    if (BeeBackend.Applications.marriedTimer.enabled) {
+                        BeeBackend.Applications.marriedTimer.enabled = false
                     }
                     else {
-                        Backend.marriedTimer.enabled = true
+                        BeeBackend.Applications.marriedTimer.enabled = true
                     }
                 }
             }

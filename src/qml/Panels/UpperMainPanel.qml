@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as Bee
+import Bee as BeeBackend
 
 Circle {
     id: upperMainPanel
@@ -21,36 +21,40 @@ Circle {
             id: clockPanel
 
             anchors.fill: parent
-            enabled: Backend.clock.enabled
+            enabled: BeeBackend.Applications.clock.enabled
 
             onClicked: menuOverlay.visible = true
         }
 
         SevenSegmentPanel {
-            id: timeSinceMarriedPanel
+            id: marriedPanel
 
             anchors.fill: parent
-            enabled: Backend.marriedTimer.enabled
+            enabled: BeeBackend.Applications.marriedTimer.enabled
             onClicked: menuOverlay.visible = true
-            years: Bee.TimeSinceMarried.years
-            days: Bee.TimeSinceMarried.days
-            hours: Bee.TimeSinceMarried.hours
-            minutes: Bee.TimeSinceMarried.minutes
-            seconds: Bee.TimeSinceMarried.seconds
+            years: BeeBackend.Applications.marriedTimer.years
+            days: BeeBackend.Applications.marriedTimer.days
+            hours: BeeBackend.Applications.marriedTimer.hours
+            minutes: BeeBackend.Applications.marriedTimer.minutes
+            seconds: BeeBackend.Applications.marriedTimer.seconds
         }
 
-        TimeSincePanel {
-            id: timeSinceKuikenPanel
+        RoundProgressBarPanel {
+            id: kuikenBirthdayPanel
 
             anchors.fill: parent
-            enabled: Backend.kuikenTimer.enabled
+            enabled: BeeBackend.Applications.kuikenTimer.enabled
             onClicked: menuOverlay.visible = true
-            years: Bee.TimeSinceKuiken.years
-            days: Bee.TimeSinceKuiken.days
-            daysInWeek: Bee.TimeSinceKuiken.daysInWeek
-            hours: Bee.TimeSinceKuiken.hours
-            minutes: Bee.TimeSinceKuiken.minutes
-            seconds: Bee.TimeSinceKuiken.seconds
+            years: BeeBackend.Applications.kuikenTimer.years
+            days: BeeBackend.Applications.kuikenTimer.days
+            daysInWeek: BeeBackend.Applications.kuikenTimer.daysInWeek
+            hours: BeeBackend.Applications.kuikenTimer.hours
+            minutes: BeeBackend.Applications.kuikenTimer.minutes
+            seconds: BeeBackend.Applications.kuikenTimer.seconds
+            barColor: BeeBackend.Applications.kuikenTimer.barColor
+            textColor: BeeBackend.Applications.kuikenTimer.textColor
+            backgroundAnimationSource: BeeBackend.Applications.kuikenTimer.backgroundAnimation
+            backgroundAnimationOpacity: BeeBackend.Applications.kuikenTimer.backgroundOpacity
         }
     }
 
@@ -83,35 +87,35 @@ Circle {
     }
 
     Timer {
-        id: timeSinceMarriedTimer
+        id: marriedPanelTimer
 
         interval: 1000
         running: true
         repeat: true
 
         onTriggered: {
-            timeSinceMarriedPanel.years = Bee.TimeSinceMarried.years;
-            timeSinceMarriedPanel.days = Bee.TimeSinceMarried.days;
-            timeSinceMarriedPanel.hours = Bee.TimeSinceMarried.hours;
-            timeSinceMarriedPanel.minutes = Bee.TimeSinceMarried.minutes;
-            timeSinceMarriedPanel.seconds = Bee.TimeSinceMarried.seconds;
+            marriedPanel.years = BeeBackend.Applications.marriedTimer.years;
+            marriedPanel.days = BeeBackend.Applications.marriedTimer.days;
+            marriedPanel.hours = BeeBackend.Applications.marriedTimer.hours;
+            marriedPanel.minutes = BeeBackend.Applications.marriedTimer.minutes;
+            marriedPanel.seconds = BeeBackend.Applications.marriedTimer.seconds;
         }
     }
 
     Timer {
-        id: timeSinceKuikenTimer
+        id: kuikenBirthdayPanelTimer
 
         interval: 1000
         running: true
         repeat: true
 
         onTriggered: {
-            timeSinceKuikenPanel.years = Bee.TimeSinceKuiken.years;
-            timeSinceKuikenPanel.weeks = Bee.TimeSinceKuiken.weeks
-            timeSinceKuikenPanel.days = Bee.TimeSinceKuiken.days;
-            timeSinceKuikenPanel.hours = Bee.TimeSinceKuiken.hours;
-            timeSinceKuikenPanel.minutes = Bee.TimeSinceKuiken.minutes;
-            timeSinceKuikenPanel.seconds = Bee.TimeSinceKuiken.seconds;
+            kuikenBirthdayPanel.years = BeeBackend.Applications.kuikenTimer.years;
+            kuikenBirthdayPanel.weeks = BeeBackend.Applications.kuikenTimer.weeks
+            kuikenBirthdayPanel.days = BeeBackend.Applications.kuikenTimer.days;
+            kuikenBirthdayPanel.hours = BeeBackend.Applications.kuikenTimer.hours;
+            kuikenBirthdayPanel.minutes = BeeBackend.Applications.kuikenTimer.minutes;
+            kuikenBirthdayPanel.seconds = BeeBackend.Applications.kuikenTimer.seconds;
         }
     }
 }
