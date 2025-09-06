@@ -73,6 +73,7 @@ Item {
                         anchors.fill: parent
                         source: AnimationManager.getAnimationPath(animationName)
                         opacity: isSelected ? 1.0 : 0.3
+                        visible: isSelected // Only the selected image is visible (and thus playing).
 
                         Behavior on opacity {
                             NumberAnimation { duration: 300 }
