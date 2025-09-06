@@ -19,6 +19,9 @@ signals:
 private slots:
     void onFrameChanged(int frameNumber);
 
+protected:
+    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value) override;
+
 private:
     QMovie *m_movie;
     QString m_source;

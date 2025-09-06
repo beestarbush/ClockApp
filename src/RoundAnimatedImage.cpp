@@ -60,12 +60,28 @@ void RoundAnimatedImage::setSource(const QString &path)
         return;
     }
     connect(m_movie, &QMovie::frameChanged, this, &RoundAnimatedImage::onFrameChanged);
-    m_movie->start();
+    if (isVisible()) {
+        m_movie->start();
+    }
 }
 
 void RoundAnimatedImage::onFrameChanged(int)
 {
     update(); // triggers paint()
+}
+
+void RoundAnimatedImage::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value)
+{
+    QQuickPaintedItem::itemChange(change, value);
+    if (change == QQuickItem::ItemVisibleHasChanged && m_movie) {
+        if (isVisible()) {
+            if (m_movie->state() != QMovie::Running) {
+                m_movie->start();
+            }
+        } else {
+            m_movie->stop();
+        }
+    }
 }
 
 void RoundAnimatedImage::paint(QPainter *painter)
