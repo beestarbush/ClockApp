@@ -41,7 +41,8 @@ Window {
 	DebugPanel {
 		id: debugPanel
 
-		anchors.fill: parent
+		width: window.width
+		height: window.height
 		visible: Backend.debugging.panelEnabled
 		onCloseButtonClicked: debugPanel.visible = false
 	}

@@ -10,6 +10,8 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
     main.cpp
+    ObjectPropertyModel.cpp
+    ObjectPropertyModel.h
     RoundAnimatedImage.cpp
     RoundAnimatedImage.h
     git_version.h
