@@ -10,10 +10,6 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(clockapp
     main.cpp
-    ObjectPropertyModel.cpp
-    ObjectPropertyModel.h
-    RoundAnimatedImage.cpp
-    RoundAnimatedImage.h
     git_version.h
     hal/HAL.cpp
     hal/HAL.h
@@ -25,6 +21,10 @@ qt_add_executable(clockapp
     hal/System.h
     hal/Temperature.cpp
     hal/Temperature.h
+    qmlcomponents/QmlUtils.cpp
+    qmlcomponents/QmlUtils.h
+    qmlcomponents/RoundAnimatedImage.cpp
+    qmlcomponents/RoundAnimatedImage.h
     services/AnimationManager.cpp
     services/AnimationManager.h
     services/DateTime.cpp

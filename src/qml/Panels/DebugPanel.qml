@@ -13,10 +13,10 @@ Rectangle {
 
 	// Debugpanel
 	// Top centered date and time and timezone
-	// Tabs: Gallery, Utility, Interfaces, Simulation, Loggin, HMI
+	// Tabs: Gallery, Utility, Inspector, Simulation, Loggin, HMI
 	// 	Gallery: show all elements that we use in UI.
 	// 	Utility: skip auth, quit, reboot, reset etc.
-	// 	Interfaces: drop down with all available objects in QML, on click it provides all the properties in this object.
+	// 	Inspector: drop down with all available objects in QML, on click it provides all the properties in this object.
 	// 	Simulation: simulate features of application
 	// 	Logging: show logs of application on screen
 	// 	HMI: Show additional HMI elements, animation speed, mouse events, keyboard events
@@ -57,7 +57,7 @@ Rectangle {
 				text: qsTr("Utility")
 			}
 			TabButton {
-				text: qsTr("Interfaces")
+				text: qsTr("Inspector")
 			}
 			TabButton {
 				text: qsTr("Simulation")
@@ -74,7 +74,7 @@ Rectangle {
 
 			GalleryPanel {}
 			UtilityPanel {}
-			InterfacePanel {}
+			InspectorPanel {}
 			SimulationPanel {}
 			LoggingPanel {}
 		}

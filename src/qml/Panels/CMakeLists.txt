@@ -10,7 +10,7 @@ qt_add_qml_module(PanelLib
         ClockPanel.qml
         DebugPanel.qml
         Debug/GalleryPanel.qml
-        Debug/InterfacePanel.qml
+        Debug/InspectorPanel.qml
         Debug/LoggingPanel.qml
         Debug/SimulationPanel.qml
         Debug/UtilityPanel.qml

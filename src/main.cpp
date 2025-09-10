@@ -2,8 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "RoundAnimatedImage.h"
-#include "ObjectPropertyModel.h"
+#include "qmlcomponents/RoundAnimatedImage.h"
+#include "qmlcomponents/QmlUtils.h"
 #include "hal/HAL.h"
 #include "services/Services.h"
 #include "applications/Applications.h"
@@ -17,22 +17,16 @@ int main(int argc, char *argv[])
 	QQmlApplicationEngine engine;
 	QmlInterface qmlInterface(&app);
 
-	QObject rootObj(&app);
-	rootObj.setObjectName("RootObject");
-
-	HAL hal(&rootObj);
-	Services services(&rootObj);
-	Applications applications(services, &rootObj);
+	HAL hal(&app);
+	Services services(&app);
+	Applications applications(services, &app);
 
 	qmlInterface.registerObject("QmlInterface", &qmlInterface);
 	qmlInterface.registerObject("HAL", &hal);
 	qmlInterface.registerObject("Services", &services);
 	qmlInterface.registerObject("Applications", &applications);
 	qmlInterface.registerType<RoundAnimatedImage>("RoundAnimatedImage");
-	qmlInterface.registerType<ObjectPropertyModel>("ObjectPropertyModel");
-
-	ObjectPropertyModel propertyModel(&rootObj, &app);
-	engine.rootContext()->setContextProperty("objectModel", &propertyModel);
+	qmlInterface.registerType<QmlUtils>("QmlUtils");
 
 	QObject::connect(
 		&engine,

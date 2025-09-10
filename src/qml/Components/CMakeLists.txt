@@ -31,6 +31,7 @@ set(qml_singletons
 	Backend.qml
 	Color.qml
 	PanelTransition.qml
+	Utils.qml
 	Value.qml
 )
 
