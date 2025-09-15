@@ -47,6 +47,8 @@ qt_add_executable(clockapp
     applications/MarriedTimer.h
     applications/TimeElapsedTimer.cpp
     applications/TimeElapsedTimer.h
+    applications/CountdownTimer.cpp
+    applications/CountdownTimer.h
 )
 
 qt_add_qml_module(clockapp
