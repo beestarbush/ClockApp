@@ -38,12 +38,19 @@ Window {
 		}
 	}
 
-	DebugPanel {
-		id: debugPanel
+	Loader {
+		id: debugPanelLoader
+		anchors.fill: parent
+		active: Backend.debugging.panelEnabled
+		sourceComponent: debugPanelComponent
+	}
 
-		width: window.width
-		height: window.height
-		visible: Backend.debugging.panelEnabled
-		onCloseButtonClicked: debugPanel.visible = false
+	Component {
+		id: debugPanelComponent
+		DebugPanel {
+			width: window.width
+			height: window.height
+			onCloseButtonClicked: debugPanelLoader.active = false
+		}
 	}
 }

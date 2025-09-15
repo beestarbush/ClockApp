@@ -124,7 +124,7 @@ Item {
                             anchors.fill: parent
                             anchors.margins: 1
                             visible: mouseArea.enabled
-                            color: mouseArea.pressed ? Color.lightGray : Color.darkGray
+                            color: mouseArea.pressed ? Color.lightGray : Color.lightGray
                             radius: 4
                             border.width: 1
                             border.color: Color.gray
