@@ -89,6 +89,10 @@ void RoundAnimatedImage::paint(QPainter *painter)
     if (m_movie && m_movie->isValid())
     {
         QImage frame = m_movie->currentImage();
+        if (frame.isNull()) {
+            // Do not attempt to scale or draw a null image
+            return;
+        }
         QRectF bounds = boundingRect();
 
         // Enable antialiasing for smooth circle
