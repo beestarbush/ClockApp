@@ -17,6 +17,8 @@ qt_add_executable(clockapp
     hal/Network.h
     hal/Screen.cpp
     hal/Screen.h
+    hal/Storage.cpp
+    hal/Storage.h
     hal/System.cpp
     hal/System.h
     hal/Temperature.cpp
@@ -33,8 +35,6 @@ qt_add_executable(clockapp
     services/QmlInterface.h
     services/Services.cpp
     services/Services.h
-    services/Settings.cpp
-    services/Settings.h
     services/Version.cpp
     services/Version.h
     applications/Applications.cpp

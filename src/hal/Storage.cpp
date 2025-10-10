@@ -1,4 +1,4 @@
-#include "Settings.h"
+#include "Storage.h"
 #include <QSettings>
 
 #ifdef PLATFORM_IS_TARGET
@@ -7,7 +7,7 @@ const QString SETTINGS_PATH = QStringLiteral("/usr/share/");
 const QString SETTINGS_PATH = QStringLiteral("/workdir/build");
 #endif
 
-Settings::Settings(QObject *parent) :
+Storage::Storage(QObject *parent) :
     QObject(parent)
 {
     QSettings::setDefaultFormat(QSettings::NativeFormat);

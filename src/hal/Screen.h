@@ -21,6 +21,8 @@ private:
     qint8 m_brightness;
     qint8 readBrightnessFromFile(const QString &filePath) const;
     void writeBrightnessToFile(const QString &filePath, qint8 value) const;
+    void loadProperties();
+    void saveProperty(const QString& key, const QVariant& value);
 };
 
 #endif // HAL_SCREEN_H
