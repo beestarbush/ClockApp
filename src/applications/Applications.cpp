@@ -17,4 +17,7 @@ Applications::Applications(Services &services, QObject *parent) :
     m_marriedTimer->setTimestamp(1730382722);
 
     m_christmasTimer->setTargetTimestamp(1766617200); // Christmas 2025
+
+    auto lNotificationManager = services.m_notificationManager;
+    lNotificationManager->showInfo("Welcome!", "The system is ready to use.");
 }

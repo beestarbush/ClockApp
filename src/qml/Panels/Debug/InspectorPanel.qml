@@ -19,7 +19,7 @@ Item {
         Panel {
             id: propertiesPanel
 
-            RoundButton {
+            Button {
                 id: showModelButton
 
                 property QtObject currentModel: null

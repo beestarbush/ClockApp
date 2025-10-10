@@ -31,6 +31,10 @@ qt_add_executable(clockapp
     services/AnimationManager.h
     services/DateTime.cpp
     services/DateTime.h
+    services/Notification.cpp
+    services/Notification.h
+    services/NotificationManager.cpp
+    services/NotificationManager.h
     services/QmlInterface.cpp
     services/QmlInterface.h
     services/Services.cpp

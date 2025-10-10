@@ -14,6 +14,7 @@ set(regular_qml_components
 	DialogOverlay.qml
 	Flickable.qml
 	MenuDialog.qml
+	NotificationOverlay.qml
 	Panel.qml
 	PanelContainer.qml
 	Pendulum.qml

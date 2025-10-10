@@ -86,4 +86,11 @@ Circle {
             }
         }
     }
+
+    NotificationOverlay {
+        id: notificationOverlay
+        anchors.fill: parent
+
+        z: 1000 // Ensure it appears above other content
+    }
 }
