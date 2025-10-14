@@ -23,7 +23,7 @@ PanelContainer {
 
             ListElement { label: "Menu" }
             ListElement { label: "Settings" }
-            ListElement { label: "Timers" }
+            ListElement { label: "Notifications" }
             ListElement { label: "Backgrounds" }
             ListElement { label: "Colors" }
             ListElement { label: "Version" }
@@ -57,6 +57,11 @@ PanelContainer {
                 if (index == 1) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = true
+                }
+                else if (index == 2) {
+                    colorRingMenu.visible = false
+                    settingsRingMenu.visible = false
+                    lowerMenuOverlay.showNotifications()
                 }
                 else if (index == 3) {
                     colorRingMenu.visible = false

@@ -41,6 +41,10 @@ PanelContainer {
         dialogOverlay.showPanel(colorSelectionDialog)
     }
 
+    function showNotifications() {
+        dialogOverlay.showPanel(notificationDialog)
+    }
+
     function closePanels() {
         dialogOverlay.showPanel(emptyDialog)
     }
@@ -306,6 +310,19 @@ PanelContainer {
                     BeeBackend.Applications.clock.pendulumBobColor = selectedColor
                 }
             }
+        }
+    }
+
+    MenuDialog {
+        id: notificationDialog
+
+        anchors.fill: parent
+        anchors.centerIn: parent
+
+        NotificationCarousel {
+            anchors.fill: parent
+            anchors.centerIn: parent
+            model: BeeBackend.Services.notificationManager
         }
     }
 }
