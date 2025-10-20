@@ -12,6 +12,7 @@ class CountdownTimer : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool initialized READ isInitialized WRITE setInitialized NOTIFY initializedChanged)
     Q_PROPERTY(qreal backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
     Q_PROPERTY(QString backgroundAnimation READ backgroundAnimation WRITE setBackgroundAnimation NOTIFY backgroundAnimationChanged)
     Q_PROPERTY(quint64 targetTimestamp READ targetTimestamp WRITE setTargetTimestamp NOTIFY targetTimestampChanged)
@@ -32,6 +33,9 @@ public:
 
     bool enabled() const;
     void setEnabled(const bool &enabled);
+
+    bool isInitialized() const;
+    void setInitialized(const bool &initialized);
 
     qreal backgroundOpacity() const;
     void setBackgroundOpacity(const qreal &backgroundOpacity);
@@ -56,6 +60,7 @@ public:
 signals:
     void nameChanged();
     void enabledChanged();
+    void initializedChanged();
     void backgroundOpacityChanged();
     void backgroundAnimationChanged();
     void targetTimestampChanged();
@@ -87,6 +92,7 @@ protected:
     // Common properties
     QString m_name;
     bool m_enabled;
+    bool m_initialized;
     qreal m_backgroundOpacity;
     QString m_backgroundAnimation;
     quint64 m_targetTimestamp;

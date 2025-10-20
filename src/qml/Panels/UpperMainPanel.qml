@@ -13,9 +13,21 @@ Circle {
         id: panelContainer
         anchors.fill: parent
 
-        property Panel initialPanel: clockPanel
+        property Panel initialPanel: setupPanel.enabled ? setupPanel : clockPanel
 
         currentIndex: indexOfPanel(initialPanel)
+
+        SetupPanel {
+            id: setupPanel
+
+            anchors.fill: parent
+            enabled: true
+
+            onFinished: {
+                panelContainer.showPanel(clockPanel)
+                setupPanel.enabled = false
+            }
+        }
 
         ClockPanel {
             id: clockPanel
@@ -31,6 +43,7 @@ Circle {
 
             anchors.fill: parent
             enabled: BeeBackend.Applications.marriedTimer.enabled
+            initialized: BeeBackend.Applications.marriedTimer.initialized
             onClicked: menuOverlay.visible = true
             years: BeeBackend.Applications.marriedTimer.years
             days: BeeBackend.Applications.marriedTimer.days
@@ -44,6 +57,7 @@ Circle {
 
             anchors.fill: parent
             enabled: BeeBackend.Applications.kuikenTimer.enabled
+            initialized: BeeBackend.Applications.kuikenTimer.initialized
             onClicked: menuOverlay.visible = true
             years: BeeBackend.Applications.kuikenTimer.years
             days: BeeBackend.Applications.kuikenTimer.days
@@ -76,7 +90,7 @@ Circle {
         id: panelRotationTimer
 
         interval: 10000 // 10 seconds
-        running: true
+        running: panelContainer.currentIndex != panelContainer.indexOfPanel(setupPanel)
         repeat: true
 
         property bool direction: true

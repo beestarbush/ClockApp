@@ -6,6 +6,8 @@
 
 const QString PROPERTY_ENABLED_KEY = QStringLiteral("enabled");
 const bool PROPERTY_ENABLED_DEFAULT = false;
+const QString PROPERTY_INITIALIZED_KEY = QStringLiteral("initialized");
+const bool PROPERTY_INITIALIZED_DEFAULT = false;
 const QString PROPERTY_BACKGROUND_ANIMATION_KEY = QStringLiteral("background-animation");
 const QString PROPERTY_BACKGROUND_ANIMATION_DEFAULT = QStringLiteral("test.gif");
 const QString PROPERTY_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
@@ -23,6 +25,7 @@ TimeElapsedTimer::TimeElapsedTimer(const QString &name, AnimationManager& animat
     QObject(parent),
     m_name(name),
     m_enabled(PROPERTY_ENABLED_DEFAULT),
+    m_initialized(PROPERTY_INITIALIZED_DEFAULT),
     m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
     m_backgroundAnimation(PROPERTY_BACKGROUND_ANIMATION_DEFAULT),
     m_timestamp(PROPERTY_TIMESTAMP_DEFAULT),
@@ -69,6 +72,22 @@ void TimeElapsedTimer::setEnabled(const bool &enabled)
     saveProperty(PROPERTY_ENABLED_KEY, enabled);
     m_enabled = enabled;
     emit enabledChanged();
+}
+
+bool TimeElapsedTimer::isInitialized() const
+{
+    return m_initialized;
+}
+
+void TimeElapsedTimer::setInitialized(const bool &initialized)
+{
+    if (m_initialized == initialized) {
+        return;
+    }
+
+    saveProperty(PROPERTY_INITIALIZED_KEY, initialized);
+    m_initialized = initialized;
+    emit initializedChanged();
 }
 
 qreal TimeElapsedTimer::backgroundOpacity() const
@@ -147,6 +166,7 @@ void TimeElapsedTimer::loadProperties()
     settings.beginGroup(m_name);
     
     m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_BACKGROUND_ANIMATION_DEFAULT).toBool();
+    m_initialized = settings.value(PROPERTY_INITIALIZED_KEY, PROPERTY_INITIALIZED_DEFAULT).toBool();
     m_backgroundAnimation = settings.value(PROPERTY_BACKGROUND_ANIMATION_KEY, PROPERTY_BACKGROUND_ANIMATION_DEFAULT).toString();
     m_backgroundOpacity = settings.value(PROPERTY_BACKGROUND_OPACITY_KEY, PROPERTY_BACKGROUND_OPACITY_DEFAULT).toReal();
     m_timestamp = settings.value(PROPERTY_TIMESTAMP_KEY, PROPERTY_TIMESTAMP_DEFAULT).toULongLong();

@@ -1,27 +1,30 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
 
-RoundPanel {
-	id: dateTimePickerPanel
-
-	anchors.fill: parent
-
-    backgroundColor: Color.lightGray
-
-    // State management
+Item {
+    id: dateTimePicker
+    
+    // Public properties
     property date selectedDateTime: new Date()
     property int selectedComponent: 0 // 0=Day, 1=Month, 2=Year, 3=Hour, 4=Minute, 5=Second
-    
-    signal dateTimeChanged(date newDateTime)
 
-    // DateTime display at the top
+    property color selectedTextColor: Color.green1
+    property color defaultTextColor: Color.black
+    
+    // Signals
+    signal dateTimeChanged(date newDateTime)
+    signal componentSelected(int component)
+    
+    // Set implicit size based on content
+    implicitWidth: dateTimeDisplay.width
+    implicitHeight: dateTimeDisplay.height
+    
+    // DateTime display
     Column {
         id: dateTimeDisplay
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: parent.height * 0.1
         spacing: 15
         
         // Date row (DD/MM/YYYY)
@@ -35,16 +38,13 @@ RoundPanel {
                 text: Qt.formatDate(selectedDateTime, "dd")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 0
-                color: selectedComponent === 0 ? Color.green1 : Color.black
+                color: selectedComponent === 0 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 0
-                        /*dialWheel.minimumValue = 1
-                        dialWheel.maximumValue = getDaysInMonth(selectedDateTime.getFullYear(), selectedDateTime.getMonth())
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getDate()*/
+                        componentSelected(0)
                     }
                 }
             }
@@ -52,7 +52,7 @@ RoundPanel {
             Text {
                 text: "/"
                 font.pixelSize: 48
-                color: Color.black
+                color: defaultTextColor
             }
             
             // Month
@@ -61,16 +61,13 @@ RoundPanel {
                 text: Qt.formatDate(selectedDateTime, "MM")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 1
-                color: selectedComponent === 1 ? Color.orange : Color.black
+                color: selectedComponent === 1 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 1
-                        /*dialWheel.minimumValue = 1
-                        dialWheel.maximumValue = 12
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getMonth() + 1*/
+                        componentSelected(1)
                     }
                 }
             }
@@ -78,7 +75,7 @@ RoundPanel {
             Text {
                 text: "/"
                 font.pixelSize: 48
-                color: Color.black
+                color: defaultTextColor
             }
             
             // Year
@@ -87,16 +84,13 @@ RoundPanel {
                 text: Qt.formatDate(selectedDateTime, "yyyy")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 2
-                color: selectedComponent === 2 ? Color.orange : Color.black
+                color: selectedComponent === 2 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 2
-                        /*dialWheel.minimumValue = 1970
-                        dialWheel.maximumValue = 2100
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getFullYear()*/
+                        componentSelected(2)
                     }
                 }
             }
@@ -113,16 +107,13 @@ RoundPanel {
                 text: Qt.formatTime(selectedDateTime, "hh")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 3
-                color: selectedComponent === 3 ? Color.orange : Color.black
+                color: selectedComponent === 3 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 3
-                        /*dialWheel.minimumValue = 0
-                        dialWheel.maximumValue = 23
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getHours()*/
+                        componentSelected(3)
                     }
                 }
             }
@@ -130,7 +121,7 @@ RoundPanel {
             Text {
                 text: ":"
                 font.pixelSize: 48
-                color: Color.black
+                color: defaultTextColor
             }
             
             // Minutes
@@ -139,16 +130,13 @@ RoundPanel {
                 text: Qt.formatTime(selectedDateTime, "mm")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 4
-                color: selectedComponent === 4 ? Color.orange : Color.black
+                color: selectedComponent === 4 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 4
-                        /*dialWheel.minimumValue = 0
-                        dialWheel.maximumValue = 59
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getMinutes()*/
+                        componentSelected(4)
                     }
                 }
             }
@@ -156,7 +144,7 @@ RoundPanel {
             Text {
                 text: ":"
                 font.pixelSize: 48
-                color: Color.black
+                color: defaultTextColor
             }
             
             // Seconds
@@ -165,45 +153,17 @@ RoundPanel {
                 text: Qt.formatTime(selectedDateTime, "ss")
                 font.pixelSize: 48
                 font.bold: selectedComponent === 5
-                color: selectedComponent === 5 ? Color.orange : Color.black
+                color: selectedComponent === 5 ? selectedTextColor : defaultTextColor
                 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         selectedComponent = 5
-                        /*dialWheel.minimumValue = 0
-                        dialWheel.maximumValue = 59
-                        dialWheel.stepSize = 1
-                        dialWheel.value = selectedDateTime.getSeconds()*/
+                        componentSelected(5)
                     }
                 }
             }
         }
-        
-        // Label showing selected component
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: getComponentLabel()
-            font.pixelSize: 24
-            color: Color.green1
-            font.italic: true
-        }
-    }
-    
-    // Dial Wheel in the center/bottom area
-
-    
-    // Helper functions
-    function getComponentLabel() {
-        switch(selectedComponent) {
-            case 0: return "Day"
-            case 1: return "Month"
-            case 2: return "Year"
-            case 3: return "Hours"
-            case 4: return "Minutes"
-            case 5: return "Seconds"
-        }
-        return ""
     }
     
     function updateDateTime(newValue) {
