@@ -71,13 +71,22 @@ RUN wget -q  https://download.qt.io/official_releases/qt/6.9/6.9.0/single/qt-eve
 	rm -rf /tmp/qt* && \
 	rm -rf /tmp/build
 
-# Set environment variables for Qt
-ENV PATH="$QT_INSTALL_DIR/6.9.0/gcc_64/bin:$PATH"
-ENV LD_LIBRARY_PATH="$QT_INSTALL_DIR/6.9.0/gcc_64/lib:$LD_LIBRARY_PATH"
+# Set environment variables for Qt (installed to /usr/local by default)
+ENV PATH="/usr/local/Qt-6.9.0/bin:$PATH"
+ENV LD_LIBRARY_PATH="/usr/local/Qt-6.9.0/lib"
 ENV QT_QPA_FONTDIR="/usr/share/fonts/truetype/dejavu"
 
+# Create a non-root user for building
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN groupadd -g ${GROUP_ID} builder && \
+	useradd -m -u ${USER_ID} -g builder builder
+
 # Set working directory
-RUN mkdir -p /workdir
+RUN mkdir -p /workdir && chown builder:builder /workdir
 WORKDIR /workdir
+
+# Switch to non-root user
+USER builder
 
 CMD ["/bin/bash"]
