@@ -7,7 +7,7 @@ import Bee as BeeBackend
 PanelContainer {
     id: dialogOverlay
 
-    currentIndex: indexOfPanel(emptyDialog)
+    currentIndex: indexOfPanel(dialWheelDialog) //emptyDialog
 
     signal close()
 
@@ -43,6 +43,15 @@ PanelContainer {
 
     function showNotifications() {
         dialogOverlay.showPanel(notificationDialog)
+    }
+
+    function showDialWheel(minimumValue, maximumValue, stepSize, startValue)
+    {
+        dialWheel.minimumValue = minimumValue
+        dialWheel.maximumValue = maximumValue
+        dialWheel.stepSize = stepSize
+        dialWheel.value = startValue
+        dialogOverlay.showPanel(dialWheelDialog)
     }
 
     function closePanels() {
@@ -323,6 +332,25 @@ PanelContainer {
             anchors.fill: parent
             anchors.centerIn: parent
             model: BeeBackend.Services.notificationManager
+        }
+    }
+
+    MenuDialog {
+        id: dialWheelDialog
+
+        anchors.fill: parent
+        anchors.centerIn: parent
+
+        DialWheel {
+            id: dialWheel
+
+            anchors.fill: parent
+            anchors.centerIn: parent
+
+            minimumValue: 1
+            maximumValue: 31
+            stepSize: 1
+            value: 1
         }
     }
 }
