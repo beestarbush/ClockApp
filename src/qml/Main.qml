@@ -17,6 +17,15 @@ Window {
 
 		anchors.fill: parent
 
+		/*DateTimePickerPanel {
+			id: dateTimePickerPanel
+
+			width: Math.min(contentRoot.width, contentRoot.height)
+			height: width
+			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.top: parent.top
+		}*/
+
 		UpperMainPanel {
 			id: upperMainPanel
 

@@ -12,6 +12,35 @@ PanelContainer {
 
     signal close()
 
+    enum MainMenu {
+        Menu,
+        Settings,
+        Timers,
+        Notifications,
+        Backgrounds,
+        Colors,
+        Version
+    }
+
+    enum SettingsMenu {
+        DisplayBrightness,
+        BackgroundOpacity,
+        KuikenTimer,
+        MarryTimer
+    }
+
+    enum ColorMenu {
+        Hours,
+        Minutes,
+        Seconds,
+        Pendulum
+    }
+
+    enum TimerMenu {
+        Married,
+        Kuiken
+    }
+
     MenuDialog {
         id: mainDialog
 
@@ -21,30 +50,38 @@ PanelContainer {
         ListModel {
             id: mainMenuModel
 
-            ListElement { label: "Menu" }
-            ListElement { label: "Settings" }
-            ListElement { label: "Notifications" }
-            ListElement { label: "Backgrounds" }
-            ListElement { label: "Colors" }
-            ListElement { label: "Version" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Menu; label: "Menu" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Settings; label: "Settings" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Timers; label: "Timers" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Notifications; label: "Notifications" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Backgrounds; label: "Backgrounds" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Colors; label: "Colors" }
+            ListElement { menuId: UpperMenuOverlay.MainMenu.Version; label: "Version" }
         }
 
         ListModel {
             id: settingsMenuModel
 
-            ListElement { label: "Display brightness" }
-            ListElement { label: "Background opacity" }
-            ListElement { label: "Kuiken timer" }
-            ListElement { label: "Marry timer" }
+            ListElement { menuId: UpperMenuOverlay.SettingsMenu.DisplayBrightness; label: "Display brightness" }
+            ListElement { menuId: UpperMenuOverlay.SettingsMenu.BackgroundOpacity; label: "Background opacity" }
+            ListElement { menuId: UpperMenuOverlay.SettingsMenu.KuikenTimer; label: "Kuiken timer" }
+            ListElement { menuId: UpperMenuOverlay.SettingsMenu.MarryTimer; label: "Marry timer" }
         }
 
         ListModel {
             id: colorMenuModel
 
-            ListElement { label: "Hours" }
-            ListElement { label: "Minutes" }
-            ListElement { label: "Seconds" }
-            ListElement { label: "Pendulum" }
+            ListElement { menuId: UpperMenuOverlay.ColorMenu.Hours; label: "Hours" }
+            ListElement { menuId: UpperMenuOverlay.ColorMenu.Minutes; label: "Minutes" }
+            ListElement { menuId: UpperMenuOverlay.ColorMenu.Seconds; label: "Seconds" }
+            ListElement { menuId: UpperMenuOverlay.ColorMenu.Pendulum; label: "Pendulum" }
+        }
+
+        ListModel {
+            id: timerModel
+
+            ListElement { menuId: UpperMenuOverlay.TimerMenu.Married; label: "Married" }
+            ListElement { menuId: UpperMenuOverlay.TimerMenu.Kuiken; label: "Kuiken" }
         }
 
         RingMenu {
@@ -54,28 +91,39 @@ PanelContainer {
             model: mainMenuModel
 
             onItemSelected: (index) => {
-                if (index == 1) {
+                var menuId = mainMenuModel.get(index).menuId
+                if (menuId === UpperMenuOverlay.MainMenu.Settings) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = true
+                    timerRingMenu.visible = false
                 }
-                else if (index == 2) {
+                else if (menuId === UpperMenuOverlay.MainMenu.Timers) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
+                    timerRingMenu.visible = true
+                }
+                else if (menuId === UpperMenuOverlay.MainMenu.Notifications) {
+                    colorRingMenu.visible = false
+                    settingsRingMenu.visible = false
+                    timerRingMenu.visible = false
                     lowerMenuOverlay.showNotifications()
                 }
-                else if (index == 3) {
+                else if (menuId === UpperMenuOverlay.MainMenu.Backgrounds) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
+                    timerRingMenu.visible = false
                     lowerMenuOverlay.showAnimationSelection()
                 }
-                else if (index == 4) {
+                else if (menuId === UpperMenuOverlay.MainMenu.Colors) {
                     settingsRingMenu.visible = false
                     colorRingMenu.visible = true
+                    timerRingMenu.visible = false
                 }
-                else if (index == 5)
+                else if (menuId === UpperMenuOverlay.MainMenu.Version)
                 {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
+                    timerRingMenu.visible = false
                     lowerMenuOverlay.showVersion(Backend.version.tag)
                 }
                 else {
@@ -85,6 +133,9 @@ PanelContainer {
                     colorRingMenu.visible = false
                     colorRingMenu.reset()
 
+                    timerRingMenu.visible = false
+                    timerRingMenu.reset()
+
                     lowerMenuOverlay.closePanels()
                 }
             }
@@ -92,20 +143,21 @@ PanelContainer {
             RingMenu {
                 id: settingsRingMenu
 
-                visible: mainRingMenu.selectedIndex == 1
+                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Settings
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
                 model: settingsMenuModel
 
                 function evaluateLowerMenuOverlay(index) {
-                    if (index == 0) {
+                    var menuId = settingsMenuModel.get(index).menuId
+                    if (menuId === UpperMenuOverlay.SettingsMenu.DisplayBrightness) {
                         lowerMenuOverlay.showScreenBrightnessConfiguration()
-                    } else if (index == 1) {
+                    } else if (menuId === UpperMenuOverlay.SettingsMenu.BackgroundOpacity) {
                         lowerMenuOverlay.showBackgroundOpacityConfiguration()
-                    } else if (index == 2) {
+                    } else if (menuId === UpperMenuOverlay.SettingsMenu.KuikenTimer) {
                         lowerMenuOverlay.showKuikenTimerConfiguration()
-                    } else if (index == 3) {
+                    } else if (menuId === UpperMenuOverlay.SettingsMenu.MarryTimer) {
                         lowerMenuOverlay.showMarriedTimerConfiguration()
                     }
                     else {
@@ -127,14 +179,13 @@ PanelContainer {
             RingMenu {
                 id: colorRingMenu
 
-                visible: mainRingMenu.selectedIndex == 4
+                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Colors
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
                 model: colorMenuModel
 
                 function evaluateLowerMenuOverlay(index) {
-                    lower
                     if (index == 0 ||
                         index == 1 ||
                         index == 2 ||
@@ -156,10 +207,39 @@ PanelContainer {
                 }
             }
 
+            RingMenu {
+                id: timerRingMenu
+
+                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Timers
+                anchors.centerIn: parent
+                width: parent.width - 200
+                height: parent.height - 200
+                model: timerModel
+
+                function evaluateLowerMenuOverlay(index) {
+                    if (index == 0 ||
+                        index == 1) {
+                        lowerMenuOverlay.showDialWheel(1, 10, 1, 1)
+                    } else {
+                        lowerMenuOverlay.closePanels()
+                    }
+                }
+
+                onVisibleChanged: {
+                    if (visible) {
+                        evaluateLowerMenuOverlay(colorRingMenu.selectedIndex)
+                    }
+                }
+
+                onItemSelected: (index) => {
+                    evaluateLowerMenuOverlay(index)
+                }
+            }
+
             Circle {
                 anchors.centerIn: parent
-                width: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
-                height: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
+                width: settingsRingMenu.visible || colorRingMenu.visible || timerRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
+                height: settingsRingMenu.visible || colorRingMenu.visible || timerRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
                 color: "transparent"
 
                 MouseArea {

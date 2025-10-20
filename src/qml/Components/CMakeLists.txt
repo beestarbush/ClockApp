@@ -12,6 +12,7 @@ set(regular_qml_components
 	ColorWheel.qml
 	Dialog.qml
 	DialogOverlay.qml
+	DialWheel.qml
 	Flickable.qml
 	MenuDialog.qml
 	NotificationCarousel.qml
