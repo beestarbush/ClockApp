@@ -11,12 +11,15 @@ Applications::Applications(Services &services, QObject *parent) :
     m_kuikenTimer->setBackgroundAnimation("kuiken.gif");
     m_kuikenTimer->setBackgroundOpacity(0.5);
     m_kuikenTimer->setTimestamp(1738195200);
+    m_kuikenTimer->setInitialized(true);
 
     m_marriedTimer->setBackgroundAnimation(QStringLiteral("married_bw.gif"));
     m_marriedTimer->setBackgroundOpacity(0.3);
     m_marriedTimer->setTimestamp(1730382722);
+    m_marriedTimer->setInitialized(true);
 
     m_christmasTimer->setTargetTimestamp(1766617200); // Christmas 2025
+    m_christmasTimer->setInitialized(true);
 
     auto lNotificationManager = services.m_notificationManager;
     lNotificationManager->showInfo("Welcome!", "The system is ready to use.");

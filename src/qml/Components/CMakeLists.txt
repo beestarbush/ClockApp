@@ -10,6 +10,7 @@ set(regular_qml_components
 	Circle.qml
 	Clock.qml
 	ColorWheel.qml
+	DateTimePicker.qml
 	Dialog.qml
 	DialogOverlay.qml
 	DialWheel.qml
