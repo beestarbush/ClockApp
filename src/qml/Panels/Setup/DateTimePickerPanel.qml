@@ -25,7 +25,8 @@ RoundPanel {
 
         width: parent.width - Value.largeMargin
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.bottom: description.top
+        anchors.bottomMargin: Value.defaultMargin
         color: Color.lightGray
         font.pixelSize: Value.largeTextSize
         font.bold: true
@@ -38,8 +39,8 @@ RoundPanel {
 
         width: parent.width - Value.largeMargin
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: title.bottom
-        anchors.topMargin: Value.defaultMargin
+        anchors.bottom: dateTimePicker.top
+        anchors.bottomMargin: Value.defaultMargin
         color: Color.lightGray
         font.pixelSize: Value.defaultTextSize
         wrapMode: Text.WordWrap
@@ -50,8 +51,7 @@ RoundPanel {
         id: dateTimePicker
         
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: description.bottom
-        anchors.topMargin: Value.defaultMargin
+        anchors.verticalCenter: parent.verticalCenter
         
         width: parent.width * 0.8
         height: implicitHeight
