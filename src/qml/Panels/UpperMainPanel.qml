@@ -7,7 +7,7 @@ Circle {
     id: upperMainPanel
 
     color: Color.blue // This should not be visible, if it is then some formatting is wrong.
-    property alias lowerMenuOverlay: menuOverlay.lowerMenuOverlay
+    property Item lowerMenuOverlay
 
     PanelContainer {
         id: panelContainer
@@ -21,11 +21,18 @@ Circle {
             id: setupPanel
 
             anchors.fill: parent
-            enabled: true
+            enabled: !BeeBackend.Applications.setup.setupComplete
+            lowerMenuOverlay: upperMainPanel.lowerMenuOverlay
 
             onFinished: {
                 panelContainer.showPanel(clockPanel)
-                setupPanel.enabled = false
+            }
+
+            onEnabledChanged: {
+                if (enabled) {
+                    panelContainer.showPanel(setupPanel)
+                    menuOverlay.visible = false
+                }
             }
         }
 
@@ -78,6 +85,8 @@ Circle {
 
         visible: false
         anchors.fill: parent
+
+        lowerMenuOverlay: upperMainPanel.lowerMenuOverlay
 
         onClose: menuOverlay.visible = false
 

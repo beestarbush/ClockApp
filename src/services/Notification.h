@@ -26,7 +26,7 @@ public:
     Notification(QObject* parent = nullptr);
     
     // Constructor for creating new notifications
-    Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, QObject* parent = nullptr);
+    Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, bool active = true, QObject* parent = nullptr);
 
     ~Notification();
 

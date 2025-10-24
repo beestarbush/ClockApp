@@ -101,9 +101,9 @@ void NotificationManager::updateHighestPriorityNotification()
     m_highestPriorityItem->reset();
 }
 
-void NotificationManager::addNotification(const QString& title, const QString& message, Notification::Type type, quint64 duration)
+void NotificationManager::addNotification(const QString& title, const QString& message, Notification::Type type, bool active, quint64 duration)
 {
-    Notification* notification = new Notification(title, message, type, duration, this);
+    Notification* notification = new Notification(title, message, type, duration, active, this);
 
     insertNotificationSorted(notification);
 
@@ -124,9 +124,9 @@ void NotificationManager::addNotification(const QString& title, const QString& m
     emit notificationAdded(notification->id());
 }
 
-void NotificationManager::showInfo(const QString& title, const QString& message, quint64 duration)
+void NotificationManager::showInfo(const QString& title, const QString& message, bool active, quint64 duration)
 {
-    addNotification(title, message, Notification::Type::Info, duration);
+    addNotification(title, message, Notification::Type::Info, active, duration);
 }
 
 void NotificationManager::showWarning(const QString& title, const QString& message, quint64 duration)

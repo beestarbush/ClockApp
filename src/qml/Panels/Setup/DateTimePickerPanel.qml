@@ -9,25 +9,48 @@ RoundPanel {
     backgroundColor: Color.transparent
 
     property alias titleText: title.text
+    property alias descriptionText: description.text
     property alias dateTime: dateTimePicker.selectedDateTime
+    property alias selectedComponent: dateTimePicker.selectedComponent
 
     signal buttonClicked()
+    signal componentSelected(int component)
+
+    function updateSelectedComponent(newValue) {
+        dateTimePicker.updateSelectedComponent(newValue)
+    }
 
     Text {
         id: title
 
+        width: parent.width - Value.largeMargin
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         color: Color.lightGray
         font.pixelSize: Value.largeTextSize
         font.bold: true
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
+    }
+
+    Text {
+        id: description
+
+        width: parent.width - Value.largeMargin
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: title.bottom
+        anchors.topMargin: Value.defaultMargin
+        color: Color.lightGray
+        font.pixelSize: Value.defaultTextSize
+        wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignHCenter
     }
 
     DateTimePicker {
         id: dateTimePicker
         
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: title.bottom
+        anchors.top: description.bottom
         anchors.topMargin: Value.defaultMargin
         
         width: parent.width * 0.8
@@ -35,18 +58,13 @@ RoundPanel {
         
         selectedTextColor: Color.green1
         defaultTextColor: Color.lightGray
-
-        onDateTimeChanged: function(newDateTime) {
-            // Handle datetime changes if needed
-        }
         
         onComponentSelected: function(component) {
-            // Handle component selection if needed
-            // Could update a dial wheel here
+            dateTimePickerPanel.componentSelected(component)
         }
     }
 
-    Button {
+    RoundButton {
         text: "Next"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: dateTimePicker.bottom

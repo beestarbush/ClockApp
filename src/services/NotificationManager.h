@@ -38,8 +38,8 @@ public:
     Notification* getHighestPriorityNotification();
 
 public slots:
-    void addNotification(const QString& title, const QString& message, Notification::Type type = Notification::Info, quint64 duration = 10000);
-    void showInfo(const QString& title, const QString& message, quint64 duration = 10000);    // 10 seconds
+    void addNotification(const QString& title, const QString& message, Notification::Type type = Notification::Info, bool active = true, quint64 duration = 10000);
+    void showInfo(const QString& title, const QString& message, bool active = true, quint64 duration = 10000);    // 10 seconds
     void showWarning(const QString& title, const QString& message, quint64 duration = 20000); // 20 seconds
     void showError(const QString& title, const QString& message, quint64 duration = 0);       // persistent
     void removeNotification(const quint64 id);

@@ -21,6 +21,7 @@ qt_add_qml_module(PanelLib
         SetupPanel.qml
         Setup/DateTimePickerPanel.qml
         Setup/TitlePanel.qml
+        Setup/ToggleButtonPanel.qml
         SevenSegmentPanel.qml
         UpperMainPanel.qml
         UpperMenuOverlay.qml

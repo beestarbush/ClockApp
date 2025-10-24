@@ -9,7 +9,7 @@ Notification::Notification(QObject* parent)
 {
 }
 
-Notification::Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, QObject* parent)
+Notification::Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, bool active, QObject* parent)
     : QObject(parent), m_autoRemoveTimer(nullptr)
 {
     m_id = s_nextId++;
@@ -18,7 +18,7 @@ Notification::Notification(const QString& title, const QString& message, Notific
     m_type = type;
     m_duration = duration;
     m_timestamp = QDateTime::currentMSecsSinceEpoch();
-    m_isActive = true;
+    m_isActive = active;
 }
 
 Notification::~Notification()

@@ -67,7 +67,7 @@ Item {
 
 		anchors.fill: parent
 
-		color: toggleButton.enabled ? (targetToggleState ? Color.green1 : Color.black)
+		color: toggleButton.enabled ? (targetToggleState ? Color.green1 : Color.darkGray)
 									: (targetToggleState ? Color.disabledToggleActive
 														 : Color.disabledToggleInactive)
 

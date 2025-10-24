@@ -15,7 +15,6 @@ PanelContainer {
     enum MainMenu {
         Menu,
         Settings,
-        Timers,
         Notifications,
         Backgrounds,
         Colors,
@@ -25,8 +24,7 @@ PanelContainer {
     enum SettingsMenu {
         DisplayBrightness,
         BackgroundOpacity,
-        KuikenTimer,
-        MarryTimer
+        SetupWizard
     }
 
     enum ColorMenu {
@@ -52,7 +50,6 @@ PanelContainer {
 
             ListElement { menuId: UpperMenuOverlay.MainMenu.Menu; label: "Menu" }
             ListElement { menuId: UpperMenuOverlay.MainMenu.Settings; label: "Settings" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Timers; label: "Timers" }
             ListElement { menuId: UpperMenuOverlay.MainMenu.Notifications; label: "Notifications" }
             ListElement { menuId: UpperMenuOverlay.MainMenu.Backgrounds; label: "Backgrounds" }
             ListElement { menuId: UpperMenuOverlay.MainMenu.Colors; label: "Colors" }
@@ -64,8 +61,7 @@ PanelContainer {
 
             ListElement { menuId: UpperMenuOverlay.SettingsMenu.DisplayBrightness; label: "Display brightness" }
             ListElement { menuId: UpperMenuOverlay.SettingsMenu.BackgroundOpacity; label: "Background opacity" }
-            ListElement { menuId: UpperMenuOverlay.SettingsMenu.KuikenTimer; label: "Kuiken timer" }
-            ListElement { menuId: UpperMenuOverlay.SettingsMenu.MarryTimer; label: "Marry timer" }
+            ListElement { menuId: UpperMenuOverlay.SettingsMenu.SetupWizard; label: "Setup wizard" }
         }
 
         ListModel {
@@ -95,35 +91,25 @@ PanelContainer {
                 if (menuId === UpperMenuOverlay.MainMenu.Settings) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = true
-                    timerRingMenu.visible = false
-                }
-                else if (menuId === UpperMenuOverlay.MainMenu.Timers) {
-                    colorRingMenu.visible = false
-                    settingsRingMenu.visible = false
-                    timerRingMenu.visible = true
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Notifications) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    timerRingMenu.visible = false
                     lowerMenuOverlay.showNotifications()
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Backgrounds) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    timerRingMenu.visible = false
                     lowerMenuOverlay.showAnimationSelection()
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Colors) {
                     settingsRingMenu.visible = false
                     colorRingMenu.visible = true
-                    timerRingMenu.visible = false
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Version)
                 {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    timerRingMenu.visible = false
                     lowerMenuOverlay.showVersion(Backend.version.tag)
                 }
                 else {
@@ -132,9 +118,6 @@ PanelContainer {
 
                     colorRingMenu.visible = false
                     colorRingMenu.reset()
-
-                    timerRingMenu.visible = false
-                    timerRingMenu.reset()
 
                     lowerMenuOverlay.closePanels()
                 }
@@ -155,10 +138,8 @@ PanelContainer {
                         lowerMenuOverlay.showScreenBrightnessConfiguration()
                     } else if (menuId === UpperMenuOverlay.SettingsMenu.BackgroundOpacity) {
                         lowerMenuOverlay.showBackgroundOpacityConfiguration()
-                    } else if (menuId === UpperMenuOverlay.SettingsMenu.KuikenTimer) {
-                        lowerMenuOverlay.showKuikenTimerConfiguration()
-                    } else if (menuId === UpperMenuOverlay.SettingsMenu.MarryTimer) {
-                        lowerMenuOverlay.showMarriedTimerConfiguration()
+                    } else if (menuId === UpperMenuOverlay.SettingsMenu.SetupWizard) {
+                        lowerMenuOverlay.showSetupWizard()
                     }
                     else {
                         lowerMenuOverlay.closePanels()
@@ -207,39 +188,10 @@ PanelContainer {
                 }
             }
 
-            RingMenu {
-                id: timerRingMenu
-
-                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Timers
-                anchors.centerIn: parent
-                width: parent.width - 200
-                height: parent.height - 200
-                model: timerModel
-
-                function evaluateLowerMenuOverlay(index) {
-                    if (index == 0 ||
-                        index == 1) {
-                        lowerMenuOverlay.showDialWheel(1, 10, 1, 1)
-                    } else {
-                        lowerMenuOverlay.closePanels()
-                    }
-                }
-
-                onVisibleChanged: {
-                    if (visible) {
-                        evaluateLowerMenuOverlay(colorRingMenu.selectedIndex)
-                    }
-                }
-
-                onItemSelected: (index) => {
-                    evaluateLowerMenuOverlay(index)
-                }
-            }
-
             Circle {
                 anchors.centerIn: parent
-                width: settingsRingMenu.visible || colorRingMenu.visible || timerRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
-                height: settingsRingMenu.visible || colorRingMenu.visible || timerRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
+                width: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
+                height: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
                 color: "transparent"
 
                 MouseArea {

@@ -7,5 +7,5 @@ Button {
 
 	width: 128
 	height: 128
-	radius: width / 2	
+	radius: width / 2
 }
