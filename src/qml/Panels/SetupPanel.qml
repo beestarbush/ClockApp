@@ -144,6 +144,7 @@ RoundPanel {
                 BeeBackend.Applications.setup.markSetupComplete()
                 setupPanel.finished()
 
+                lowerMenuOverlay.closePanels()
                 panelContainer.showPanel(welcomePanel)
             }
         }

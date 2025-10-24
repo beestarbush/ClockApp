@@ -37,7 +37,7 @@ RoundPanel {
     Text {
         id: description
 
-        width: parent.width - Value.largeMargin
+        width: parent.width - 2 * Value.largeMargin
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: dateTimePicker.top
         anchors.bottomMargin: Value.defaultMargin
