@@ -8,7 +8,7 @@ class MarriedTimer : public TimeElapsedTimer
 	Q_OBJECT
 
 public:
-	MarriedTimer(AnimationManager& animationManager, QObject *parent = nullptr);
+	MarriedTimer(MediaManager& mediaManager, QObject *parent = nullptr);
 };
 
 #endif // APPS_MARRIED_TIMER_H

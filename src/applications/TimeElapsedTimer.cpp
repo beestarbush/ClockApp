@@ -1,5 +1,5 @@
 #include "TimeElapsedTimer.h"
-#include "services/AnimationManager.h"
+#include "services/MediaManager.h"
 #include <QSettings>
 #include <QDateTime>
 #include <QDebug>
@@ -8,8 +8,8 @@ const QString PROPERTY_ENABLED_KEY = QStringLiteral("enabled");
 const bool PROPERTY_ENABLED_DEFAULT = false;
 const QString PROPERTY_INITIALIZED_KEY = QStringLiteral("initialized");
 const bool PROPERTY_INITIALIZED_DEFAULT = false;
-const QString PROPERTY_BACKGROUND_ANIMATION_KEY = QStringLiteral("background-animation");
-const QString PROPERTY_BACKGROUND_ANIMATION_DEFAULT = QStringLiteral("test.gif");
+const QString PROPERTY_BACKGROUND_KEY = QStringLiteral("background");
+const QString PROPERTY_BACKGROUND_DEFAULT = QStringLiteral("test.gif");
 const QString PROPERTY_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
 const qreal PROPERTY_BACKGROUND_OPACITY_DEFAULT = 0.5;
 const QString PROPERTY_TIMESTAMP_KEY = QStringLiteral("timestamp");
@@ -21,13 +21,13 @@ constexpr quint64 SECONDS_IN_A_DAY = SECONDS_IN_HOUR * 24;
 constexpr quint64 DAYS_IN_A_WEEK = 7;
 constexpr quint64 DAYS_IN_YEAR = 365;
 
-TimeElapsedTimer::TimeElapsedTimer(const QString &name, AnimationManager& animationManager, QObject *parent) :
+TimeElapsedTimer::TimeElapsedTimer(const QString &name, MediaManager& mediaManager, QObject *parent) :
     QObject(parent),
     m_name(name),
     m_enabled(PROPERTY_ENABLED_DEFAULT),
     m_initialized(PROPERTY_INITIALIZED_DEFAULT),
     m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
-    m_backgroundAnimation(PROPERTY_BACKGROUND_ANIMATION_DEFAULT),
+    m_background(PROPERTY_BACKGROUND_DEFAULT),
     m_timestamp(PROPERTY_TIMESTAMP_DEFAULT),
     m_years(0),
     m_days(0),
@@ -36,7 +36,7 @@ TimeElapsedTimer::TimeElapsedTimer(const QString &name, AnimationManager& animat
     m_hours(0),
     m_minutes(0),
     m_seconds(0),
-    m_animationManager(animationManager),
+    m_mediaManager(mediaManager),
     m_timer(this)
 {
     loadProperties();
@@ -107,20 +107,20 @@ void TimeElapsedTimer::setBackgroundOpacity(const qreal &backgroundOpacity)
     emit backgroundOpacityChanged();
 }
 
-QString TimeElapsedTimer::backgroundAnimation() const
+QString TimeElapsedTimer::background() const
 {
-    return m_animationManager.getAnimationPath(m_backgroundAnimation);
+    return m_mediaManager.getMediaPath(m_background);
 }
 
-void TimeElapsedTimer::setBackgroundAnimation(const QString &backgroundAnimation)
+void TimeElapsedTimer::setBackground(const QString &background)
 {
-    if (m_backgroundAnimation == backgroundAnimation) {
+    if (m_background == background) {
         return;
     }
 
-    saveProperty(PROPERTY_BACKGROUND_ANIMATION_KEY, backgroundAnimation);
-    m_backgroundAnimation = backgroundAnimation;
-    emit backgroundAnimationChanged();
+    saveProperty(PROPERTY_BACKGROUND_KEY, background);
+    m_background = background;
+    emit backgroundChanged();
 }
 
 quint64 TimeElapsedTimer::timestamp() const
@@ -167,7 +167,7 @@ void TimeElapsedTimer::loadProperties()
     
     m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_ENABLED_DEFAULT).toBool();
     m_initialized = settings.value(PROPERTY_INITIALIZED_KEY, PROPERTY_INITIALIZED_DEFAULT).toBool();
-    m_backgroundAnimation = settings.value(PROPERTY_BACKGROUND_ANIMATION_KEY, PROPERTY_BACKGROUND_ANIMATION_DEFAULT).toString();
+    m_background = settings.value(PROPERTY_BACKGROUND_KEY, PROPERTY_BACKGROUND_DEFAULT).toString();
     m_backgroundOpacity = settings.value(PROPERTY_BACKGROUND_OPACITY_KEY, PROPERTY_BACKGROUND_OPACITY_DEFAULT).toReal();
     m_timestamp = settings.value(PROPERTY_TIMESTAMP_KEY, PROPERTY_TIMESTAMP_DEFAULT).toULongLong();
 

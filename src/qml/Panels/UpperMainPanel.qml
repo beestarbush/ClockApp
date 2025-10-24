@@ -75,8 +75,8 @@ Circle {
             seconds: BeeBackend.Applications.kuikenTimer.seconds
             barColor: BeeBackend.Applications.kuikenTimer.barColor
             textColor: BeeBackend.Applications.kuikenTimer.textColor
-            backgroundAnimationSource: BeeBackend.Applications.kuikenTimer.backgroundAnimation
-            backgroundAnimationOpacity: BeeBackend.Applications.kuikenTimer.backgroundOpacity
+            backgroundSource: BeeBackend.Applications.kuikenTimer.background
+            backgroundOpacity: BeeBackend.Applications.kuikenTimer.backgroundOpacity
         }
     }
 

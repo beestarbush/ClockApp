@@ -15,8 +15,8 @@ RoundPanel {
     property int seconds
     property color barColor
     property color textColor
-    property alias backgroundAnimationSource: backgroundAnimation.source
-    property alias backgroundAnimationOpacity: backgroundAnimation.opacity
+    property alias backgroundSource: background.source
+    property alias backgroundOpacity: background.opacity
     property bool initialized
 
     backgroundColor: Color.black
@@ -25,7 +25,7 @@ RoundPanel {
     signal clicked()
 
     BeeBackend.RoundAnimatedImage {
-        id: backgroundAnimation
+        id: background
 
         anchors.fill: parent
     }

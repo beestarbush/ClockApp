@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "AnimationManager.h"
+#include "MediaManager.h"
 #include "DateTime.h"
 #include "NotificationManager.h"
 #include "QmlInterface.h"
@@ -12,7 +12,7 @@
 class Services : public QObject
 {
 	Q_OBJECT
-    Q_PROPERTY(AnimationManager* animationManager MEMBER m_animationManager CONSTANT)
+    Q_PROPERTY(MediaManager* mediaManager MEMBER m_mediaManager CONSTANT)
     Q_PROPERTY(DateTime* dateTime MEMBER m_dateTime CONSTANT)
     Q_PROPERTY(NotificationManager* notificationManager MEMBER m_notificationManager CONSTANT)
     Q_PROPERTY(QmlInterface* qmlInterface MEMBER m_qmlInterface CONSTANT)
@@ -24,7 +24,7 @@ public:
 	Services(QObject *parent = nullptr);
 
 private:
-    AnimationManager* m_animationManager;
+    MediaManager* m_mediaManager;
     DateTime* m_dateTime;
     NotificationManager* m_notificationManager;
     QmlInterface* m_qmlInterface;

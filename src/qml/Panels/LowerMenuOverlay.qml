@@ -29,8 +29,8 @@ PanelContainer {
         dialogOverlay.showPanel(backgroundOpacityDialog)
     }
 
-    function showAnimationSelection() {
-        dialogOverlay.showPanel(animationSelectionDialog)
+    function showMediaSelection() {
+        dialogOverlay.showPanel(mediaSelectionDialog)
     }
 
     function showColorSelection(clockPointerIndex) {
@@ -262,17 +262,17 @@ PanelContainer {
     }
 
     MenuDialog {
-        id: animationSelectionDialog
+        id: mediaSelectionDialog
 
         anchors.fill: parent
         anchors.centerIn: parent
 
-        AnimationCarousel {
+        MediaCarousel {
             anchors.fill: parent
             anchors.centerIn: parent
 
-            onAnimationSelected: (animationName) => {
-                BeeBackend.Applications.clock.backgroundAnimation = animationName
+            onMediaSelected: (mediaName) => {
+                BeeBackend.Applications.clock.background = mediaName
             }
         }
     }

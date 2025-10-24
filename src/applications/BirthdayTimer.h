@@ -11,7 +11,7 @@ class BirthdayTimer : public TimeElapsedTimer
 	Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
 
 public:
-	BirthdayTimer(const QString& name, AnimationManager& animationManager, QObject *parent = nullptr);
+	BirthdayTimer(const QString& name, MediaManager& mediaManager, QObject *parent = nullptr);
 
 	QColor barColor() const;
 	void setBarColor(const QColor &barColor);

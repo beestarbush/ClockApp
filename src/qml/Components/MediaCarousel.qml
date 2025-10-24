@@ -5,73 +5,73 @@ import Components
 import Bee as BeeBackend
 
 Item {
-    id: animationCarousel
+    id: mediaCarousel
 
-    property var animations: []
+    property var media: []
     property int currentIndex: 0
-    property string selectedAnimation: animations.length > 0 ? animations[currentIndex] : ""
+    property string selectedMedia: media.length > 0 ? media[currentIndex] : ""
 
-    signal animationSelected(string animationName)
+    signal mediaSelected(string mediaName)
 
-    function setAnimations(animationList) {
-        animations = animationList || []
-        if (currentIndex >= animations.length) {
-            currentIndex = Math.max(0, animations.length - 1)
+    function setMedia(mediaList) {
+        media = mediaList || []
+        if (currentIndex >= media.length) {
+            currentIndex = Math.max(0, media.length - 1)
         }
     }
 
-    function selectCurrentAnimation() {
-        if (selectedAnimation) {
-            animationSelected(selectedAnimation)
+    function selectCurrentMedia() {
+        if (selectedMedia) {
+            mediaSelected(selectedMedia)
         }
     }
 
-    // No animations message
+    // No media message
     Text {
-        id: noAnimationsText
+        id: noMediaText
         anchors.centerIn: parent
-        text: "No animations found\nPlace GIF files in animations directory"
+        text: "No media found\nPlace files in media directory"
         color: Color.lightGray
         font.pixelSize: Value.defaultTextSize
         horizontalAlignment: Text.AlignHCenter
-        visible: animations.length === 0
+        visible: media.length === 0
     }
 
-    // Main flickable for swiping through animations
+    // Main flickable for swiping through media
     Flickable {
         id: flickable
         anchors.fill: parent
         
-        contentWidth: animationRow.width
+        contentWidth: mediaRow.width
         contentHeight: height
         flickDeceleration: 1500
         boundsBehavior: Flickable.StopAtBounds
         clip: true
-        interactive: animations.length > 1
+        interactive: media.length > 1
         
-        visible: animations.length > 0
+        visible: media.length > 0
 
         Row {
-            id: animationRow
+            id: mediaRow
             height: parent.height
             spacing: 0
 
             Repeater {
-                model: animations
+                model: media
 
                 delegate: Item {
-                    id: animationItem
+                    id: mediaItem
                     width: flickable.width
                     height: flickable.height
 
                     property bool isSelected: index === currentIndex
-                    property string animationName: modelData
+                    property string mediaName: modelData
 
-                    // Full screen animation preview
+                    // Full screen media preview
                     BeeBackend.RoundAnimatedImage {
                         id: previewImage
                         anchors.fill: parent
-                        source: BeeBackend.Services.animationManager.getAnimationPath(animationName)
+                        source: BeeBackend.Services.mediaManager.getMediaPath(mediaName)
                         opacity: isSelected ? 1.0 : 0.3
                         visible: isSelected // Only the selected image is visible (and thus playing).
 
@@ -80,7 +80,7 @@ Item {
                         }
                     }
 
-                    // Animation name overlay
+                    // Media name overlay
                     Rectangle {
                         anchors.bottom: parent.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -95,7 +95,7 @@ Item {
                         Text {
                             id: nameText
                             anchors.centerIn: parent
-                            text: animationName
+                            text: mediaName
                             color: Color.lightGray
                             font.pixelSize: Value.defaultTextSize
                             font.bold: true
@@ -108,7 +108,7 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            selectCurrentAnimation()
+                            selectCurrentMedia()
                         }
                     }
                 }
@@ -118,7 +118,7 @@ Item {
         // Snap to pages when flicking stops
         onMovementEnded: {
             var targetIndex = Math.round(contentX / width)
-            targetIndex = Math.max(0, Math.min(targetIndex, animations.length - 1))
+            targetIndex = Math.max(0, Math.min(targetIndex, media.length - 1))
             
             if (targetIndex !== currentIndex) {
                 currentIndex = targetIndex
@@ -144,10 +144,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: Value.smallMargin
         spacing: Value.smallMargin
-        visible: animations.length > 1
+        visible: media.length > 1
 
         Repeater {
-            model: animations.length
+            model: media.length
 
             delegate: Rectangle {
                 width: 15
@@ -178,7 +178,7 @@ Item {
         radius: width / 2
         color: Color.black
         opacity: currentIndex > 0 ? 0.7 : 0.3
-        visible: animations.length > 1
+        visible: media.length > 1
 
         Text {
             anchors.centerIn: parent
@@ -208,8 +208,8 @@ Item {
         height: width
         radius: width / 2
         color: Color.black
-        opacity: currentIndex < animations.length - 1 ? 0.7 : 0.3
-        visible: animations.length > 1
+        opacity: currentIndex < media.length - 1 ? 0.7 : 0.3
+        visible: media.length > 1
 
         Text {
             anchors.centerIn: parent
@@ -221,24 +221,24 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            enabled: currentIndex < animations.length - 1
+            enabled: currentIndex < media.length - 1
             onClicked: {
-                currentIndex = Math.min(animations.length - 1, currentIndex + 1)
+                currentIndex = Math.min(media.length - 1, currentIndex + 1)
                 snapAnimation.to = currentIndex * flickable.width
                 snapAnimation.start()
             }
         }
     }
 
-    // Update animations when Backend properties change
+    // Update media when Backend properties change
     Connections {
         target: Backend
-        function onAvailableAnimationsChanged() {
-            setAnimations(Backend.availableAnimations)
+        function onAvailableMediaChanged() {
+            setMedia(Backend.availableMedia)
         }
     }
 
     Component.onCompleted: {
-        setAnimations(Backend.availableAnimations)
+        setMedia(Backend.availableMedia)
     }
 }

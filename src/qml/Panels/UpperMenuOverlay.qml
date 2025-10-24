@@ -100,7 +100,7 @@ PanelContainer {
                 else if (menuId === UpperMenuOverlay.MainMenu.Backgrounds) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    lowerMenuOverlay.showAnimationSelection()
+                    lowerMenuOverlay.showMediaSelection()
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Colors) {
                     settingsRingMenu.visible = false

@@ -4,14 +4,14 @@
 #include <QObject>
 #include <QColor>
 
-class AnimationManager;
+class MediaManager;
 
 class Clock : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 	Q_PROPERTY(qreal backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
-	Q_PROPERTY(QString backgroundAnimation READ backgroundAnimation WRITE setBackgroundAnimation NOTIFY backgroundAnimationChanged)
+	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(QColor hourColor READ hourColor WRITE setHourColor NOTIFY hourColorChanged)
 	Q_PROPERTY(QColor minuteColor READ minuteColor WRITE setMinuteColor NOTIFY minuteColorChanged)
 	Q_PROPERTY(QColor secondColor READ secondColor WRITE setSecondColor NOTIFY secondColorChanged)
@@ -19,7 +19,7 @@ class Clock : public QObject
 	Q_PROPERTY(QColor pendulumRodColor READ pendulumRodColor WRITE setPendulumRodColor NOTIFY pendulumRodColorChanged)
 
 public:
-	Clock(AnimationManager& animationManager, QObject *parent = nullptr);
+	Clock(MediaManager& mediaManager, QObject *parent = nullptr);
 
 	bool enabled() const;
 	void setEnabled(const bool &enabled);
@@ -27,8 +27,8 @@ public:
 	qreal backgroundOpacity() const;
 	void setBackgroundOpacity(const qreal &backgroundOpacity);
 
-	QString backgroundAnimation() const;
-	void setBackgroundAnimation(const QString &backgroundAnimation);
+	QString background() const;
+	void setBackground(const QString &background);
 
 	QColor hourColor() const;
 	void setHourColor(const QColor &hourColor);
@@ -48,7 +48,7 @@ public:
 signals:
 	void enabledChanged();
 	void backgroundOpacityChanged();
-	void backgroundAnimationChanged();
+	void backgroundChanged();
 	void hourColorChanged();
 	void minuteColorChanged();
 	void secondColorChanged();
@@ -61,7 +61,7 @@ private:
 	// Properties
 	bool m_enabled;
 	qreal m_backgroundOpacity;
-	QString m_backgroundAnimation;
+	QString m_background;
 	QColor m_hourColor;
 	QColor m_minuteColor;
 	QColor m_secondColor;
@@ -69,7 +69,7 @@ private:
 	QColor m_pendulumRodColor;
 
 	// Dependencies
-	AnimationManager& m_animationManager;
+	MediaManager& m_mediaManager;
 };
 
 #endif // APPS_CLOCK_H

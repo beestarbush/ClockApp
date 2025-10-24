@@ -8,8 +8,8 @@ const QColor PROPERTY_BAR_COLOR_DEFAULT = QColor("#02996c");
 const QString PROPERTY_TEXT_COLOR_KEY = QStringLiteral("text-color");
 const QColor PROPERTY_TEXT_COLOR_DEFAULT = QColor("#BBBBBB");
 
-BirthdayTimer::BirthdayTimer(const QString& name, AnimationManager& animationManager, QObject *parent) :
-    TimeElapsedTimer(name, animationManager, parent),
+BirthdayTimer::BirthdayTimer(const QString& name, MediaManager& mediaManager, QObject *parent) :
+    TimeElapsedTimer(name, mediaManager, parent),
     m_barColor(PROPERTY_BAR_COLOR_DEFAULT),
     m_textColor(PROPERTY_TEXT_COLOR_DEFAULT)
 {

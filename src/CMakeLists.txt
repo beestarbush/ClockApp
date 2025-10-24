@@ -27,8 +27,8 @@ qt_add_executable(clockapp
     qmlcomponents/QmlUtils.h
     qmlcomponents/RoundAnimatedImage.cpp
     qmlcomponents/RoundAnimatedImage.h
-    services/AnimationManager.cpp
-    services/AnimationManager.h
+    services/MediaManager.cpp
+    services/MediaManager.h
     services/DateTime.cpp
     services/DateTime.h
     services/Notification.cpp
@@ -64,11 +64,11 @@ qt_add_qml_module(clockapp
         qml/Main.qml
 )
 
-# This only contains default animations (when lookup on filesystem is not possible)
-qt_add_resources(clockapp "animations"
+# This only contains default media (when lookup on filesystem is not possible)
+qt_add_resources(clockapp "media"
     PREFIX "/"
     FILES
-        "animations/test.gif"
+        "media/test.gif"
 )
 
 if (CMAKE_CXX_COMPILER MATCHES "aarch64-poky-linux")

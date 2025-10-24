@@ -5,7 +5,7 @@
 #include <QColor>
 #include <QTimer>
 
-class AnimationManager;
+class MediaManager;
 
 class TimeElapsedTimer : public QObject
 {
@@ -14,7 +14,7 @@ class TimeElapsedTimer : public QObject
 	Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 	Q_PROPERTY(bool initialized READ isInitialized WRITE setInitialized NOTIFY initializedChanged)
 	Q_PROPERTY(qreal backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
-	Q_PROPERTY(QString backgroundAnimation READ backgroundAnimation WRITE setBackgroundAnimation NOTIFY backgroundAnimationChanged)
+	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(quint64 timestamp READ timestamp WRITE setTimestamp NOTIFY timestampChanged)
 	Q_PROPERTY(quint64 years READ years NOTIFY timeChanged)
 	Q_PROPERTY(quint64 days READ days NOTIFY timeChanged)
@@ -25,7 +25,7 @@ class TimeElapsedTimer : public QObject
 	Q_PROPERTY(quint64 seconds READ seconds NOTIFY timeChanged)
 
 public:
-	TimeElapsedTimer(const QString &name, AnimationManager& animationManager, QObject *parent = nullptr);
+	TimeElapsedTimer(const QString &name, MediaManager& mediaManager, QObject *parent = nullptr);
 	virtual ~TimeElapsedTimer() = default;
 
     QString name() const;
@@ -40,8 +40,8 @@ public:
 	qreal backgroundOpacity() const;
 	void setBackgroundOpacity(const qreal &backgroundOpacity);
 
-	QString backgroundAnimation() const;
-	void setBackgroundAnimation(const QString &backgroundAnimation);
+	QString background() const;
+	void setBackground(const QString &background);
 
 	quint64 timestamp() const;
 	void setTimestamp(const quint64 &timestamp);
@@ -62,7 +62,7 @@ signals:
 	void enabledChanged();
 	void initializedChanged();
 	void backgroundOpacityChanged();
-	void backgroundAnimationChanged();
+	void backgroundChanged();
 	void timestampChanged();
 
 	void timeChanged();
@@ -93,7 +93,7 @@ protected:
 	bool m_enabled;
 	bool m_initialized;
 	qreal m_backgroundOpacity;
-	QString m_backgroundAnimation;
+	QString m_background;
 	quint64 m_timestamp;
 
 	// Properties for indicating the elapsed time
@@ -106,7 +106,7 @@ protected:
 	quint64 m_seconds;
 
 	// Dependencies and internal objects
-	AnimationManager& m_animationManager;
+	MediaManager& m_mediaManager;
 	QTimer m_timer;
 };
 

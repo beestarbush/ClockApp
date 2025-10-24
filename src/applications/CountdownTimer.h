@@ -5,7 +5,7 @@
 #include <QColor>
 #include <QTimer>
 
-class AnimationManager;
+class MediaManager;
 
 class CountdownTimer : public QObject
 {
@@ -14,7 +14,7 @@ class CountdownTimer : public QObject
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool initialized READ isInitialized WRITE setInitialized NOTIFY initializedChanged)
     Q_PROPERTY(qreal backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
-    Q_PROPERTY(QString backgroundAnimation READ backgroundAnimation WRITE setBackgroundAnimation NOTIFY backgroundAnimationChanged)
+    Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
     Q_PROPERTY(quint64 targetTimestamp READ targetTimestamp WRITE setTargetTimestamp NOTIFY targetTimestampChanged)
     Q_PROPERTY(quint64 years READ years NOTIFY timeChanged)
     Q_PROPERTY(quint64 days READ days NOTIFY timeChanged)
@@ -25,7 +25,7 @@ class CountdownTimer : public QObject
     Q_PROPERTY(quint64 seconds READ seconds NOTIFY timeChanged)
 
 public:
-    CountdownTimer(const QString &name, AnimationManager& animationManager, QObject *parent = nullptr);
+    CountdownTimer(const QString &name, MediaManager& mediaManager, QObject *parent = nullptr);
     virtual ~CountdownTimer() = default;
 
     QString name() const;
@@ -40,8 +40,8 @@ public:
     qreal backgroundOpacity() const;
     void setBackgroundOpacity(const qreal &backgroundOpacity);
 
-    QString backgroundAnimation() const;
-    void setBackgroundAnimation(const QString &backgroundAnimation);
+    QString background() const;
+    void setBackground(const QString &background);
 
     quint64 targetTimestamp() const;
     void setTargetTimestamp(const quint64 &timestamp);
@@ -62,7 +62,7 @@ signals:
     void enabledChanged();
     void initializedChanged();
     void backgroundOpacityChanged();
-    void backgroundAnimationChanged();
+    void backgroundChanged();
     void targetTimestampChanged();
 
     void timeChanged();
@@ -94,7 +94,7 @@ protected:
     bool m_enabled;
     bool m_initialized;
     qreal m_backgroundOpacity;
-    QString m_backgroundAnimation;
+    QString m_background;
     quint64 m_targetTimestamp;
 
     // Properties for indicating the remaining time
@@ -107,7 +107,7 @@ protected:
     quint64 m_seconds;
 
     // Dependencies and internal objects
-    AnimationManager& m_animationManager;
+    MediaManager& m_mediaManager;
     QTimer m_timer;
     bool m_finished;
 };

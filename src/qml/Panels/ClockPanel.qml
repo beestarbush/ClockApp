@@ -11,11 +11,11 @@ RoundPanel {
     signal clicked()
 
     BeeBackend.RoundAnimatedImage {
-        id: clockBackgroundAnimation
+        id: clockBackground
 
         anchors.fill: parent
         
-        source: BeeBackend.Applications.clock.backgroundAnimation
+        source: BeeBackend.Applications.clock.background
         opacity: BeeBackend.Applications.clock.backgroundOpacity
     }
 

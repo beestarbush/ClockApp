@@ -11,8 +11,8 @@ Item {
 	readonly property VersionQmlObject version: VersionQmlObject {}
 	readonly property DebugQmlObject debugging: DebugQmlObject {}
 
-	// Animation management properties
-	property var availableAnimations: Bee.Services.animationManager.availableAnimations
+	// Media management properties
+	property var availableMedia: Bee.Services.mediaManager.availableMedia
 
 	component ScreenQmlObject: QtObject {
 		readonly property QtObject screen: Bee.HAL.screen

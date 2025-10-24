@@ -3,18 +3,18 @@
 
 Applications::Applications(Services &services, QObject *parent) :
     QObject(parent),
-    m_clock(new Clock(*services.m_animationManager, this)),
-    m_marriedTimer(new MarriedTimer(*services.m_animationManager, this)),
-    m_kuikenTimer(new BirthdayTimer("kuiken-timer", *services.m_animationManager, this)),
-    m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_animationManager, this)),
+    m_clock(new Clock(*services.m_mediaManager, this)),
+    m_marriedTimer(new MarriedTimer(*services.m_mediaManager, this)),
+    m_kuikenTimer(new BirthdayTimer("kuiken-timer", *services.m_mediaManager, this)),
+    m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_mediaManager, this)),
     m_setup(new Setup(m_marriedTimer, m_kuikenTimer, m_christmasTimer, this))
 {
-    m_kuikenTimer->setBackgroundAnimation("kuiken.gif");
+    m_kuikenTimer->setBackground("kuiken.gif");
     m_kuikenTimer->setBackgroundOpacity(0.5);
     m_kuikenTimer->setTimestamp(1738195200);
     m_kuikenTimer->setInitialized(true);
 
-    m_marriedTimer->setBackgroundAnimation(QStringLiteral("married_bw.gif"));
+    m_marriedTimer->setBackground(QStringLiteral("married_bw.gif"));
     m_marriedTimer->setBackgroundOpacity(0.3);
     m_marriedTimer->setTimestamp(1730382722);
     m_marriedTimer->setInitialized(true);

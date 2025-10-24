@@ -53,12 +53,12 @@ Item {
                 wheelColor: Color.black
             }
 
-            AnimationCarousel {
+            MediaCarousel {
                 width: 200
                 height: 200
 
-                onAnimationSelected: (animationName) => {
-                    console.log("Selected animation: " + animationName)
+                onMediaSelected: (mediaName) => {
+                    console.log("Selected media: " + mediaName)
                 }
             }
 
