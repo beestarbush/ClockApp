@@ -8,7 +8,7 @@ RoundPanel {
 
 	anchors.fill: parent
 
-    backgroundColor: Color.lightGray
+    backgroundColor: Color.black
 
     Pendulum {
         id: pendulum

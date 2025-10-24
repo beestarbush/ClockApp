@@ -7,21 +7,18 @@ import Bee as BeeBackend
 PanelContainer {
     id: dialogOverlay
 
-    currentIndex: indexOfPanel(dialWheelDialog) //emptyDialog
+    currentIndex: indexOfPanel(emptyDialog)
 
     signal close()
+    signal dialWheelValueUpdated(int newValue)
 
     function showVersion(value) {
         versionDialog.text = value
         dialogOverlay.showPanel(versionDialog)
     }
 
-    function showKuikenTimerConfiguration() {
-        dialogOverlay.showPanel(kuikenTimerDialog)
-    }
-
-    function showMarriedTimerConfiguration() {
-        dialogOverlay.showPanel(marriedTimerDialog)
+    function showSetupWizard() {
+        dialogOverlay.showPanel(setupWizardDialog)
     }
 
     function showScreenBrightnessConfiguration() {
@@ -103,44 +100,43 @@ PanelContainer {
     }
 
     MenuDialog {
-        id: kuikenTimerDialog
+        id: setupWizardDialog
 
         anchors.fill: parent
 
-        RoundButton {
-		    anchors.fill: parent
-            anchors.centerIn: parent           
-            color: BeeBackend.Applications.kuikenTimer.enabled ? Color.green1 : Color.red
+        MouseArea {
+            anchors.fill: parent
+            onPressed: setupWizardLongPressTimer.start()
+            onReleased: setupWizardLongPressTimer.stop()
+            onCanceled: setupWizardLongPressTimer.stop()
+        }
 
-            onClicked: {
-                if (BeeBackend.Applications.kuikenTimer.enabled) {
-                    BeeBackend.Applications.kuikenTimer.enabled = false
-                }
-                else {
-                    BeeBackend.Applications.kuikenTimer.enabled = true
-                }
+        Timer {
+            id: setupWizardLongPressTimer
+
+            interval: 2000
+            running: false
+            repeat: false
+            onTriggered: {
+                BeeBackend.Applications.setup.resetSetup()
+                dialogOverlay.closePanels()
             }
-        }     
-    }
+        }
 
-    MenuDialog {
-        id: marriedTimerDialog
+        Text {
+            id: setupWizardTextValue
 
-        anchors.fill: parent
+		    width: parent.width - Value.defaultMargin
+            font.pixelSize: Value.defaultTextSize
+            anchors.centerIn: parent
 
-        RoundButton {
-		    anchors.fill: parent
-            anchors.centerIn: parent           
-            color: BeeBackend.Applications.marriedTimer.enabled ? Color.green1 : Color.red
+            wrapMode: Text.Wrap
+		    horizontalAlignment: Text.AlignHCenter
+		    verticalAlignment: Text.AlignVCenter
 
-            onClicked: {
-                if (BeeBackend.Applications.marriedTimer.enabled) {
-                    BeeBackend.Applications.marriedTimer.enabled = false
-                }
-                else {
-                    BeeBackend.Applications.marriedTimer.enabled = true
-                }
-            }
+            text: "Press and hold to enter setup wizard."
+
+            color: Color.lightGray
         }     
     }
 
@@ -351,6 +347,8 @@ PanelContainer {
             maximumValue: 31
             stepSize: 1
             value: 1
+
+            onValueChanged: dialogOverlay.dialWheelValueUpdated(dialWheel.value)
         }
     }
 }

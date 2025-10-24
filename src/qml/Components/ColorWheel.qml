@@ -21,6 +21,44 @@ Item {
         lightness = startColor.hslLightness
     }
 
+    Canvas {
+        id: canvas
+        width: parent.width
+        height: parent.height
+        anchors.centerIn: parent
+        rotation: rotationAngle
+        renderStrategy: Canvas.Threaded
+        renderTarget: Canvas.FramebufferObject
+
+        Component.onCompleted: {
+            requestPaint()
+        }
+
+        onRotationChanged: {
+            requestPaint()
+        }
+
+        onPaint: {
+            var ctx = getContext("2d")
+            var centerX = width / 2
+            var centerY = height / 2
+            var radius = Math.min(centerX, centerY)
+
+            ctx.clearRect(0, 0, width, height)
+
+            for (var angle = 0; angle < 360; angle += 1) {
+                var startAngle = (angle - 1) * Math.PI / 180
+                var endAngle = angle * Math.PI / 180
+                ctx.beginPath()
+                ctx.moveTo(centerX, centerY)
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle)
+                ctx.closePath()
+                ctx.fillStyle = Qt.hsla(angle / 360, colorWheel.saturation, colorWheel.lightness, 1)
+                ctx.fill()
+            }
+        }
+    }
+
     Rectangle {
         id: wheel
         width: parent.width
@@ -28,32 +66,7 @@ Item {
         anchors.centerIn: parent
         radius: width / 2
         color: "transparent"
-
-        Canvas {
-            id: canvas
-            anchors.fill: parent
-            rotation: rotationAngle
-
-            onPaint: {
-                var ctx = canvas.getContext("2d")
-                var centerX = canvas.width / 2
-                var centerY = canvas.height / 2
-                var radius = Math.min(centerX, centerY)
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-                for (var angle = 0; angle < 360; angle += 1) {
-                    var startAngle = (angle - 1) * Math.PI / 180
-                    var endAngle = angle * Math.PI / 180
-                    ctx.beginPath()
-                    ctx.moveTo(centerX, centerY)
-                    ctx.arc(centerX, centerY, radius, startAngle, endAngle)
-                    ctx.closePath()
-                    ctx.fillStyle = Qt.hsla(angle / 360, 100, 0.5, 1)
-                    ctx.fill()
-                }
-            }
-        }
+        z: 1
 
         MouseArea {
             anchors.fill: parent
@@ -89,7 +102,7 @@ Item {
         radius: width / 2
         color: currentColor
         anchors.centerIn: parent
-        z: 1
+        z: 3
 
         MouseArea {
             id: previewMouse
@@ -129,6 +142,6 @@ Item {
         color: "#000000"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        z: 2
+        z: 4
     }
 }

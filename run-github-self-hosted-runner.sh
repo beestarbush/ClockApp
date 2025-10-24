@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Check if token is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <github-token>"
+    echo "Example: $0 token1234567890abcdef"
+    exit 1
+fi
+
+TOKEN="$1"
+
 # Install dependencies
 sudo apt install -y curl
 
@@ -17,7 +26,7 @@ echo "194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d  actions-
 tar xzf ./actions-runner-linux-x64-2.329.0.tar.gz
 
 # Create the runner and start the configuration experience
-./config.sh --url https://github.com/beestarbush/ClockApp --token ABRGPVF2IHRAAC34FDOKSP3I6YQZY
+./config.sh --url https://github.com/beestarbush/ClockApp --token "$TOKEN"
 
 # Last step, run it!
 ./run.sh

@@ -7,7 +7,7 @@ Item {
     
     // Public properties
     property date selectedDateTime: new Date()
-    property int selectedComponent: 0 // 0=Day, 1=Month, 2=Year, 3=Hour, 4=Minute, 5=Second
+    property int selectedComponent: -1 // -1=None, 0=Day, 1=Month, 2=Year, 3=Hour, 4=Minute, 5=Second
 
     property color selectedTextColor: Color.green1
     property color defaultTextColor: Color.black
@@ -166,7 +166,7 @@ Item {
         }
     }
     
-    function updateDateTime(newValue) {
+    function updateSelectedComponent(newValue) {
         var newDate = new Date(selectedDateTime)
         
         switch(selectedComponent) {
@@ -188,13 +188,12 @@ Item {
             case 5: // Seconds
                 newDate.setSeconds(newValue)
                 break
+            default:
+                // Do nothing if no valid component is selected
+                return
         }
         
         selectedDateTime = newDate
         dateTimeChanged(newDate)
-    }
-    
-    function getDaysInMonth(year, month) {
-        return new Date(year, month + 1, 0).getDate()
     }
 }

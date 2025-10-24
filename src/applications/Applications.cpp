@@ -6,7 +6,8 @@ Applications::Applications(Services &services, QObject *parent) :
     m_clock(new Clock(*services.m_animationManager, this)),
     m_marriedTimer(new MarriedTimer(*services.m_animationManager, this)),
     m_kuikenTimer(new BirthdayTimer("kuiken-timer", *services.m_animationManager, this)),
-    m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_animationManager, this))
+    m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_animationManager, this)),
+    m_setup(new Setup(m_marriedTimer, m_kuikenTimer, m_christmasTimer, this))
 {
     m_kuikenTimer->setBackgroundAnimation("kuiken.gif");
     m_kuikenTimer->setBackgroundOpacity(0.5);
@@ -22,5 +23,5 @@ Applications::Applications(Services &services, QObject *parent) :
     m_christmasTimer->setInitialized(true);
 
     auto lNotificationManager = services.m_notificationManager;
-    lNotificationManager->showInfo("Welcome!", "The system is ready to use.");
+    lNotificationManager->showInfo("System started", "The system is ready to use.", false);
 }

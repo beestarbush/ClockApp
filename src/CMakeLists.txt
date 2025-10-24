@@ -53,6 +53,8 @@ qt_add_executable(clockapp
     applications/TimeElapsedTimer.h
     applications/CountdownTimer.cpp
     applications/CountdownTimer.h
+    applications/Setup.cpp
+    applications/Setup.h
 )
 
 qt_add_qml_module(clockapp

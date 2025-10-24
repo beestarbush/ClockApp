@@ -9,15 +9,15 @@ const QString PROPERTY_BACKGROUND_ANIMATION_DEFAULT = QStringLiteral("test.gif")
 const QString PROPERTY_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
 const qreal PROPERTY_BACKGROUND_OPACITY_DEFAULT = 0.5;
 const QString PROPERTY_HOUR_COLOR_KEY = QStringLiteral("hour-color");
-const QColor PROPERTY_HOUR_COLOR_DEFAULT = QColor(Qt::red);
+const QColor PROPERTY_HOUR_COLOR_DEFAULT = QColor("#995000");
 const QString PROPERTY_MINUTE_COLOR_KEY = QStringLiteral("minute-color");
-const QColor PROPERTY_MINUTE_COLOR_DEFAULT = QColor(Qt::blue);
+const QColor PROPERTY_MINUTE_COLOR_DEFAULT = QColor("#005099");
 const QString PROPERTY_SECOND_COLOR_KEY = QStringLiteral("second-color");
-const QColor PROPERTY_SECOND_COLOR_DEFAULT = QColor(Qt::green);
+const QColor PROPERTY_SECOND_COLOR_DEFAULT = QColor("#009950");
 const QString PROPERTY_PENDULUM_BOB_COLOR_KEY = QStringLiteral("pendulum-bob-color");
-const QColor PROPERTY_PENDULUM_BOB_COLOR_DEFAULT = QColor(Qt::green);
+const QColor PROPERTY_PENDULUM_BOB_COLOR_DEFAULT = QColor("#009950");
 const QString PROPERTY_PENDULUM_ROD_COLOR_KEY = QStringLiteral("pendulum-rod-color");
-const QColor PROPERTY_PENDULUM_ROD_COLOR_DEFAULT = QColor(Qt::black);
+const QColor PROPERTY_PENDULUM_ROD_COLOR_DEFAULT = QColor("#333333");
 
 Clock::Clock(AnimationManager& animationManager, QObject *parent) :
     QObject(parent),

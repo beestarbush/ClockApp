@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import Components
+
 Item {
     property alias model: repeater.model
     property int itemCount: repeater.model.count
@@ -48,7 +50,7 @@ Item {
                     text: label
                     font.pixelSize: 12
                     font.bold: index === selectedIndex
-                    color: index === selectedIndex ? "yellow" : "white"
+                    color: index === selectedIndex ? Color.green1 : Color.white
 
                     transform: Rotation {
                         origin.x: width / 2

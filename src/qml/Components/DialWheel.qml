@@ -14,12 +14,13 @@ Item {
     // Visual properties
     property color wheelColor: Color.transparent
     property color markerColor: Color.green1
-    property real thickness: 100
+    property real thickness: width / 4
     property bool snapToStep: true
     
     // Internal properties
     property real _normalizedValue: (value - minimumValue) / (maximumValue - minimumValue)
     property real _angle: _normalizedValue * 360
+    property real _dragAngle: _angle  // Separate angle for dragging (moves freely)
     
     width: 200
     height: 200
@@ -37,9 +38,10 @@ Item {
     Item {
         id: wheel
         anchors.fill: parent
-        rotation: _angle
+        rotation: mouseArea.isDragging ? dialWheel._dragAngle : dialWheel._angle
         
         Behavior on rotation {
+            enabled: !mouseArea.isDragging
             RotationAnimation {
                 duration: 200
                 direction: RotationAnimation.Shortest
@@ -73,12 +75,13 @@ Item {
     
     // Mouse interaction for rotating the wheel
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         
         property real lastAngle: 0
         property bool isDragging: false
         
-        function updateValue(mouse) {
+        function updateValue(mouse, isRelease) {
             var centerX = dialWheel.width / 2
             var centerY = dialWheel.height / 2
             var deltaX = mouse.x - centerX
@@ -91,30 +94,37 @@ Item {
             // Convert angle to value
             var rawValue = minimumValue + (angle / 360) * (maximumValue - minimumValue)
             
-            // Apply step size if snap is enabled
-            if (snapToStep && stepSize > 0) {
-                rawValue = Math.round(rawValue / stepSize) * stepSize
-            }
-            
             // Clamp to bounds
             rawValue = Math.max(minimumValue, Math.min(maximumValue, rawValue))
             
-            dialWheel.value = rawValue
-            console.log("Value: " + rawValue)
+            // While dragging, update the drag angle for smooth rotation
+            if (!isRelease) {
+                dialWheel._dragAngle = angle
+                // Update value continuously during drag; snapping is applied only on release
+                dialWheel.value = rawValue
+            } else {
+                // On release, apply snapping if enabled
+                if (snapToStep && stepSize > 0) {
+                    rawValue = Math.round(rawValue / stepSize) * stepSize
+                    rawValue = Math.max(minimumValue, Math.min(maximumValue, rawValue))
+                }
+                dialWheel.value = rawValue
+            }
         }
         
         onPressed: function(mouse) {
             isDragging = true
-            updateValue(mouse)
+            updateValue(mouse, false)
         }
         
         onPositionChanged: function(mouse) {
             if (isDragging) {
-                updateValue(mouse)
+                updateValue(mouse, false)
             }
         }
         
-        onReleased: {
+        onReleased: function(mouse) {
+            updateValue(mouse, true)  // Snap on release
             isDragging = false
         }
         
