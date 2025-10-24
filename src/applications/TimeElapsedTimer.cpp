@@ -165,7 +165,7 @@ void TimeElapsedTimer::loadProperties()
     static QSettings settings;
     settings.beginGroup(m_name);
     
-    m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_BACKGROUND_ANIMATION_DEFAULT).toBool();
+    m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_ENABLED_DEFAULT).toBool();
     m_initialized = settings.value(PROPERTY_INITIALIZED_KEY, PROPERTY_INITIALIZED_DEFAULT).toBool();
     m_backgroundAnimation = settings.value(PROPERTY_BACKGROUND_ANIMATION_KEY, PROPERTY_BACKGROUND_ANIMATION_DEFAULT).toString();
     m_backgroundOpacity = settings.value(PROPERTY_BACKGROUND_OPACITY_KEY, PROPERTY_BACKGROUND_OPACITY_DEFAULT).toReal();
