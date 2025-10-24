@@ -14,4 +14,4 @@ cat > "$OUTFILE" <<EOF
 #define GIT_DIRTY "${GIT_DIRTY}"
 EOF
 
-sudo docker run --rm -i -v $(pwd)/src:/workdir appbuilder ./build.sh #"--clean"
+docker run --rm -i -v $(pwd)/src:/workdir appbuilder ./build.sh #"--clean"
