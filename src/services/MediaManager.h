@@ -1,11 +1,11 @@
 #ifndef SERVICES_MEDIAMANAGER_H
 #define SERVICES_MEDIAMANAGER_H
 
+#include <QDateTime>
+#include <QFileSystemWatcher>
 #include <QObject>
 #include <QStringList>
-#include <QFileSystemWatcher>
 #include <QTimer>
-#include <QDateTime>
 
 class RemoteApi;
 class MediaInfo;
@@ -18,39 +18,39 @@ class MediaManager : public QObject
     Q_PROPERTY(QDateTime lastSyncTime READ lastSyncTime NOTIFY lastSyncTimeChanged)
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
 
-public:
-    explicit MediaManager(RemoteApi& remoteApi, QObject *parent = nullptr);
+  public:
+    explicit MediaManager(RemoteApi& remoteApi, QObject* parent = nullptr);
 
     QStringList availableMedia() const;
     bool syncing() const;
     QDateTime lastSyncTime() const;
     QString lastError() const;
 
-    Q_INVOKABLE QString getMediaPath(const QString &name) const;
+    Q_INVOKABLE QString getMediaPath(const QString& name) const;
     Q_INVOKABLE void triggerSync();
 
-signals:
+  signals:
     void availableMediaChanged();
     void syncingChanged();
     void lastSyncTimeChanged();
     void lastErrorChanged();
 
-private slots:
-    void onDirectoryChanged(const QString &path);
+  private slots:
+    void onDirectoryChanged(const QString& path);
     void onSyncTimerTimeout();
 
-private:
+  private:
     void setupFileWatcher();
     void scanDirectory();
-    bool isValidFile(const QString &filePath) const;
+    bool isValidFile(const QString& filePath) const;
     QString getMediaDirectory() const;
-    
+
     void startMediaSync();
     void fetchMediaList();
-    void downloadMedia(const QString &mediaId);
-    void cleanupOldMedia(const QStringList &serverMediaList);
+    void downloadMedia(const QString& mediaId);
+    void cleanupOldMedia(const QStringList& serverMediaList);
     void completeSyncWithSuccess();
-    void completeSyncWithError(const QString &error);
+    void completeSyncWithError(const QString& error);
 
     QStringList m_availableMedia;
     QFileSystemWatcher m_fileWatcher;
@@ -63,7 +63,7 @@ private:
     QString m_lastError;
     QStringList m_pendingDownloads;
     QStringList m_downloadedFilenames;
-    QStringList m_currentServerMediaIds;  // Store server media IDs for final save
+    QStringList m_currentServerMediaIds; // Store server media IDs for final save
     int m_activeDownloads;
 };
 

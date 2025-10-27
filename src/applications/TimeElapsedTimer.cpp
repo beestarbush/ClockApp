@@ -1,8 +1,8 @@
 #include "TimeElapsedTimer.h"
 #include "services/MediaManager.h"
-#include <QSettings>
 #include <QDateTime>
 #include <QDebug>
+#include <QSettings>
 
 const QString PROPERTY_ENABLED_KEY = QStringLiteral("enabled");
 const bool PROPERTY_ENABLED_DEFAULT = false;
@@ -21,23 +21,23 @@ constexpr quint64 SECONDS_IN_A_DAY = SECONDS_IN_HOUR * 24;
 constexpr quint64 DAYS_IN_A_WEEK = 7;
 constexpr quint64 DAYS_IN_YEAR = 365;
 
-TimeElapsedTimer::TimeElapsedTimer(const QString &name, MediaManager& mediaManager, QObject *parent) :
-    QObject(parent),
-    m_name(name),
-    m_enabled(PROPERTY_ENABLED_DEFAULT),
-    m_initialized(PROPERTY_INITIALIZED_DEFAULT),
-    m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
-    m_background(PROPERTY_BACKGROUND_DEFAULT),
-    m_timestamp(PROPERTY_TIMESTAMP_DEFAULT),
-    m_years(0),
-    m_days(0),
-    m_daysInWeek(0),
-    m_weeks(0),
-    m_hours(0),
-    m_minutes(0),
-    m_seconds(0),
-    m_mediaManager(mediaManager),
-    m_timer(this)
+TimeElapsedTimer::TimeElapsedTimer(const QString& name, MediaManager& mediaManager, QObject* parent)
+    : QObject(parent),
+      m_name(name),
+      m_enabled(PROPERTY_ENABLED_DEFAULT),
+      m_initialized(PROPERTY_INITIALIZED_DEFAULT),
+      m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
+      m_background(PROPERTY_BACKGROUND_DEFAULT),
+      m_timestamp(PROPERTY_TIMESTAMP_DEFAULT),
+      m_years(0),
+      m_days(0),
+      m_daysInWeek(0),
+      m_weeks(0),
+      m_hours(0),
+      m_minutes(0),
+      m_seconds(0),
+      m_mediaManager(mediaManager),
+      m_timer(this)
 {
     loadProperties();
     startTimer();
@@ -48,7 +48,7 @@ QString TimeElapsedTimer::name() const
     return m_name;
 }
 
-void TimeElapsedTimer::setName(const QString &name)
+void TimeElapsedTimer::setName(const QString& name)
 {
     if (m_name == name) {
         return;
@@ -63,7 +63,7 @@ bool TimeElapsedTimer::enabled() const
     return m_enabled;
 }
 
-void TimeElapsedTimer::setEnabled(const bool &enabled)
+void TimeElapsedTimer::setEnabled(const bool& enabled)
 {
     if (m_enabled == enabled) {
         return;
@@ -79,7 +79,7 @@ bool TimeElapsedTimer::isInitialized() const
     return m_initialized;
 }
 
-void TimeElapsedTimer::setInitialized(const bool &initialized)
+void TimeElapsedTimer::setInitialized(const bool& initialized)
 {
     if (m_initialized == initialized) {
         return;
@@ -95,7 +95,7 @@ qreal TimeElapsedTimer::backgroundOpacity() const
     return m_backgroundOpacity;
 }
 
-void TimeElapsedTimer::setBackgroundOpacity(const qreal &backgroundOpacity)
+void TimeElapsedTimer::setBackgroundOpacity(const qreal& backgroundOpacity)
 {
     if (m_backgroundOpacity == backgroundOpacity) {
         return;
@@ -112,7 +112,7 @@ QString TimeElapsedTimer::background() const
     return m_mediaManager.getMediaPath(m_background);
 }
 
-void TimeElapsedTimer::setBackground(const QString &background)
+void TimeElapsedTimer::setBackground(const QString& background)
 {
     if (m_background == background) {
         return;
@@ -128,7 +128,7 @@ quint64 TimeElapsedTimer::timestamp() const
     return m_timestamp;
 }
 
-void TimeElapsedTimer::setTimestamp(const quint64 &timestamp)
+void TimeElapsedTimer::setTimestamp(const quint64& timestamp)
 {
     if (m_timestamp == timestamp) {
         return;
@@ -137,7 +137,7 @@ void TimeElapsedTimer::setTimestamp(const quint64 &timestamp)
     saveProperty(PROPERTY_TIMESTAMP_KEY, timestamp);
     m_timestamp = timestamp;
     emit timestampChanged();
-    
+
     // Recalculate time immediately when timestamp changes
     calculateTimeElapsed();
 }
@@ -145,7 +145,7 @@ void TimeElapsedTimer::setTimestamp(const quint64 &timestamp)
 void TimeElapsedTimer::startTimer()
 {
     calculateTimeElapsed();
-    
+
     if (!m_timer.isActive()) {
         connect(&m_timer, &QTimer::timeout, this, &TimeElapsedTimer::calculateTimeElapsed);
         m_timer.start(1000); // Update every second
@@ -164,7 +164,7 @@ void TimeElapsedTimer::loadProperties()
 {
     static QSettings settings;
     settings.beginGroup(m_name);
-    
+
     m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_ENABLED_DEFAULT).toBool();
     m_initialized = settings.value(PROPERTY_INITIALIZED_KEY, PROPERTY_INITIALIZED_DEFAULT).toBool();
     m_background = settings.value(PROPERTY_BACKGROUND_KEY, PROPERTY_BACKGROUND_DEFAULT).toString();
@@ -172,7 +172,7 @@ void TimeElapsedTimer::loadProperties()
     m_timestamp = settings.value(PROPERTY_TIMESTAMP_KEY, PROPERTY_TIMESTAMP_DEFAULT).toULongLong();
 
     loadAdditionalProperties();
-    
+
     settings.endGroup();
 }
 
@@ -197,7 +197,7 @@ void TimeElapsedTimer::calculateTimeElapsed()
 
     // Calculate the difference in seconds
     qint64 diffSeconds = now.toSecsSinceEpoch() - referenceDate.toSecsSinceEpoch();
-    
+
     quint64 years = diffSeconds / (SECONDS_IN_A_DAY * DAYS_IN_YEAR);
     quint64 days = diffSeconds / (SECONDS_IN_A_DAY);
     quint64 daysInWeek = days % DAYS_IN_A_WEEK;

@@ -1,21 +1,21 @@
 #include "NotificationManager.h"
 #include <QDateTime>
 
-NotificationManager::NotificationManager(QObject *parent)
-    : QAbstractListModel(parent)
-    , m_isVisible(false)
-    , m_highestPriorityItem(nullptr)
+NotificationManager::NotificationManager(QObject* parent)
+    : QAbstractListModel(parent),
+      m_isVisible(false),
+      m_highestPriorityItem(nullptr)
 {
     m_highestPriorityItem = new Notification(this);
 }
 
-int NotificationManager::rowCount(const QModelIndex &parent) const
+int NotificationManager::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
     return m_notifications.size();
 }
 
-QVariant NotificationManager::data(const QModelIndex &index, int role) const
+QVariant NotificationManager::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid() || index.row() >= m_notifications.size())
         return QVariant();
@@ -243,13 +243,15 @@ void NotificationManager::insertNotificationSorted(Notification* notification)
         if (notification->type() > m_notifications[i]->type()) {
             insertIndex = i;
             break;
-        } else if (notification->type() == m_notifications[i]->type()) {
+        }
+        else if (notification->type() == m_notifications[i]->type()) {
             // Same type - check active status
             if (notification->isActive() && !m_notifications[i]->isActive()) {
                 // New notification is active, existing is inactive - insert here
                 insertIndex = i;
                 break;
-            } else if (notification->isActive() == m_notifications[i]->isActive()) {
+            }
+            else if (notification->isActive() == m_notifications[i]->isActive()) {
                 // Same type and same status - newer comes first
                 if (notification->timestamp() >= m_notifications[i]->timestamp()) {
                     insertIndex = i;

@@ -4,24 +4,24 @@
 #include "hal/Network.h"
 
 #include <QDebug>
-#include <QSettings>
-#include <QJsonDocument>
-#include <QJsonArray>
 #include <QHttpMultiPart>
 #include <QHttpPart>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QSettings>
 #include <QTimer>
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
 
-RemoteApi::RemoteApi(Network& network, QObject *parent)
-    : QObject(parent)
-    , m_networkManager(this)
-    , m_enabled(false)
-    , m_connected(false)
-    , m_network(network)
+RemoteApi::RemoteApi(Network& network, QObject* parent)
+    : QObject(parent),
+      m_networkManager(this),
+      m_enabled(false),
+      m_connected(false),
+      m_network(network)
 {
     loadSettings();
-    
+
     // Test connection if enabled and configured
     if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
         QTimer::singleShot(1000, this, [this]() {
@@ -59,7 +59,7 @@ void RemoteApi::setEnabled(bool enabled)
     }
 }
 
-void RemoteApi::setServerUrl(const QString &url)
+void RemoteApi::setServerUrl(const QString& url)
 {
     if (m_serverUrl != url) {
         m_serverUrl = url;
@@ -69,7 +69,7 @@ void RemoteApi::setServerUrl(const QString &url)
     }
 }
 
-void RemoteApi::setDeviceId(const QString &id)
+void RemoteApi::setDeviceId(const QString& id)
 {
     if (m_deviceId != id) {
         m_deviceId = id;
@@ -78,7 +78,7 @@ void RemoteApi::setDeviceId(const QString &id)
     }
 }
 
-void RemoteApi::get(const QString &endpoint, ResponseCallback callback)
+void RemoteApi::get(const QString& endpoint, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -88,22 +88,22 @@ void RemoteApi::get(const QString &endpoint, ResponseCallback callback)
     }
 
     QNetworkRequest request = createRequest(endpoint);
-    QNetworkReply *reply = m_networkManager.get(request);
-    
+    QNetworkReply* reply = m_networkManager.get(request);
+
     PendingRequest pending;
     pending.reply = reply;
     pending.responseCallback = callback;
     pending.isBinaryDownload = false;
     m_pendingRequests[reply] = pending;
-    
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
     });
-    
+
     qDebug() << "GET:" << request.url().toString();
 }
 
-void RemoteApi::post(const QString &endpoint, const QJsonObject &payload, ResponseCallback callback)
+void RemoteApi::post(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -114,26 +114,26 @@ void RemoteApi::post(const QString &endpoint, const QJsonObject &payload, Respon
 
     QNetworkRequest request = createRequest(endpoint);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    
+
     QJsonDocument doc(payload);
     QByteArray data = doc.toJson();
-    
-    QNetworkReply *reply = m_networkManager.post(request, data);
-    
+
+    QNetworkReply* reply = m_networkManager.post(request, data);
+
     PendingRequest pending;
     pending.reply = reply;
     pending.responseCallback = callback;
     pending.isBinaryDownload = false;
     m_pendingRequests[reply] = pending;
-    
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
     });
-    
+
     qDebug() << "POST:" << request.url().toString();
 }
 
-void RemoteApi::put(const QString &endpoint, const QJsonObject &payload, ResponseCallback callback)
+void RemoteApi::put(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -144,26 +144,26 @@ void RemoteApi::put(const QString &endpoint, const QJsonObject &payload, Respons
 
     QNetworkRequest request = createRequest(endpoint);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    
+
     QJsonDocument doc(payload);
     QByteArray data = doc.toJson();
-    
-    QNetworkReply *reply = m_networkManager.put(request, data);
-    
+
+    QNetworkReply* reply = m_networkManager.put(request, data);
+
     PendingRequest pending;
     pending.reply = reply;
     pending.responseCallback = callback;
     pending.isBinaryDownload = false;
     m_pendingRequests[reply] = pending;
-    
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
     });
-    
+
     qDebug() << "PUT:" << request.url().toString();
 }
 
-void RemoteApi::deleteRequest(const QString &endpoint, ResponseCallback callback)
+void RemoteApi::deleteRequest(const QString& endpoint, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -173,22 +173,22 @@ void RemoteApi::deleteRequest(const QString &endpoint, ResponseCallback callback
     }
 
     QNetworkRequest request = createRequest(endpoint);
-    QNetworkReply *reply = m_networkManager.deleteResource(request);
-    
+    QNetworkReply* reply = m_networkManager.deleteResource(request);
+
     PendingRequest pending;
     pending.reply = reply;
     pending.responseCallback = callback;
     pending.isBinaryDownload = false;
     m_pendingRequests[reply] = pending;
-    
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
     });
-    
+
     qDebug() << "DELETE:" << request.url().toString();
 }
 
-void RemoteApi::download(const QString &endpoint, DataCallback callback)
+void RemoteApi::download(const QString& endpoint, DataCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -198,22 +198,22 @@ void RemoteApi::download(const QString &endpoint, DataCallback callback)
     }
 
     QNetworkRequest request = createRequest(endpoint);
-    QNetworkReply *reply = m_networkManager.get(request);
-    
+    QNetworkReply* reply = m_networkManager.get(request);
+
     PendingRequest pending;
     pending.reply = reply;
     pending.dataCallback = callback;
     pending.isBinaryDownload = true;
     m_pendingRequests[reply] = pending;
-    
+
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
     });
-    
+
     qDebug() << "DOWNLOAD:" << request.url().toString();
 }
 
-void RemoteApi::createObject(const SerializableObject &object, SuccessCallback callback)
+void RemoteApi::createObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -225,21 +225,22 @@ void RemoteApi::createObject(const SerializableObject &object, SuccessCallback c
 
     QString endpoint = object.getCreateEndpoint();
     QJsonObject payload = object.toJson();
-    
-    post(endpoint, payload, [callback, endpoint](bool success, const QJsonObject &response, const QString &error) {
+
+    post(endpoint, payload, [callback, endpoint](bool success, const QJsonObject& response, const QString& error) {
         if (callback) {
             callback(success, error);
         }
-        
+
         if (success) {
             qDebug() << "Object created successfully at:" << endpoint;
-        } else {
+        }
+        else {
             qWarning() << "Failed to create object at" << endpoint << ":" << error;
         }
     });
 }
 
-void RemoteApi::updateObject(const SerializableObject &object, SuccessCallback callback)
+void RemoteApi::updateObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -251,21 +252,22 @@ void RemoteApi::updateObject(const SerializableObject &object, SuccessCallback c
 
     QString endpoint = object.getUpdateEndpoint();
     QJsonObject payload = object.toJson();
-    
-    put(endpoint, payload, [callback, endpoint](bool success, const QJsonObject &response, const QString &error) {
+
+    put(endpoint, payload, [callback, endpoint](bool success, const QJsonObject& response, const QString& error) {
         if (callback) {
             callback(success, error);
         }
-        
+
         if (success) {
             qDebug() << "Object updated successfully at:" << endpoint;
-        } else {
+        }
+        else {
             qWarning() << "Failed to update object at" << endpoint << ":" << error;
         }
     });
 }
 
-void RemoteApi::deleteObject(const SerializableObject &object, SuccessCallback callback)
+void RemoteApi::deleteObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -276,15 +278,16 @@ void RemoteApi::deleteObject(const SerializableObject &object, SuccessCallback c
     }
 
     QString endpoint = object.getDeleteEndpoint();
-    
-    deleteRequest(endpoint, [callback, endpoint](bool success, const QJsonObject &response, const QString &error) {
+
+    deleteRequest(endpoint, [callback, endpoint](bool success, const QJsonObject& response, const QString& error) {
         if (callback) {
             callback(success, error);
         }
-        
+
         if (success) {
             qDebug() << "Object deleted successfully at:" << endpoint;
-        } else {
+        }
+        else {
             qWarning() << "Failed to delete object at" << endpoint << ":" << error;
         }
     });
@@ -302,23 +305,24 @@ void RemoteApi::testConnection(std::function<void(bool, const QString&)> callbac
         return;
     }
 
-    get("/api/test", [this, callback](bool success, const QJsonObject &response, const QString &error) {
+    get("/api/test", [this, callback](bool success, const QJsonObject& response, const QString& error) {
         if (success) {
             QString message = response["message"].toString();
             if (message.isEmpty()) {
                 message = "Connection successful";
             }
-            
+
             setConnected(true);
             qDebug() << "Connection test successful:" << message;
-            
+
             if (callback) {
                 callback(true, message);
             }
-        } else {
+        }
+        else {
             setConnected(false);
             qWarning() << "Connection test failed:" << error;
-            
+
             if (callback) {
                 callback(false, error);
             }
@@ -335,8 +339,8 @@ void RemoteApi::loadSettings()
     m_deviceId = settings.value("device-id").toString();
     settings.endGroup();
 
-    qDebug() << "Loaded server connection settings - Enabled:" << m_enabled 
-             << "Server:" << m_serverUrl 
+    qDebug() << "Loaded server connection settings - Enabled:" << m_enabled
+             << "Server:" << m_serverUrl
              << "Device ID:" << m_deviceId;
 }
 
@@ -352,52 +356,54 @@ void RemoteApi::saveSettings()
     qDebug() << "Saved server connection settings";
 }
 
-QNetworkRequest RemoteApi::createRequest(const QString &endpoint)
+QNetworkRequest RemoteApi::createRequest(const QString& endpoint)
 {
     QUrl url(m_serverUrl + endpoint);
     QNetworkRequest request(url);
     request.setTransferTimeout(NETWORK_TIMEOUT_MS);
-    
+
     return request;
 }
 
-void RemoteApi::handleResponse(QNetworkReply *reply)
+void RemoteApi::handleResponse(QNetworkReply* reply)
 {
     reply->deleteLater();
-    
+
     if (!m_pendingRequests.contains(reply)) {
         qWarning() << "Received response for unknown request";
         return;
     }
-    
+
     PendingRequest pending = m_pendingRequests.take(reply);
-    
+
     if (reply->error() != QNetworkReply::NoError) {
         QString error = reply->errorString();
         qWarning() << "Network error:" << error;
-        
+
         if (pending.isBinaryDownload && pending.dataCallback) {
             pending.dataCallback(false, QByteArray(), error);
-        } else if (pending.responseCallback) {
+        }
+        else if (pending.responseCallback) {
             pending.responseCallback(false, QJsonObject(), error);
         }
-        
+
         setConnected(false);
         return;
     }
-    
+
     QByteArray responseData = reply->readAll();
-    
+
     if (pending.isBinaryDownload) {
         // Binary download (e.g., media file)
         if (pending.dataCallback) {
             pending.dataCallback(true, responseData, QString());
         }
         setConnected(true);
-    } else {
+    }
+    else {
         // JSON response
         QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
-        
+
         if (!jsonDoc.isObject()) {
             QString error = "Invalid JSON response from server";
             qWarning() << error;
@@ -406,13 +412,13 @@ void RemoteApi::handleResponse(QNetworkReply *reply)
             }
             return;
         }
-        
+
         QJsonObject jsonObj = jsonDoc.object();
-        
+
         if (pending.responseCallback) {
             pending.responseCallback(true, jsonObj, QString());
         }
-        
+
         setConnected(true);
     }
 }

@@ -11,10 +11,10 @@ const QStringList SHUTDOWN_ARGUMENTS = {QStringLiteral("System shutdown command 
 const QString REBOOT_COMMAND = QStringLiteral("reboot");
 #endif
 
-System::System(QObject *parent) :
-    QObject(parent),
-    m_shutdownProcess(this),
-    m_rebootProcess(this)
+System::System(QObject* parent)
+    : QObject(parent),
+      m_shutdownProcess(this),
+      m_rebootProcess(this)
 {
 }
 

@@ -1,8 +1,8 @@
 #ifndef APPS_COUNTDOWN_TIMER_H
 #define APPS_COUNTDOWN_TIMER_H
 
-#include <QObject>
 #include <QColor>
+#include <QObject>
 #include <QTimer>
 
 class MediaManager;
@@ -24,27 +24,27 @@ class CountdownTimer : public QObject
     Q_PROPERTY(quint64 minutes READ minutes NOTIFY timeChanged)
     Q_PROPERTY(quint64 seconds READ seconds NOTIFY timeChanged)
 
-public:
-    CountdownTimer(const QString &name, MediaManager& mediaManager, QObject *parent = nullptr);
+  public:
+    CountdownTimer(const QString& name, MediaManager& mediaManager, QObject* parent = nullptr);
     virtual ~CountdownTimer() = default;
 
     QString name() const;
-    void setName(const QString &name);
+    void setName(const QString& name);
 
     bool enabled() const;
-    void setEnabled(const bool &enabled);
+    void setEnabled(const bool& enabled);
 
     bool isInitialized() const;
-    void setInitialized(const bool &initialized);
+    void setInitialized(const bool& initialized);
 
     qreal backgroundOpacity() const;
-    void setBackgroundOpacity(const qreal &backgroundOpacity);
+    void setBackgroundOpacity(const qreal& backgroundOpacity);
 
     QString background() const;
-    void setBackground(const QString &background);
+    void setBackground(const QString& background);
 
     quint64 targetTimestamp() const;
-    void setTargetTimestamp(const quint64 &timestamp);
+    void setTargetTimestamp(const quint64& timestamp);
 
     quint64 years() const;
     quint64 days() const;
@@ -57,7 +57,7 @@ public:
     void startTimer();
     void stopTimer();
 
-signals:
+  signals:
     void nameChanged();
     void enabledChanged();
     void initializedChanged();
@@ -75,7 +75,7 @@ signals:
     void secondsChanged(quint64 seconds);
     void countdownFinished();
 
-protected:
+  protected:
     void loadProperties();
     virtual void loadAdditionalProperties();
     void saveProperty(const QString& key, const QVariant& value);

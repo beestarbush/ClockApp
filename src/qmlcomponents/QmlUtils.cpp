@@ -1,28 +1,27 @@
 #include "QmlUtils.h"
+#include <QDebug>
+#include <QMetaEnum>
 #include <QMetaObject>
 #include <QMetaProperty>
-#include <QMetaEnum>
 #include <QQuickItem>
-#include <QDebug>
 
-QmlUtils *QmlUtils::mInstance = nullptr;
+QmlUtils* QmlUtils::mInstance = nullptr;
 
-QmlUtils::QmlUtils(QObject *parent)
+QmlUtils::QmlUtils(QObject* parent)
     : QObject(parent)
 {
     mInstance = this;
 }
 
-QVariantList QmlUtils::properties(QObject *aObject) const
+QVariantList QmlUtils::properties(QObject* aObject) const
 {
-    static auto lSuperClasses = QList<const QMetaObject *>()
+    static auto lSuperClasses = QList<const QMetaObject*>()
                                 << &QObject::staticMetaObject
                                 << &QQuickItem::staticMetaObject;
 
     QVariantList lPropertiesList;
 
-    if (aObject)
-    {
+    if (aObject) {
         const auto lMetaObject = aObject->metaObject();
         const auto lPropertyCount = lMetaObject->propertyCount();
 
@@ -30,38 +29,33 @@ QVariantList QmlUtils::properties(QObject *aObject) const
         auto lPropertyOffset = 0;
 
         // Skip properties of QObject or QQuickItem class
-        do
-        {
+        do {
             lPropertyOffset = lSuperClassMetaObject->propertyOffset();
             lSuperClassMetaObject = lSuperClassMetaObject->superClass();
         } while (lSuperClassMetaObject && !lSuperClasses.contains(lSuperClassMetaObject));
 
-        for (int lI = lPropertyOffset; lI < lPropertyCount; ++lI)
-        {
+        for (int lI = lPropertyOffset; lI < lPropertyCount; ++lI) {
             lPropertiesList << propertyInformation(aObject, QString::fromLatin1(lMetaObject->property(lI).name()));
         }
     }
 
     // Sort properties by name
-    std::sort(lPropertiesList.begin(), lPropertiesList.end(), [](const QVariant &aLeft, const QVariant &aRight)
-              {
-                  return aLeft.toMap().value(QStringLiteral("name")).toString() < aRight.toMap().value(QStringLiteral("name")).toString();
-              });
+    std::sort(lPropertiesList.begin(), lPropertiesList.end(), [](const QVariant& aLeft, const QVariant& aRight) {
+        return aLeft.toMap().value(QStringLiteral("name")).toString() < aRight.toMap().value(QStringLiteral("name")).toString();
+    });
 
     return lPropertiesList;
 }
 
-QVariantMap QmlUtils::propertyInformation(QObject *aObject, const QString &aPropertyName) const
+QVariantMap QmlUtils::propertyInformation(QObject* aObject, const QString& aPropertyName) const
 {
     QVariantMap lPropertyInformation;
 
-    if (aObject)
-    {
+    if (aObject) {
         const auto lMetaObject = aObject->metaObject();
         const auto lPropertyIndex = lMetaObject->indexOfProperty(qPrintable(aPropertyName));
 
-        if (lPropertyIndex != -1)
-        {
+        if (lPropertyIndex != -1) {
             const auto lMetaProperty = lMetaObject->property(lPropertyIndex);
 
             lPropertyInformation.insert(QStringLiteral("name"), aPropertyName);
@@ -71,8 +65,7 @@ QVariantMap QmlUtils::propertyInformation(QObject *aObject, const QString &aProp
             lPropertyInformation.insert(QStringLiteral("isWritable"), lMetaProperty.isWritable());
             lPropertyInformation.insert(QStringLiteral("hasNotifySignal"), lMetaProperty.hasNotifySignal());
 
-            if (strcmp(lMetaProperty.typeName(), "QVariant") == 0)
-            {
+            if (strcmp(lMetaProperty.typeName(), "QVariant") == 0) {
                 auto lVariant = lMetaProperty.read(aObject);
                 lPropertyInformation.insert(QStringLiteral("variantTypeName"), QString::fromLatin1(lVariant.typeName()));
             }
@@ -84,22 +77,19 @@ QVariantMap QmlUtils::propertyInformation(QObject *aObject, const QString &aProp
     return lPropertyInformation;
 }
 
-QString QmlUtils::enumValueName(QObject *aObject, const QString &aEnumPropertyName, int aEnumValue) const
+QString QmlUtils::enumValueName(QObject* aObject, const QString& aEnumPropertyName, int aEnumValue) const
 {
-    if (aObject)
-    {
+    if (aObject) {
         const auto lMetaObject = aObject->metaObject();
         auto lPropertyIndex = lMetaObject->indexOfProperty(qPrintable(aEnumPropertyName));
 
-        if (lPropertyIndex == -1)
-        {
+        if (lPropertyIndex == -1) {
             return {};
         }
 
         auto lMetaProperty = lMetaObject->property(lPropertyIndex);
 
-        if (!lMetaProperty.isEnumType())
-        {
+        if (!lMetaProperty.isEnumType()) {
             return {};
         }
 
@@ -110,21 +100,19 @@ QString QmlUtils::enumValueName(QObject *aObject, const QString &aEnumPropertyNa
     return {};
 }
 
-bool QmlUtils::isQmlSupportedModel(QObject *aObject) const
+bool QmlUtils::isQmlSupportedModel(QObject* aObject) const
 {
-    auto lModel = dynamic_cast<QAbstractItemModel *>(aObject);
+    auto lModel = dynamic_cast<QAbstractItemModel*>(aObject);
     return lModel && !lModel->roleNames().isEmpty();
 }
 
-QStringList QmlUtils::roleNames(QAbstractItemModel *aModel) const
+QStringList QmlUtils::roleNames(QAbstractItemModel* aModel) const
 {
     QStringList lResult;
 
-    if (aModel)
-    {
+    if (aModel) {
         const auto lRoles = aModel->roleNames().values();
-        for (const auto &lRole : lRoles)
-        {
+        for (const auto& lRole : lRoles) {
             lResult << QString::fromLatin1(lRole);
         }
     }
@@ -134,10 +122,9 @@ QStringList QmlUtils::roleNames(QAbstractItemModel *aModel) const
     return lResult;
 }
 
-QVariant QmlUtils::modelData(QAbstractItemModel *aModel, int aRowIndex, const QString &aRole) const
+QVariant QmlUtils::modelData(QAbstractItemModel* aModel, int aRowIndex, const QString& aRole) const
 {
-    if (aModel)
-    {
+    if (aModel) {
         const auto lRoleIndex = aModel->roleNames().key(qPrintable(aRole));
         return aModel->data(aModel->index(aRowIndex, 0), lRoleIndex);
     }
@@ -145,15 +132,13 @@ QVariant QmlUtils::modelData(QAbstractItemModel *aModel, int aRowIndex, const QS
     return {};
 }
 
-QVariant QmlUtils::modelData(QAbstractItemModel *aModel, int aRowIndex) const
+QVariant QmlUtils::modelData(QAbstractItemModel* aModel, int aRowIndex) const
 {
-    if (aModel)
-    {
+    if (aModel) {
         QVariantMap lResult;
         const auto lRoleName = aModel->roleNames();
 
-        for (auto lIterator = lRoleName.constBegin(); lIterator != lRoleName.constEnd(); ++lIterator)
-        {
+        for (auto lIterator = lRoleName.constBegin(); lIterator != lRoleName.constEnd(); ++lIterator) {
             auto lValue = aModel->data(aModel->index(aRowIndex, 0), lIterator.key());
             lResult.insert(QString::fromLocal8Bit(lIterator.value()), lValue);
         }
@@ -164,7 +149,7 @@ QVariant QmlUtils::modelData(QAbstractItemModel *aModel, int aRowIndex) const
     return {};
 }
 
-int QmlUtils::modelCount(QAbstractItemModel *aModel) const
+int QmlUtils::modelCount(QAbstractItemModel* aModel) const
 {
     return aModel ? aModel->rowCount() : 0;
 }

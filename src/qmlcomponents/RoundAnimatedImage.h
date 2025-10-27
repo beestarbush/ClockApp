@@ -1,28 +1,29 @@
-#include <QQuickPaintedItem>
 #include <QMovie>
 #include <QPainter>
+#include <QQuickPaintedItem>
 
-class RoundAnimatedImage : public QQuickPaintedItem {
+class RoundAnimatedImage : public QQuickPaintedItem
+{
     Q_OBJECT
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
 
-public:
-    RoundAnimatedImage(QQuickItem *parent = nullptr);
-    void paint(QPainter *painter) override;
+  public:
+    RoundAnimatedImage(QQuickItem* parent = nullptr);
+    void paint(QPainter* painter) override;
 
     QString source() const;
-    void setSource(const QString &path);
+    void setSource(const QString& path);
 
-signals:
+  signals:
     void sourceChanged();
 
-private slots:
+  private slots:
     void onFrameChanged(int frameNumber);
 
-protected:
-    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value) override;
+  protected:
+    void itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData& value) override;
 
-private:
-    QMovie *m_movie;
+  private:
+    QMovie* m_movie;
     QString m_source;
 };

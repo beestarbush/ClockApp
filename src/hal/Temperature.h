@@ -6,26 +6,26 @@
 
 class Temperature : public QObject
 {
-	Q_OBJECT
-	Q_PROPERTY(qint32 processorTemperature READ processorTemperature NOTIFY processorTemperatureChanged)
-	Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
+    Q_OBJECT
+    Q_PROPERTY(qint32 processorTemperature READ processorTemperature NOTIFY processorTemperatureChanged)
+    Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
 
-public:
-	Temperature(QObject *parent = nullptr);
+  public:
+    Temperature(QObject* parent = nullptr);
 
-	qint32 processorTemperature() const;
-	bool valid() const;
+    qint32 processorTemperature() const;
+    bool valid() const;
 
-signals:
-	void processorTemperatureChanged();
-	void validChanged();
+  signals:
+    void processorTemperatureChanged();
+    void validChanged();
 
-private:
-	void update();
+  private:
+    void update();
 
-	QTimer m_refreshTimer;
-	qint32 m_processorTemperature;
-	bool m_valid;
+    QTimer m_refreshTimer;
+    qint32 m_processorTemperature;
+    bool m_valid;
 };
 
 #endif // HAL_TEMPERATURE_H

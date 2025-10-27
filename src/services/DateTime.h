@@ -6,20 +6,20 @@
 
 class DateTime : public QObject
 {
-	Q_OBJECT
-	Q_PROPERTY(QString localTime READ localTime NOTIFY timeChanged)
-	Q_PROPERTY(QString utcTime READ utcTime NOTIFY timeChanged)
+    Q_OBJECT
+    Q_PROPERTY(QString localTime READ localTime NOTIFY timeChanged)
+    Q_PROPERTY(QString utcTime READ utcTime NOTIFY timeChanged)
 
-public:
-	DateTime(QObject *parent = nullptr);
+  public:
+    DateTime(QObject* parent = nullptr);
 
     QString localTime() const;
-	QString utcTime() const;
+    QString utcTime() const;
 
-signals:
-	void timeChanged();
+  signals:
+    void timeChanged();
 
-private:
+  private:
     QTimeZone m_timeZone;
 };
 

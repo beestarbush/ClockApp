@@ -5,11 +5,10 @@
 
 class Storage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-public:
-	Storage(QObject *parent = nullptr);
-	
+  public:
+    Storage(QObject* parent = nullptr);
 };
 
 #endif // HAL_STORAGE_H

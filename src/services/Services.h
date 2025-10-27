@@ -3,18 +3,18 @@
 
 #include <QObject>
 
-#include "MediaManager.h"
 #include "DateTime.h"
+#include "MediaManager.h"
 #include "NotificationManager.h"
 #include "QmlInterface.h"
-#include "Version.h"
 #include "RemoteApi.h"
+#include "Version.h"
 
 class HAL;
 
 class Services : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
     Q_PROPERTY(MediaManager* mediaManager MEMBER m_mediaManager CONSTANT)
     Q_PROPERTY(DateTime* dateTime MEMBER m_dateTime CONSTANT)
     Q_PROPERTY(NotificationManager* notificationManager MEMBER m_notificationManager CONSTANT)
@@ -22,12 +22,12 @@ class Services : public QObject
     Q_PROPERTY(Version* version MEMBER m_version CONSTANT)
     Q_PROPERTY(RemoteApi* remoteApi MEMBER m_remoteApi CONSTANT)
 
-public:
+  public:
     friend class Applications;
 
-	Services(HAL& hal, QObject *parent = nullptr);
+    Services(HAL& hal, QObject* parent = nullptr);
 
-private:
+  private:
     RemoteApi* m_remoteApi;
     MediaManager* m_mediaManager;
     DateTime* m_dateTime;

@@ -9,14 +9,14 @@ const QString INTERFACE_NAME = QStringLiteral("eth0");
 #endif
 constexpr quint16 REFRESH_INTERVAL_MS = 30 * 1000; // Refresh every 30 seconds
 
-Network::Network(QObject *parent) :
-    QObject(parent),
-    m_refreshTimer(this),
-    m_interfaceName(INTERFACE_NAME),
-    m_connected(false),
-    m_running(false),
-    m_ipAddress(""),
-    m_subnetMask("")
+Network::Network(QObject* parent)
+    : QObject(parent),
+      m_refreshTimer(this),
+      m_interfaceName(INTERFACE_NAME),
+      m_connected(false),
+      m_running(false),
+      m_ipAddress(""),
+      m_subnetMask("")
 {
     update();
 
@@ -51,13 +51,13 @@ QString Network::subnetMask() const
 
 void Network::update()
 {
-    for (const QNetworkInterface &interface : QNetworkInterface::allInterfaces()) {
+    for (const QNetworkInterface& interface : QNetworkInterface::allInterfaces()) {
         if (interface.name() == m_interfaceName) {
             m_connected = interface.flags() & QNetworkInterface::IsUp;
             m_running = interface.flags() & QNetworkInterface::IsRunning;
             emit connectedChanged();
             emit runningChanged();
-            
+
             auto entries = interface.addressEntries();
             if (!entries.isEmpty()) {
                 m_ipAddress = entries.first().ip().toString();

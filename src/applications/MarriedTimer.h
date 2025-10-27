@@ -5,10 +5,10 @@
 
 class MarriedTimer : public TimeElapsedTimer
 {
-	Q_OBJECT
+    Q_OBJECT
 
-public:
-	MarriedTimer(MediaManager& mediaManager, QObject *parent = nullptr);
+  public:
+    MarriedTimer(MediaManager& mediaManager, QObject* parent = nullptr);
 };
 
 #endif // APPS_MARRIED_TIMER_H

@@ -1,7 +1,7 @@
 #include "Clock.h"
 #include "services/MediaManager.h"
-#include <QSettings>
 #include <QDebug>
+#include <QSettings>
 
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("clock");
 const QString PROPERTY_BACKGROUND_KEY = QStringLiteral("background");
@@ -19,17 +19,17 @@ const QColor PROPERTY_PENDULUM_BOB_COLOR_DEFAULT = QColor("#009950");
 const QString PROPERTY_PENDULUM_ROD_COLOR_KEY = QStringLiteral("pendulum-rod-color");
 const QColor PROPERTY_PENDULUM_ROD_COLOR_DEFAULT = QColor("#333333");
 
-Clock::Clock(MediaManager& mediaManager, QObject *parent) :
-    QObject(parent),
-    m_enabled(true),
-    m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
-    m_background(PROPERTY_BACKGROUND_DEFAULT),
-    m_hourColor(PROPERTY_HOUR_COLOR_DEFAULT),
-    m_minuteColor(PROPERTY_MINUTE_COLOR_DEFAULT),
-    m_secondColor(PROPERTY_SECOND_COLOR_DEFAULT),
-    m_pendulumBobColor(PROPERTY_PENDULUM_BOB_COLOR_DEFAULT),
-    m_pendulumRodColor(PROPERTY_PENDULUM_ROD_COLOR_DEFAULT),
-    m_mediaManager(mediaManager)
+Clock::Clock(MediaManager& mediaManager, QObject* parent)
+    : QObject(parent),
+      m_enabled(true),
+      m_backgroundOpacity(PROPERTY_BACKGROUND_OPACITY_DEFAULT),
+      m_background(PROPERTY_BACKGROUND_DEFAULT),
+      m_hourColor(PROPERTY_HOUR_COLOR_DEFAULT),
+      m_minuteColor(PROPERTY_MINUTE_COLOR_DEFAULT),
+      m_secondColor(PROPERTY_SECOND_COLOR_DEFAULT),
+      m_pendulumBobColor(PROPERTY_PENDULUM_BOB_COLOR_DEFAULT),
+      m_pendulumRodColor(PROPERTY_PENDULUM_ROD_COLOR_DEFAULT),
+      m_mediaManager(mediaManager)
 {
     loadProperties();
 }
@@ -53,7 +53,7 @@ bool Clock::enabled() const
     return m_enabled;
 }
 
-void Clock::setEnabled(const bool &enabled)
+void Clock::setEnabled(const bool& enabled)
 {
     if (m_enabled == enabled) {
         return;
@@ -68,7 +68,7 @@ qreal Clock::backgroundOpacity() const
     return m_backgroundOpacity;
 }
 
-void Clock::setBackgroundOpacity(const qreal &backgroundOpacity)
+void Clock::setBackgroundOpacity(const qreal& backgroundOpacity)
 {
     if (m_backgroundOpacity == backgroundOpacity) {
         return;
@@ -88,7 +88,7 @@ QString Clock::background() const
     return m_mediaManager.getMediaPath(m_background);
 }
 
-void Clock::setBackground(const QString &background)
+void Clock::setBackground(const QString& background)
 {
     if (m_background == background) {
         return;
@@ -108,7 +108,7 @@ QColor Clock::hourColor() const
     return m_hourColor;
 }
 
-void Clock::setHourColor(const QColor &hourColor)
+void Clock::setHourColor(const QColor& hourColor)
 {
     if (m_hourColor == hourColor) {
         return;
@@ -128,7 +128,7 @@ QColor Clock::minuteColor() const
     return m_minuteColor;
 }
 
-void Clock::setMinuteColor(const QColor &minuteColor)
+void Clock::setMinuteColor(const QColor& minuteColor)
 {
     if (m_minuteColor == minuteColor) {
         return;
@@ -148,7 +148,7 @@ QColor Clock::secondColor() const
     return m_secondColor;
 }
 
-void Clock::setSecondColor(const QColor &secondColor)
+void Clock::setSecondColor(const QColor& secondColor)
 {
     if (m_secondColor == secondColor) {
         return;
@@ -168,7 +168,7 @@ QColor Clock::pendulumBobColor() const
     return m_pendulumBobColor;
 }
 
-void Clock::setPendulumBobColor(const QColor &pendulumBobColor)
+void Clock::setPendulumBobColor(const QColor& pendulumBobColor)
 {
     if (m_pendulumBobColor == pendulumBobColor) {
         return;
@@ -188,7 +188,7 @@ QColor Clock::pendulumRodColor() const
     return m_pendulumRodColor;
 }
 
-void Clock::setPendulumRodColor(const QColor &pendulumRodColor)
+void Clock::setPendulumRodColor(const QColor& pendulumRodColor)
 {
     if (m_pendulumRodColor == pendulumRodColor) {
         return;

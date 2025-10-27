@@ -2,9 +2,9 @@
 #include "RoundAnimatedImage.h"
 #include <QPainterPath>
 
-RoundAnimatedImage::RoundAnimatedImage(QQuickItem *parent) :
-    QQuickPaintedItem(parent),
-    m_movie(nullptr)
+RoundAnimatedImage::RoundAnimatedImage(QQuickItem* parent)
+    : QQuickPaintedItem(parent),
+      m_movie(nullptr)
 {
     setFlag(QQuickItem::ItemHasContents, true);
     setAcceptedMouseButtons(Qt::NoButton);
@@ -17,10 +17,9 @@ QString RoundAnimatedImage::source() const
     return m_source;
 }
 
-void RoundAnimatedImage::setSource(const QString &path)
+void RoundAnimatedImage::setSource(const QString& path)
 {
-    if (m_source == path)
-    {
+    if (m_source == path) {
         return;
     }
 
@@ -29,30 +28,26 @@ void RoundAnimatedImage::setSource(const QString &path)
 
     // Convert qrc:/ to :/ for Qt resource compatibility, but use local variable
     QString actualPath = path;
-    if (actualPath.startsWith("qrc:/"))
-    {
+    if (actualPath.startsWith("qrc:/")) {
         actualPath.replace(0, 4, ":");
     }
 
     emit sourceChanged();
 
-    if (m_movie)
-    {
+    if (m_movie) {
         m_movie->stop();
         delete m_movie;
         m_movie = nullptr;
     }
 
     // Handle empty path gracefully
-    if (actualPath.isEmpty())
-    {
+    if (actualPath.isEmpty()) {
         update(); // Clear the display
         return;
     }
 
     m_movie = new QMovie(actualPath);
-    if (!m_movie->isValid())
-    {
+    if (!m_movie->isValid()) {
         qWarning() << "Invalid movie source:" << actualPath;
         delete m_movie;
         m_movie = nullptr;
@@ -70,7 +65,7 @@ void RoundAnimatedImage::onFrameChanged(int)
     update(); // triggers paint()
 }
 
-void RoundAnimatedImage::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &value)
+void RoundAnimatedImage::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData& value)
 {
     QQuickPaintedItem::itemChange(change, value);
     if (change == QQuickItem::ItemVisibleHasChanged && m_movie) {
@@ -78,16 +73,16 @@ void RoundAnimatedImage::itemChange(QQuickItem::ItemChange change, const QQuickI
             if (m_movie->state() != QMovie::Running) {
                 m_movie->start();
             }
-        } else {
+        }
+        else {
             m_movie->stop();
         }
     }
 }
 
-void RoundAnimatedImage::paint(QPainter *painter)
+void RoundAnimatedImage::paint(QPainter* painter)
 {
-    if (m_movie && m_movie->isValid())
-    {
+    if (m_movie && m_movie->isValid()) {
         QImage frame = m_movie->currentImage();
         if (frame.isNull()) {
             // Do not attempt to scale or draw a null image
@@ -109,8 +104,7 @@ void RoundAnimatedImage::paint(QPainter *painter)
         // Center the image if aspect ratio does not match
         QPointF topLeft(
             bounds.x() + (bounds.width() - scaledFrame.width()) / 2,
-            bounds.y() + (bounds.height() - scaledFrame.height()) / 2
-        );
+            bounds.y() + (bounds.height() - scaledFrame.height()) / 2);
 
         painter->drawImage(bounds, frame);
     }

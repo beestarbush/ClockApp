@@ -2,9 +2,9 @@
 #include <QDebug>
 #include <cassert>
 
-DateTime::DateTime(QObject *parent) :
-    QObject(parent),
-    m_timeZone(QTimeZone("Europe/Amsterdam"))
+DateTime::DateTime(QObject* parent)
+    : QObject(parent),
+      m_timeZone(QTimeZone("Europe/Amsterdam"))
 {
     assert(m_timeZone.isValid()); // Time zones not available on system (install tzdata).
 }

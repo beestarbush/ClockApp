@@ -9,11 +9,11 @@ const QString PROCESSOR_TEMPERATURE_INTERFACE_NAME = QStringLiteral("/tmp/proces
 #endif
 constexpr quint16 REFRESH_INTERVAL_MS = 5 * 1000; // Refresh every 5 seconds
 
-Temperature::Temperature(QObject *parent) :
-    QObject(parent),
-    m_refreshTimer(this),
-    m_processorTemperature(0),
-    m_valid(false)
+Temperature::Temperature(QObject* parent)
+    : QObject(parent),
+      m_refreshTimer(this),
+      m_processorTemperature(0),
+      m_valid(false)
 {
     update();
 
@@ -34,14 +34,12 @@ bool Temperature::valid() const
 void Temperature::update()
 {
     QFile file(PROCESSOR_TEMPERATURE_INTERFACE_NAME);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         bool ok;
         qint32 value = in.readLine().toInt(&ok);
         file.close();
-        if (!ok)
-        {
+        if (!ok) {
             qWarning() << "Failed to read value from file:" << PROCESSOR_TEMPERATURE_INTERFACE_NAME;
             m_valid = false;
             emit validChanged();

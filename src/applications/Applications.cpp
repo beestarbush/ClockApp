@@ -1,13 +1,13 @@
 #include "Applications.h"
 #include "services/Services.h"
 
-Applications::Applications(Services &services, QObject *parent) :
-    QObject(parent),
-    m_clock(new Clock(*services.m_mediaManager, this)),
-    m_marriedTimer(new MarriedTimer(*services.m_mediaManager, this)),
-    m_kuikenTimer(new BirthdayTimer("kuiken-timer", *services.m_mediaManager, this)),
-    m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_mediaManager, this)),
-    m_setup(new Setup(m_marriedTimer, m_kuikenTimer, m_christmasTimer, *services.m_remoteApi, this))
+Applications::Applications(Services& services, QObject* parent)
+    : QObject(parent),
+      m_clock(new Clock(*services.m_mediaManager, this)),
+      m_marriedTimer(new MarriedTimer(*services.m_mediaManager, this)),
+      m_kuikenTimer(new BirthdayTimer("kuiken-timer", *services.m_mediaManager, this)),
+      m_christmasTimer(new CountdownTimer("christmas-timer", *services.m_mediaManager, this)),
+      m_setup(new Setup(m_marriedTimer, m_kuikenTimer, m_christmasTimer, *services.m_remoteApi, this))
 {
     m_kuikenTimer->setBackground("kuiken.gif");
     m_kuikenTimer->setBackgroundOpacity(0.5);

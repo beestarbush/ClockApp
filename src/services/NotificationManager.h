@@ -1,8 +1,8 @@
 #ifndef SERVICES_NOTIFICATIONMANAGER_H
 #define SERVICES_NOTIFICATIONMANAGER_H
 
-#include <QAbstractListModel>
 #include "Notification.h"
+#include <QAbstractListModel>
 
 class NotificationManager : public QAbstractListModel
 {
@@ -13,8 +13,9 @@ class NotificationManager : public QAbstractListModel
     Q_PROPERTY(bool isVisible READ isVisible NOTIFY isVisibleChanged)
     Q_PROPERTY(Notification* highestPriorityNotification READ getHighestPriorityNotification NOTIFY highestPriorityChanged)
 
-public:
-    enum Roles {
+  public:
+    enum Roles
+    {
         TitleRole = Qt::UserRole + 1,
         MessageRole,
         TypeRole,
@@ -24,11 +25,11 @@ public:
         ActiveRole
     };
 
-    NotificationManager(QObject *parent = nullptr);
+    NotificationManager(QObject* parent = nullptr);
 
     // QAbstractListModel interface
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
     // Property getters
@@ -37,20 +38,20 @@ public:
     bool isVisible() const;
     Notification* getHighestPriorityNotification();
 
-public slots:
+  public slots:
     void addNotification(const QString& title, const QString& message, Notification::Type type = Notification::Info, bool active = true, quint64 duration = 10000);
-    void showInfo(const QString& title, const QString& message, bool active = true, quint64 duration = 10000);    // 10 seconds
-    void showWarning(const QString& title, const QString& message, quint64 duration = 20000); // 20 seconds
-    void showError(const QString& title, const QString& message, quint64 duration = 0);       // persistent
+    void showInfo(const QString& title, const QString& message, bool active = true, quint64 duration = 10000); // 10 seconds
+    void showWarning(const QString& title, const QString& message, quint64 duration = 20000);                  // 20 seconds
+    void showError(const QString& title, const QString& message, quint64 duration = 0);                        // persistent
     void removeNotification(const quint64 id);
     void removeNotificationAt(int index);
-    void deleteNotification(const quint64 id);  // Permanently delete notification
+    void deleteNotification(const quint64 id); // Permanently delete notification
     void clearAll();
-    void clearInactive();  // Remove only inactive notifications
+    void clearInactive(); // Remove only inactive notifications
     void setNotificationActive(const quint64 id, bool active);
     void toggleNotificationActive(const quint64 id);
 
-signals:
+  signals:
     void countChanged();
     void activeCountChanged();
     void hasNotificationsChanged();
@@ -59,7 +60,7 @@ signals:
     void notificationAdded(const quint64 id);
     void notificationRemoved(const quint64 id);
 
-private:
+  private:
     void insertNotificationSorted(Notification* notification);
     void setupAutoRemove(Notification* notification);
     void updateHighestPriorityNotification();

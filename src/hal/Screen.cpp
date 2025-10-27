@@ -1,6 +1,6 @@
 #include "Screen.h"
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 #include <QSettings>
 
 #ifdef PLATFORM_IS_TARGET
@@ -12,9 +12,9 @@ const QString PROPERTY_GROUP_NAME = QStringLiteral("screen");
 const QString PROPERTY_BRIGHTNESS_KEY = QStringLiteral("brightness");
 constexpr quint8 PROPERTY_BRIGHTNESS_DEFAULT = 100;
 
-Screen::Screen(QObject *parent) :
-    QObject(parent),
-    m_brightness(0)
+Screen::Screen(QObject* parent)
+    : QObject(parent),
+      m_brightness(0)
 {
     loadProperties();
     writeBrightnessToFile(BRIGHTNESS_FILE_PATH, m_brightness);
@@ -27,8 +27,7 @@ qint8 Screen::brightness() const
 
 void Screen::setBrightness(const qint8 value)
 {
-    if (m_brightness != value)
-    {
+    if (m_brightness != value) {
         m_brightness = value;
         saveProperty(PROPERTY_BRIGHTNESS_KEY, m_brightness);
         writeBrightnessToFile(BRIGHTNESS_FILE_PATH, m_brightness);
@@ -36,17 +35,15 @@ void Screen::setBrightness(const qint8 value)
     }
 }
 
-qint8 Screen::readBrightnessFromFile(const QString &filePath) const
+qint8 Screen::readBrightnessFromFile(const QString& filePath) const
 {
     QFile file(filePath);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
         bool ok;
         qint8 value = in.readLine().toInt(&ok);
         file.close();
-        if (!ok)
-        {
+        if (!ok) {
             qWarning() << "Failed to read brightness value from file:" << filePath;
             return 0;
         }
@@ -58,11 +55,10 @@ qint8 Screen::readBrightnessFromFile(const QString &filePath) const
     return 0; // Default value if reading fails
 }
 
-void Screen::writeBrightnessToFile(const QString &filePath, qint8 value) const
+void Screen::writeBrightnessToFile(const QString& filePath, qint8 value) const
 {
     QFile file(filePath);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
         // Scale the value back to the range of 0-31 for writing to the file.
         int scaledValue = (value * 31) / 100; // Assuming we want to write a value between 0 and 31
@@ -70,8 +66,7 @@ void Screen::writeBrightnessToFile(const QString &filePath, qint8 value) const
         file.flush();
         file.close();
     }
-    else
-    {
+    else {
         qWarning() << "Failed to open file for writing:" << filePath;
     }
 }

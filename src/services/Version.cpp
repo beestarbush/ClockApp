@@ -1,8 +1,8 @@
 #include "Version.h"
 #include "git_version.h"
 
-Version::Version(QObject *parent) :
-    QObject(parent)
+Version::Version(QObject* parent)
+    : QObject(parent)
 {
 }
 

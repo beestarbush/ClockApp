@@ -1,12 +1,12 @@
 #include "Setup.h"
-#include "applications/TimeElapsedTimer.h"
-#include "applications/CountdownTimer.h"
 #include "applications/BirthdayTimer.h"
+#include "applications/CountdownTimer.h"
 #include "applications/MarriedTimer.h"
+#include "applications/TimeElapsedTimer.h"
 #include "services/RemoteApi.h"
 #include "services/remoteapi/DeviceStatus.h"
-#include <QSettings>
 #include <QDebug>
+#include <QSettings>
 
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("setup");
 const QString PROPERTY_SETUP_COMPLETE_KEY = QStringLiteral("setup-complete");
@@ -16,14 +16,14 @@ Setup::Setup(MarriedTimer* marriedTimer,
              BirthdayTimer* kuikenTimer,
              CountdownTimer* christmasTimer,
              RemoteApi& remoteApi,
-             QObject *parent) :
-    QObject(parent),
-    m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
-    m_setupStep(0),
-    m_marriedTimer(marriedTimer),
-    m_kuikenTimer(kuikenTimer),
-    m_christmasTimer(christmasTimer),
-    m_remoteApi(remoteApi)
+             QObject* parent)
+    : QObject(parent),
+      m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
+      m_setupStep(0),
+      m_marriedTimer(marriedTimer),
+      m_kuikenTimer(kuikenTimer),
+      m_christmasTimer(christmasTimer),
+      m_remoteApi(remoteApi)
 {
     loadProperties();
 }
@@ -49,7 +49,7 @@ void Setup::setSetupStep(int step)
 }
 
 void Setup::markSetupComplete()
-{    
+{
     m_setupComplete = true;
     saveProperty(PROPERTY_SETUP_COMPLETE_KEY, true);
 
@@ -66,12 +66,12 @@ void Setup::nextSetupStep()
 }
 
 void Setup::resetSetup()
-{    
+{
     m_setupComplete = false;
     m_setupStep = 0;
-    
+
     saveProperty(PROPERTY_SETUP_COMPLETE_KEY, false);
-    
+
     emit setupCompleteChanged();
     emit setupStepChanged();
 }
@@ -104,10 +104,11 @@ void Setup::registerDevice()
     status.deviceId = m_remoteApi.deviceId();
     status.deviceName = "Clock device";
 
-    m_remoteApi.createObject(status, [](bool success, const QString &error) {
+    m_remoteApi.createObject(status, [](bool success, const QString& error) {
         if (success) {
             qDebug() << "Device registered successfully";
-        } else {
+        }
+        else {
             qWarning() << "Failed to register device:" << error;
         }
     });
