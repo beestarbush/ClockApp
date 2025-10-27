@@ -8,6 +8,7 @@ class TimeElapsedTimer;
 class CountdownTimer;
 class BirthdayTimer;
 class MarriedTimer;
+class RemoteApi;
 
 class Setup : public QObject
 {
@@ -19,6 +20,7 @@ public:
 	Setup(MarriedTimer* marriedTimer,
 	      BirthdayTimer* kuikenTimer,
 	      CountdownTimer* christmasTimer,
+	      RemoteApi& remoteApi,
 	      QObject *parent = nullptr);
 
 	bool isSetupComplete() const;
@@ -36,6 +38,7 @@ signals:
 private:
 	void loadProperties();
 	void saveProperty(const QString& key, const QVariant& value);
+	void registerDevice();
 
 	bool m_setupComplete;
 	int m_setupStep;
@@ -44,6 +47,7 @@ private:
 	MarriedTimer* m_marriedTimer;
 	BirthdayTimer* m_kuikenTimer;
 	CountdownTimer* m_christmasTimer;
+	RemoteApi& m_remoteApi;
 };
 
 #endif // APPS_SETUP_H

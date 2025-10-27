@@ -8,6 +8,7 @@
 #include "NotificationManager.h"
 #include "QmlInterface.h"
 #include "Version.h"
+#include "RemoteApi.h"
 
 class Services : public QObject
 {
@@ -17,6 +18,7 @@ class Services : public QObject
     Q_PROPERTY(NotificationManager* notificationManager MEMBER m_notificationManager CONSTANT)
     Q_PROPERTY(QmlInterface* qmlInterface MEMBER m_qmlInterface CONSTANT)
     Q_PROPERTY(Version* version MEMBER m_version CONSTANT)
+    Q_PROPERTY(RemoteApi* remoteApi MEMBER m_remoteApi CONSTANT)
 
 public:
     friend class Applications;
@@ -24,6 +26,7 @@ public:
 	Services(QObject *parent = nullptr);
 
 private:
+    RemoteApi* m_remoteApi;
     MediaManager* m_mediaManager;
     DateTime* m_dateTime;
     NotificationManager* m_notificationManager;

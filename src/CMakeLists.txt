@@ -4,7 +4,7 @@ project(ClockApp VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -29,6 +29,15 @@ qt_add_executable(clockapp
     qmlcomponents/RoundAnimatedImage.h
     services/MediaManager.cpp
     services/MediaManager.h
+    services/RemoteApi.cpp
+    services/RemoteApi.h
+    services/remoteapi/SerializableObject.h
+    services/remoteapi/DeviceStatus.cpp
+    services/remoteapi/DeviceStatus.h
+    services/remoteapi/MediaInfo.cpp
+    services/remoteapi/MediaInfo.h
+    services/remoteapi/MediaList.cpp
+    services/remoteapi/MediaList.h
     services/DateTime.cpp
     services/DateTime.h
     services/Notification.cpp
@@ -93,7 +102,7 @@ set_target_properties(clockapp PROPERTIES
 )
 
 target_link_libraries(clockapp
-    PRIVATE Qt6::Quick ComponentLibplugin PanelLibplugin
+    PRIVATE Qt6::Quick Qt6::Network ComponentLibplugin PanelLibplugin
 )
 
 include(GNUInstallDirs)

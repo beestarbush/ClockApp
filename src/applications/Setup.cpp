@@ -3,6 +3,8 @@
 #include "applications/CountdownTimer.h"
 #include "applications/BirthdayTimer.h"
 #include "applications/MarriedTimer.h"
+#include "services/RemoteApi.h"
+#include "services/remoteapi/DeviceStatus.h"
 #include <QSettings>
 #include <QDebug>
 
@@ -13,13 +15,15 @@ const bool PROPERTY_SETUP_COMPLETE_DEFAULT = false;
 Setup::Setup(MarriedTimer* marriedTimer,
              BirthdayTimer* kuikenTimer,
              CountdownTimer* christmasTimer,
+             RemoteApi& remoteApi,
              QObject *parent) :
     QObject(parent),
     m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
     m_setupStep(0),
     m_marriedTimer(marriedTimer),
     m_kuikenTimer(kuikenTimer),
-    m_christmasTimer(christmasTimer)
+    m_christmasTimer(christmasTimer),
+    m_remoteApi(remoteApi)
 {
     loadProperties();
 }
@@ -48,6 +52,9 @@ void Setup::markSetupComplete()
 {    
     m_setupComplete = true;
     saveProperty(PROPERTY_SETUP_COMPLETE_KEY, true);
+
+    // Register device with server when setup is complete
+    registerDevice();
 
     emit setupCompleteChanged();
 }
@@ -84,4 +91,24 @@ void Setup::saveProperty(const QString& key, const QVariant& value)
     settings.setValue(key, value);
     settings.endGroup();
     settings.sync();
+}
+
+void Setup::registerDevice()
+{
+    if (!m_remoteApi.enabled()) {
+        qDebug() << "RemoteApi not enabled, skipping device registration";
+        return;
+    }
+
+    DeviceStatus status;
+    status.deviceId = m_remoteApi.deviceId();
+    status.deviceName = "Clock device";
+
+    m_remoteApi.createObject(status, [](bool success, const QString &error) {
+        if (success) {
+            qDebug() << "Device registered successfully";
+        } else {
+            qWarning() << "Failed to register device:" << error;
+        }
+    });
 }
