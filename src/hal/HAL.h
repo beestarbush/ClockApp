@@ -16,6 +16,8 @@ class HAL : public QObject
     Q_PROPERTY(Storage* storage MEMBER m_storage CONSTANT)
 
 public:
+    friend class Services;
+
 	HAL(QObject *parent = nullptr);
 
 private:

@@ -10,6 +10,8 @@
 #include "Version.h"
 #include "RemoteApi.h"
 
+class HAL;
+
 class Services : public QObject
 {
 	Q_OBJECT
@@ -23,7 +25,7 @@ class Services : public QObject
 public:
     friend class Applications;
 
-	Services(QObject *parent = nullptr);
+	Services(HAL& hal, QObject *parent = nullptr);
 
 private:
     RemoteApi* m_remoteApi;

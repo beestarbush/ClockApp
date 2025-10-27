@@ -19,7 +19,7 @@ class MediaManager : public QObject
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
 
 public:
-    explicit MediaManager(RemoteApi* remoteApi, QObject *parent = nullptr);
+    explicit MediaManager(RemoteApi& remoteApi, QObject *parent = nullptr);
 
     QStringList availableMedia() const;
     bool syncing() const;
@@ -56,8 +56,8 @@ private:
     QFileSystemWatcher m_fileWatcher;
     QTimer m_scanTimer;
     QTimer m_syncTimer;
-    RemoteApi* m_remoteApi;
-    
+    RemoteApi& m_remoteApi;
+
     bool m_syncing;
     QDateTime m_lastSyncTime;
     QString m_lastError;

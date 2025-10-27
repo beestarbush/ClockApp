@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	QmlInterface qmlInterface(&app);
 
 	HAL hal(&app);
-	Services services(&app);
+	Services services(hal, &app);
 	Applications applications(services, &app);
 
 	qmlInterface.registerObject("QmlInterface", &qmlInterface);

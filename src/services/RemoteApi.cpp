@@ -1,5 +1,8 @@
 #include "RemoteApi.h"
 #include "remoteapi/SerializableObject.h"
+
+#include "hal/Network.h"
+
 #include <QDebug>
 #include <QSettings>
 #include <QJsonDocument>
@@ -10,16 +13,17 @@
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
 
-RemoteApi::RemoteApi(QObject *parent)
+RemoteApi::RemoteApi(Network& network, QObject *parent)
     : QObject(parent)
     , m_networkManager(this)
     , m_enabled(false)
     , m_connected(false)
+    , m_network(network)
 {
     loadSettings();
     
     // Test connection if enabled and configured
-    if (m_enabled && !m_serverUrl.isEmpty()) {
+    if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
         QTimer::singleShot(1000, this, [this]() {
             testConnection();
         });

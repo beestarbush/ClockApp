@@ -20,7 +20,7 @@ constexpr int MIN_MEDIA_FILE_SIZE = 50; // Minimum reasonable file size in bytes
 constexpr int SCAN_DELAY_MS = 500; // Delay in milliseconds for scanning directory
 constexpr int SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 
-MediaManager::MediaManager(RemoteApi* remoteApi, QObject *parent)
+MediaManager::MediaManager(RemoteApi& remoteApi, QObject *parent)
     : QObject(parent)
     , m_fileWatcher(this)
     , m_scanTimer(this)
@@ -46,7 +46,7 @@ MediaManager::MediaManager(RemoteApi* remoteApi, QObject *parent)
     scanDirectory();
     
     // Start sync timer if RemoteApi is enabled
-    if (m_remoteApi && m_remoteApi->enabled()) {
+    if (m_remoteApi.enabled()) {
         m_syncTimer.start();
         // Trigger initial sync after a short delay
         QTimer::singleShot(5000, this, &MediaManager::triggerSync);
@@ -79,8 +79,8 @@ void MediaManager::triggerSync()
         qDebug() << "Sync already in progress";
         return;
     }
-    
-    if (!m_remoteApi || !m_remoteApi->enabled()) {
+
+    if (!m_remoteApi.enabled()) {
         qDebug() << "RemoteApi not enabled, skipping media sync";
         return;
     }
@@ -219,9 +219,9 @@ void MediaManager::startMediaSync()
 void MediaManager::fetchMediaList()
 {
     MediaList listTemplate;
-    listTemplate.deviceId = m_remoteApi->deviceId();
-    
-    m_remoteApi->fetchObject(listTemplate, [this](bool success, const MediaList &list, const QString &error) {
+    listTemplate.deviceId = m_remoteApi.deviceId();
+
+    m_remoteApi.fetchObject(listTemplate, [this](bool success, const MediaList &list, const QString &error) {
         if (!success) {
             completeSyncWithError("Failed to fetch media list: " + error);
             return;
@@ -298,7 +298,7 @@ void MediaManager::fetchMediaList()
             // No downloads, but we had deletions
             // Update local media.json to match server
             MediaList updatedList;
-            updatedList.deviceId = m_remoteApi->deviceId();
+            updatedList.deviceId = m_remoteApi.deviceId();
             updatedList.mediaIds = serverMediaIds;
             updatedList.saveToFile(getMediaDirectory());
             completeSyncWithSuccess();
@@ -309,8 +309,8 @@ void MediaManager::fetchMediaList()
 void MediaManager::downloadMedia(const QString &mediaId)
 {
     m_activeDownloads++;
-    
-    if (!m_remoteApi || !m_remoteApi->enabled()) {
+
+    if (!m_remoteApi.enabled()) {
         m_activeDownloads--;
         m_pendingDownloads.removeOne(mediaId);
         qWarning() << "RemoteApi not enabled";
@@ -320,9 +320,9 @@ void MediaManager::downloadMedia(const QString &mediaId)
     // Create MediaInfo template with just the ID
     MediaInfo infoTemplate;
     infoTemplate.id = mediaId;
-    infoTemplate.deviceId = m_remoteApi->deviceId();
+    infoTemplate.deviceId = m_remoteApi.deviceId();
 
-    m_remoteApi->fetchObject(infoTemplate, [this, mediaId](bool success, const MediaInfo &fetchedInfo, const QString &error) {
+    m_remoteApi.fetchObject(infoTemplate, [this, mediaId](bool success, const MediaInfo &fetchedInfo, const QString &error) {
         m_activeDownloads--;
         m_pendingDownloads.removeOne(mediaId);
         
@@ -332,7 +332,7 @@ void MediaManager::downloadMedia(const QString &mediaId)
                 // Cleanup with filenames we did manage to fetch
                 // Save updated media.json even on partial failure
                 MediaList updatedList;
-                updatedList.deviceId = m_remoteApi->deviceId();
+                updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
                 cleanupOldMedia(m_downloadedFilenames);
@@ -359,7 +359,7 @@ void MediaManager::downloadMedia(const QString &mediaId)
                 if (m_pendingDownloads.isEmpty()) {
                     // Save updated media.json with server's media list
                     MediaList updatedList;
-                    updatedList.deviceId = m_remoteApi->deviceId();
+                    updatedList.deviceId = m_remoteApi.deviceId();
                     updatedList.mediaIds = m_currentServerMediaIds;
                     updatedList.saveToFile(getMediaDirectory());
                     cleanupOldMedia(m_downloadedFilenames);
@@ -367,7 +367,7 @@ void MediaManager::downloadMedia(const QString &mediaId)
                 } else {
                     // Save updated media.json even on partial failure
                     MediaList updatedList;
-                    updatedList.deviceId = m_remoteApi->deviceId();
+                    updatedList.deviceId = m_remoteApi.deviceId();
                     updatedList.mediaIds = m_currentServerMediaIds;
                     updatedList.saveToFile(getMediaDirectory());
                     cleanupOldMedia(m_downloadedFilenames);
@@ -395,7 +395,7 @@ void MediaManager::downloadMedia(const QString &mediaId)
             if (m_pendingDownloads.isEmpty()) {
                 // Save updated media.json with server's media list
                 MediaList updatedList;
-                updatedList.deviceId = m_remoteApi->deviceId();
+                updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
                 cleanupOldMedia(m_downloadedFilenames);
@@ -403,7 +403,7 @@ void MediaManager::downloadMedia(const QString &mediaId)
             } else {
                 // Save updated media.json even on partial failure
                 MediaList updatedList;
-                updatedList.deviceId = m_remoteApi->deviceId();
+                updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
                 cleanupOldMedia(m_downloadedFilenames);

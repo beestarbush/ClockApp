@@ -9,7 +9,7 @@
 #include <QJsonObject>
 #include <functional>
 
-// Forward declarations
+class Network;
 class SerializableObject;
 
 class RemoteApi : public QObject
@@ -21,7 +21,7 @@ class RemoteApi : public QObject
     Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
 public:
-    explicit RemoteApi(QObject *parent = nullptr);
+    explicit RemoteApi(Network& network, QObject *parent = nullptr);
 
     // Properties
     bool enabled() const;
@@ -105,6 +105,7 @@ private:
     void handleResponse(QNetworkReply *reply);
     void setConnected(bool connected);
 
+    Network& m_network;
     QNetworkAccessManager m_networkManager;
     bool m_enabled;
     QString m_serverUrl;
