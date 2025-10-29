@@ -82,21 +82,23 @@ void RoundAnimatedImage::itemChange(QQuickItem::ItemChange change, const QQuickI
 
 void RoundAnimatedImage::paint(QPainter* painter)
 {
+    QRectF bounds = boundingRect();
+
+    // Enable antialiasing for smooth circle
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    // Create circular clip
+    QPainterPath path;
+    path.addEllipse(bounds);
+    painter->setClipPath(path);
+
     if (m_movie && m_movie->isValid()) {
         QImage frame = m_movie->currentImage();
         if (frame.isNull()) {
-            // Do not attempt to scale or draw a null image
+            // Draw black background for null frame
+            painter->fillRect(bounds, Qt::black);
             return;
         }
-        QRectF bounds = boundingRect();
-
-        // Enable antialiasing for smooth circle
-        painter->setRenderHint(QPainter::Antialiasing, true);
-
-        // Create circular clip
-        QPainterPath path;
-        path.addEllipse(bounds);
-        painter->setClipPath(path);
 
         // Scale the frame to fill the bounding rect, keeping aspect ratio
         QImage scaledFrame = frame.scaled(bounds.size().toSize(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
@@ -107,5 +109,8 @@ void RoundAnimatedImage::paint(QPainter* painter)
             bounds.y() + (bounds.height() - scaledFrame.height()) / 2);
 
         painter->drawImage(bounds, frame);
+    } else {
+        // Draw black background when there's no valid movie source
+        painter->fillRect(bounds, Qt::black);
     }
 }

@@ -127,6 +127,6 @@ Circle {
 		height: width
 		anchors.centerIn: parent
 
-		color: Color.black
+		color: Color.darkGray
 	}
 }

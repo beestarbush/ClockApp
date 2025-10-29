@@ -77,7 +77,7 @@ qt_add_qml_module(clockapp
 qt_add_resources(clockapp "media"
     PREFIX "/"
     FILES
-        "media/test.gif"
+        "media/default.gif"
 )
 
 if (CMAKE_CXX_COMPILER MATCHES "aarch64-poky-linux")

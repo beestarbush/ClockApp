@@ -9,6 +9,16 @@ Item {
 	readonly property int pendulumAngle: 10
 	property alias rodColor: rod.color
 	property alias bobColor: bob.color
+	property bool active: false
+
+	onActiveChanged: {
+		if (active) {
+			swingAnimation.start()
+		}
+		else {
+			swingAnimation.stop()
+		}
+	}
 
 	Rectangle {
 		id: rod
@@ -59,7 +69,5 @@ Item {
 				easing.type: Easing.InOutSine // Smooth easing for natural swing
 			}
 		}
-
-		Component.onCompleted: swingAnimation.start()
 	}
 }

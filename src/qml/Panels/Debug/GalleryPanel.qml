@@ -102,6 +102,7 @@ Item {
             Pendulum {
                 width: 200
                 height: 200
+                active: true
             }
 
             SevenSegmentDisplay {

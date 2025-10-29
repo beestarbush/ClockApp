@@ -12,15 +12,25 @@
 #include <QTimer>
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
+const QString PROPERTIES_GROUP_NAME = QStringLiteral("remote-api");
+const QString PROPERTY_ENABLED_KEY = QStringLiteral("enabled");
+const bool PROPERTY_ENABLED_DEFAULT = false;
+const QString PROPERTY_SERVER_URL_KEY = QStringLiteral("url");
+const QString PROPERTY_SERVER_URL_DEFAULT = QStringLiteral("https://bijsterbosch.org/clock");
+const QString PROPERTY_DEVICE_ID_KEY = QStringLiteral("device-id");
+const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("");
 
 RemoteApi::RemoteApi(Network& network, QObject* parent)
     : QObject(parent),
+      m_network(network),
       m_networkManager(this),
-      m_enabled(false),
+      m_enabled(PROPERTY_ENABLED_DEFAULT),
+      m_serverUrl(PROPERTY_SERVER_URL_DEFAULT),
+      m_deviceId(PROPERTY_DEVICE_ID_DEFAULT),
       m_connected(false),
-      m_network(network)
+      m_pendingRequests()
 {
-    loadSettings();
+    loadProperties();
 
     // Test connection if enabled and configured
     if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
@@ -52,30 +62,36 @@ bool RemoteApi::connected() const
 
 void RemoteApi::setEnabled(bool enabled)
 {
-    if (m_enabled != enabled) {
-        m_enabled = enabled;
-        saveSettings();
-        emit enabledChanged();
+    if (m_enabled == enabled) {
+        return;
     }
+
+    saveProperty(PROPERTY_ENABLED_KEY, enabled);
+    m_enabled = enabled;
+    emit enabledChanged();
 }
 
 void RemoteApi::setServerUrl(const QString& url)
 {
-    if (m_serverUrl != url) {
-        m_serverUrl = url;
-        saveSettings();
-        emit serverUrlChanged();
-        setConnected(false);
+    if (m_serverUrl == url) {
+        return;
     }
+
+    saveProperty(PROPERTY_SERVER_URL_KEY, url);
+    m_serverUrl = url;
+    emit serverUrlChanged();
+    setConnected(false);
 }
 
 void RemoteApi::setDeviceId(const QString& id)
 {
-    if (m_deviceId != id) {
-        m_deviceId = id;
-        saveSettings();
-        emit deviceIdChanged();
+    if (m_deviceId == id) {
+        return;
     }
+
+    saveProperty(PROPERTY_DEVICE_ID_KEY, id);
+    m_deviceId = id;
+    emit deviceIdChanged();
 }
 
 void RemoteApi::get(const QString& endpoint, ResponseCallback callback)
@@ -330,30 +346,22 @@ void RemoteApi::testConnection(std::function<void(bool, const QString&)> callbac
     });
 }
 
-void RemoteApi::loadSettings()
+void RemoteApi::loadProperties()
 {
     QSettings settings;
-    settings.beginGroup("remote-api");
-    m_enabled = settings.value("enabled", false).toBool();
-    m_serverUrl = settings.value("url").toString();
-    m_deviceId = settings.value("device-id").toString();
+    settings.beginGroup(PROPERTIES_GROUP_NAME);
+    m_enabled = settings.value(PROPERTY_ENABLED_KEY, PROPERTY_ENABLED_DEFAULT).toBool();
+    m_serverUrl = settings.value(PROPERTY_SERVER_URL_KEY, PROPERTY_SERVER_URL_DEFAULT).toString();
+    m_deviceId = settings.value(PROPERTY_DEVICE_ID_KEY, PROPERTY_DEVICE_ID_DEFAULT).toString();
     settings.endGroup();
-
-    qDebug() << "Loaded server connection settings - Enabled:" << m_enabled
-             << "Server:" << m_serverUrl
-             << "Device ID:" << m_deviceId;
 }
 
-void RemoteApi::saveSettings()
+void RemoteApi::saveProperty(const QString& key, const QVariant& value)
 {
     QSettings settings;
-    settings.beginGroup("remote-api");
-    settings.setValue("enabled", m_enabled);
-    settings.setValue("url", m_serverUrl);
-    settings.setValue("device-id", m_deviceId);
+    settings.beginGroup(PROPERTIES_GROUP_NAME);
+    settings.setValue(key, value);
     settings.endGroup();
-
-    qDebug() << "Saved server connection settings";
 }
 
 QNetworkRequest RemoteApi::createRequest(const QString& endpoint)

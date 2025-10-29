@@ -10,6 +10,7 @@ Item {
     property var media: []
     property int currentIndex: 0
     property string selectedMedia: media.length > 0 ? media[currentIndex] : ""
+    property int selectedIndex: 0
 
     signal mediaSelected(string mediaName)
 
@@ -22,8 +23,46 @@ Item {
 
     function selectCurrentMedia() {
         if (selectedMedia) {
+            selectedIndex = currentIndex
             mediaSelected(selectedMedia)
         }
+    }
+
+    // Select a media item by its name (exact match). This sets the current page,
+    // animates the flickable to that page and emits the `mediaSelected` signal.
+    // If the name is not found, nothing happens.
+    function selectMediaByName(name) {
+        if (!name) return;
+
+        // Extract filename from possible full paths or URLs
+        var base = name;
+        var lastSlash = Math.max(name.lastIndexOf('/'), name.lastIndexOf('\\'));
+        if (lastSlash !== -1) {
+            base = name.substring(lastSlash + 1);
+        }
+
+        // Strip query params or fragments if present
+        var qIdx = base.indexOf('?');
+        if (qIdx !== -1) base = base.substring(0, qIdx);
+        var hashIdx = base.indexOf('#');
+        if (hashIdx !== -1) base = base.substring(0, hashIdx);
+
+        // Now find the index by filename
+        var idx = media.indexOf(base);
+        if (idx === -1) {
+            // Fallback: try matching the full original string (in case model stores full paths)
+            idx = media.indexOf(name);
+        }
+        if (idx === -1) return;
+
+        currentIndex = idx;
+
+        // Smooth scroll to the selected page
+        snapAnimation.to = idx * flickable.width
+        snapAnimation.start()
+
+        // Emit selection
+        selectCurrentMedia()
     }
 
     // No media message
@@ -72,34 +111,18 @@ Item {
                         id: previewImage
                         anchors.fill: parent
                         source: BeeBackend.Services.mediaManager.getMediaPath(mediaName)
-                        opacity: isSelected ? 1.0 : 0.3
+                        opacity: 1.0
                         visible: isSelected // Only the selected image is visible (and thus playing).
 
                         Behavior on opacity {
                             NumberAnimation { duration: 300 }
                         }
-                    }
 
-                    // Media name overlay
-                    Rectangle {
-                        anchors.bottom: parent.bottom
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.bottomMargin: Value.defaultMargin * 2
-                        width: nameText.width + Value.defaultMargin
-                        height: nameText.height + Value.smallMargin
-                        color: Color.black
-                        opacity: 0.8
-                        radius: Value.smallMargin
-                        visible: isSelected
+                        Circle {
+                            anchors.fill: parent
 
-                        Text {
-                            id: nameText
-                            anchors.centerIn: parent
-                            text: mediaName
-                            color: Color.lightGray
-                            font.pixelSize: Value.defaultTextSize
-                            font.bold: true
-                            horizontalAlignment: Text.AlignHCenter
+                            color: Color.black
+                            opacity: index == selectedIndex ? 0.5 : 0
                         }
                     }
 
@@ -135,35 +158,6 @@ Item {
             property: "contentX"
             duration: 300
             easing.type: Easing.OutCubic
-        }
-    }
-
-    // Page indicators at bottom
-    Row {
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottomMargin: Value.smallMargin
-        spacing: Value.smallMargin
-        visible: media.length > 1
-
-        Repeater {
-            model: media.length
-
-            delegate: Rectangle {
-                width: 15
-                height: width
-                radius: width / 2
-                color: index === currentIndex ? Color.green1 : Color.gray
-                opacity: index === currentIndex ? 1.0 : 0.5
-
-                Behavior on color {
-                    ColorAnimation { duration: 200 }
-                }
-
-                Behavior on opacity {
-                    NumberAnimation { duration: 200 }
-                }
-            }
         }
     }
 

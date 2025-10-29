@@ -6,7 +6,7 @@ import Bee as BeeBackend
 RoundPanel {
 	id: clockPanel
 
-    backgroundColor: Color.lightGray
+    backgroundColor: Color.black
 
     signal clicked()
 

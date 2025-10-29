@@ -18,8 +18,6 @@ Circle {
 
         PendulumPanel {
             id: pendulumPanel
-
-            //onDebugButtonClicked: panelContainer.showPanel(debugPanel)
         }
     }
 

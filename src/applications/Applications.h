@@ -15,7 +15,7 @@ class Applications : public QObject
     Q_PROPERTY(Clock* clock MEMBER m_clock CONSTANT)
     Q_PROPERTY(MarriedTimer* marriedTimer MEMBER m_marriedTimer CONSTANT)
     Q_PROPERTY(BirthdayTimer* kuikenTimer MEMBER m_kuikenTimer CONSTANT)
-    Q_PROPERTY(CountdownTimer* christmasTimer MEMBER m_christmasTimer CONSTANT)
+    Q_PROPERTY(CountdownTimer* countdownTimer MEMBER m_countdownTimer CONSTANT)
 
   public:
     Applications(Services& services, QObject* parent = nullptr);
@@ -24,6 +24,6 @@ class Applications : public QObject
     Clock* m_clock;
     MarriedTimer* m_marriedTimer;
     BirthdayTimer* m_kuikenTimer;
-    CountdownTimer* m_christmasTimer;
+    CountdownTimer* m_countdownTimer;
     Setup* m_setup;
 };

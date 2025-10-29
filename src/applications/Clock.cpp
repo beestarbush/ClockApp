@@ -5,7 +5,7 @@
 
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("clock");
 const QString PROPERTY_BACKGROUND_KEY = QStringLiteral("background");
-const QString PROPERTY_BACKGROUND_DEFAULT = QStringLiteral("test.gif");
+const QString PROPERTY_BACKGROUND_DEFAULT = QStringLiteral("default.gif");
 const QString PROPERTY_BACKGROUND_OPACITY_KEY = QStringLiteral("background-opacity");
 const qreal PROPERTY_BACKGROUND_OPACITY_DEFAULT = 0.5;
 const QString PROPERTY_HOUR_COLOR_KEY = QStringLiteral("hour-color");

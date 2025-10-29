@@ -22,6 +22,11 @@ RoundPanel {
                 marriedDateTimePickerPanel.updateSelectedComponent(newValue)
             } else if (panelContainer.currentIndex == panelContainer.indexOfPanel(kuikenDateTimePickerPanel)) {
                 kuikenDateTimePickerPanel.updateSelectedComponent(newValue)
+            } else if (panelContainer.currentIndex == panelContainer.indexOfPanel(countdownDateTimePickerPanel)) {
+                countdownDateTimePickerPanel.updateSelectedComponent(newValue)
+            } else if (panelContainer.currentIndex == panelContainer.indexOfPanel(deviceIdPanel)) {
+                // Ensure the value always shows 4 digits and prepend SN-
+                deviceIdPanel.valueText = `SN-${newValue.toString().padStart(4, '0')}`;
             }
         }
     }
@@ -43,6 +48,30 @@ RoundPanel {
             buttonText: "Next"
 
             onButtonClicked: {
+                BeeBackend.Applications.setup.nextSetupStep()
+                panelContainer.showPanel(deviceIdPanel)
+            }
+        }
+
+        IntegerSelectPanel {
+            id: deviceIdPanel
+
+            anchors.fill: parent
+            titleText: "Register clock"
+            descriptionText: "Tap the value to edit it, then use the dial below to adjust the value."
+            valueText: BeeBackend.Services.remoteApi.deviceId
+            valueTextSelected: lowerMenuOverlay.visible
+
+            onValueSelected: {
+                lowerMenuOverlay.visible = true
+                lowerMenuOverlay.showDialWheel(0, 10, 1, 0)
+            }
+
+            onButtonClicked: {
+                lowerMenuOverlay.visible = false
+
+                BeeBackend.Services.remoteApi.deviceId = deviceIdPanel.valueText
+
                 BeeBackend.Applications.setup.nextSetupStep()
                 panelContainer.showPanel(marriedTimerEnablePanel)
             }
@@ -86,6 +115,24 @@ RoundPanel {
 
                 // Move to next panel
                 lowerMenuOverlay.visible = false
+                panelContainer.showPanel(marriedBackgroundPickerPanel)
+
+                lowerMenuOverlay.visible = true
+                lowerMenuOverlay.showMediaSelection(1)
+            }
+        }
+
+        TitlePanel {
+            id: marriedBackgroundPickerPanel
+
+            anchors.fill: parent
+            titleText: "Configure married timer background"
+            descriptionText: "Select a background below."
+            buttonText: "Next"
+
+            onButtonClicked: {
+                lowerMenuOverlay.visible = false
+                BeeBackend.Applications.setup.nextSetupStep()
                 panelContainer.showPanel(kuikenTimerEnablePanel)
             }
         }
@@ -128,6 +175,99 @@ RoundPanel {
 
                 // Move to next panel
                 lowerMenuOverlay.visible = false
+                panelContainer.showPanel(kuikenBackgroundPickerPanel)
+
+                lowerMenuOverlay.visible = true
+                lowerMenuOverlay.showMediaSelection(2)
+            }
+        }
+
+        TitlePanel {
+            id: kuikenBackgroundPickerPanel
+
+            anchors.fill: parent
+            titleText: "Configure kuiken timer background"
+            descriptionText: "Select a background below."
+            buttonText: "Next"
+
+            onButtonClicked: {
+                lowerMenuOverlay.visible = false
+                BeeBackend.Applications.setup.nextSetupStep()
+                panelContainer.showPanel(countdownTimerEnablePanel)
+            }
+        }
+
+        ToggleButtonPanel {
+            id: countdownTimerEnablePanel
+
+            anchors.fill: parent
+            titleText: "Countdown timer setting"
+            descriptionText: "Use the toggle to turn the timer on or off."
+            toggleTarget: BeeBackend.Applications.countdownTimer
+            toggleProperty: "enabled"
+
+            onButtonClicked: {
+                BeeBackend.Applications.setup.nextSetupStep()
+                panelContainer.showPanel(countdownDateTimePickerPanel)
+            }
+        }
+
+        DateTimePickerPanel {
+            id: countdownDateTimePickerPanel
+
+            anchors.fill: parent
+            titleText: "Configure countdown timer"
+            descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
+            dateTime: new Date(BeeBackend.Applications.countdownTimer.targetTimestamp * 1000)
+
+            onComponentSelected: function(component) {
+                lowerMenuOverlay.visible = true
+                var params = getDialWheelParams(countdownDateTimePickerPanel, component)
+                lowerMenuOverlay.showDialWheel(params.min, params.max, params.step, params.value)
+            }
+
+            onButtonClicked: {
+                var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
+                BeeBackend.Applications.countdownTimer.targetTimestamp = selectedTimestamp
+                BeeBackend.Applications.countdownTimer.initialized = true
+
+                BeeBackend.Applications.setup.nextSetupStep()
+
+                // Move to next panel
+                lowerMenuOverlay.visible = false
+                panelContainer.showPanel(countdownBackgroundPickerPanel)
+
+                lowerMenuOverlay.visible = true
+                lowerMenuOverlay.showMediaSelection(3)
+            }
+        }
+
+        TitlePanel {
+            id: countdownBackgroundPickerPanel
+
+            anchors.fill: parent
+            titleText: "Configure countdown timer background"
+            descriptionText: "Select a background below."
+            buttonText: "Next"
+
+            onButtonClicked: {
+                lowerMenuOverlay.visible = false
+                BeeBackend.Applications.setup.nextSetupStep()
+                panelContainer.showPanel(serverConnectionEnablePanel)
+            }
+        }
+
+        ToggleButtonPanel {
+            id: serverConnectionEnablePanel
+
+            anchors.fill: parent
+            titleText: "Server connection"
+            descriptionText: "Use the toggle to turn a connection with server on or off. This connection can be used to synchronize status of the clock, and add/remove media from the clock."
+            toggleTarget: BeeBackend.Services.remoteApi
+            toggleProperty: "enabled"
+
+            onButtonClicked: {
+                BeeBackend.Applications.setup.nextSetupStep()
                 panelContainer.showPanel(finishPanel)
             }
         }

@@ -11,18 +11,20 @@
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("setup");
 const QString PROPERTY_SETUP_COMPLETE_KEY = QStringLiteral("setup-complete");
 const bool PROPERTY_SETUP_COMPLETE_DEFAULT = false;
+const int MAX_SETUP_STEPS = 12;
 
 Setup::Setup(MarriedTimer* marriedTimer,
              BirthdayTimer* kuikenTimer,
-             CountdownTimer* christmasTimer,
+             CountdownTimer* countdownTimer,
              RemoteApi& remoteApi,
              QObject* parent)
     : QObject(parent),
       m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
       m_setupStep(0),
+      m_maxSetupSteps(MAX_SETUP_STEPS),
       m_marriedTimer(marriedTimer),
       m_kuikenTimer(kuikenTimer),
-      m_christmasTimer(christmasTimer),
+      m_countdownTimer(countdownTimer),
       m_remoteApi(remoteApi)
 {
     loadProperties();
@@ -46,6 +48,11 @@ void Setup::setSetupStep(int step)
 
     m_setupStep = step;
     emit setupStepChanged();
+}
+
+int Setup::maxSetupSteps() const
+{
+    return m_maxSetupSteps;
 }
 
 void Setup::markSetupComplete()

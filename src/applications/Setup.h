@@ -15,17 +15,19 @@ class Setup : public QObject
     Q_OBJECT
     Q_PROPERTY(bool setupComplete READ isSetupComplete NOTIFY setupCompleteChanged)
     Q_PROPERTY(int setupStep READ setupStep WRITE setSetupStep NOTIFY setupStepChanged)
+    Q_PROPERTY(int maxSetupSteps READ maxSetupSteps NOTIFY maxSetupStepsChanged)
 
   public:
     Setup(MarriedTimer* marriedTimer,
           BirthdayTimer* kuikenTimer,
-          CountdownTimer* christmasTimer,
+          CountdownTimer* countdownTimer,
           RemoteApi& remoteApi,
           QObject* parent = nullptr);
 
     bool isSetupComplete() const;
     int setupStep() const;
     void setSetupStep(int step);
+    int maxSetupSteps() const;
 
     Q_INVOKABLE void markSetupComplete();
     Q_INVOKABLE void nextSetupStep();
@@ -34,6 +36,7 @@ class Setup : public QObject
   signals:
     void setupCompleteChanged();
     void setupStepChanged();
+    void maxSetupStepsChanged();
 
   private:
     void loadProperties();
@@ -42,11 +45,12 @@ class Setup : public QObject
 
     bool m_setupComplete;
     int m_setupStep;
+    int m_maxSetupSteps;
 
     // Application references
     MarriedTimer* m_marriedTimer;
     BirthdayTimer* m_kuikenTimer;
-    CountdownTimer* m_christmasTimer;
+    CountdownTimer* m_countdownTimer;
     RemoteApi& m_remoteApi;
 };
 

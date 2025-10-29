@@ -102,8 +102,8 @@ class RemoteApi : public QObject
     void deleteRequest(const QString& endpoint, ResponseCallback callback);
     void download(const QString& endpoint, DataCallback callback);
 
-    void loadSettings();
-    void saveSettings();
+    void loadProperties();
+    void saveProperty(const QString& key, const QVariant& value);
     QNetworkRequest createRequest(const QString& endpoint);
     void handleResponse(QNetworkReply* reply);
     void setConnected(bool connected);

@@ -11,7 +11,4 @@ Services::Services(HAL& hal, QObject* parent)
       m_qmlInterface(new QmlInterface(this)),
       m_version(new Version(this))
 {
-    // m_remoteApi->setEnabled(true);
-    // m_remoteApi->setServerUrl("https://bijsterbosch.org/clock");
-    // m_remoteApi->setDeviceId("clock-0000");
 }

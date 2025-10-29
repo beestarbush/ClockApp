@@ -12,8 +12,7 @@ PanelContainer {
     signal close()
     signal dialWheelValueUpdated(int newValue)
 
-    function showVersion(value) {
-        versionDialog.text = value
+    function showVersion() {
         dialogOverlay.showPanel(versionDialog)
     }
 
@@ -29,7 +28,8 @@ PanelContainer {
         dialogOverlay.showPanel(backgroundOpacityDialog)
     }
 
-    function showMediaSelection() {
+    function showMediaSelection(index) {
+        mediaSelectionDialog.setIndex(index)
         dialogOverlay.showPanel(mediaSelectionDialog)
     }
 
@@ -64,7 +64,6 @@ PanelContainer {
     MenuDialog {
         id: versionDialog
 
-        property alias text: textValue.text
         anchors.fill: parent
 
         MouseArea {
@@ -84,18 +83,39 @@ PanelContainer {
         }
 
         Text {
-            id: textValue
+            id: versionValue
 
 		    width: parent.width - Value.defaultMargin
             font.bold: true
             font.pixelSize: Value.largeTextSize
             anchors.centerIn: parent
+            text: Backend.version.tag
 
             wrapMode: Text.Wrap
 		    horizontalAlignment: Text.AlignHCenter
 		    verticalAlignment: Text.AlignVCenter
 
             color: Color.lightGray
+        }
+
+        Timer {
+            id: toggleTextTimer
+
+            interval: 5000 // 5 seconds
+            running: versionDialog.visible
+            repeat: true
+
+            property bool showVersion: true
+
+            onTriggered: {
+                if (showVersion) {
+                    versionValue.text = Backend.version.tag
+                    showVersion = false
+                } else {
+                    versionValue.text = BeeBackend.Services.remoteApi.deviceId
+                    showVersion = true
+                }
+            }
         }
     }
 
@@ -267,12 +287,39 @@ PanelContainer {
         anchors.fill: parent
         anchors.centerIn: parent
 
+        property int selectedIndex: 0
+
+        function setIndex(index) {
+            mediaSelectionDialog.selectedIndex = index
+            if (index == 0) {
+                carousel.selectMediaByName(BeeBackend.Applications.clock.background)
+            } else if (index == 1) {
+                carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.background)
+            } else if (index == 2) {
+                carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.background)
+            } else if (index == 3) {
+                carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.background)
+            }
+            
+        }
+
         MediaCarousel {
+            id: carousel
+
             anchors.fill: parent
             anchors.centerIn: parent
 
             onMediaSelected: (mediaName) => {
-                BeeBackend.Applications.clock.background = mediaName
+                console.log("DBG: onMediaSelected: " + mediaName + " index: " + mediaSelectionDialog.selectedIndex)
+                if (mediaSelectionDialog.selectedIndex == 0) {
+                    BeeBackend.Applications.clock.background = mediaName
+                } else if (mediaSelectionDialog.selectedIndex == 1) {
+                    BeeBackend.Applications.marriedTimer.background = mediaName
+                } else if (mediaSelectionDialog.selectedIndex == 2) {
+                    BeeBackend.Applications.kuikenTimer.background = mediaName
+                } else if (mediaSelectionDialog.selectedIndex == 3) {
+                    BeeBackend.Applications.countdownTimer.background = mediaName
+                }
             }
         }
     }

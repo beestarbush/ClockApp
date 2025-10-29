@@ -45,7 +45,6 @@ class MediaManager : public QObject
     bool isValidFile(const QString& filePath) const;
     QString getMediaDirectory() const;
 
-    void startMediaSync();
     void fetchMediaList();
     void downloadMedia(const QString& mediaId);
     void cleanupOldMedia(const QStringList& serverMediaList);

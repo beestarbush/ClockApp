@@ -34,9 +34,11 @@ PanelContainer {
         Pendulum
     }
 
-    enum TimerMenu {
+    enum BackgroundMenu {
+        Clock,
         Married,
-        Kuiken
+        Kuiken,
+        Countdown
     }
 
     MenuDialog {
@@ -74,10 +76,12 @@ PanelContainer {
         }
 
         ListModel {
-            id: timerModel
+            id: backgroundModel
 
-            ListElement { menuId: UpperMenuOverlay.TimerMenu.Married; label: "Married" }
-            ListElement { menuId: UpperMenuOverlay.TimerMenu.Kuiken; label: "Kuiken" }
+            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Clock; label: "Clock" }
+            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Married; label: "Married" }
+            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Kuiken; label: "Kuiken" }
+            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Countdown; label: "Countdown" }
         }
 
         RingMenu {
@@ -91,26 +95,30 @@ PanelContainer {
                 if (menuId === UpperMenuOverlay.MainMenu.Settings) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = true
+                    backgroundRingMenu.visible = false
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Notifications) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
+                    backgroundRingMenu.visible = false
                     lowerMenuOverlay.showNotifications()
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Backgrounds) {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    lowerMenuOverlay.showMediaSelection()
+                    backgroundRingMenu.visible = true
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Colors) {
                     settingsRingMenu.visible = false
                     colorRingMenu.visible = true
+                    backgroundRingMenu.visible = false
                 }
                 else if (menuId === UpperMenuOverlay.MainMenu.Version)
                 {
                     colorRingMenu.visible = false
                     settingsRingMenu.visible = false
-                    lowerMenuOverlay.showVersion(Backend.version.tag)
+                    backgroundRingMenu.visible = false
+                    lowerMenuOverlay.showVersion()
                 }
                 else {
                     settingsRingMenu.visible = false
@@ -118,6 +126,9 @@ PanelContainer {
 
                     colorRingMenu.visible = false
                     colorRingMenu.reset()
+
+                    backgroundRingMenu.visible = false
+                    backgroundRingMenu.reset()
 
                     lowerMenuOverlay.closePanels()
                 }
@@ -167,10 +178,10 @@ PanelContainer {
                 model: colorMenuModel
 
                 function evaluateLowerMenuOverlay(index) {
-                    if (index == 0 ||
-                        index == 1 ||
-                        index == 2 ||
-                        index == 3) {
+                    if (index == UpperMenuOverlay.ColorMenu.Hours ||
+                        index == UpperMenuOverlay.ColorMenu.Minutes ||
+                        index == UpperMenuOverlay.ColorMenu.Seconds ||
+                        index == UpperMenuOverlay.ColorMenu.Pendulum) {
                         lowerMenuOverlay.showColorSelection(index)
                     } else {
                         lowerMenuOverlay.closePanels()
@@ -188,10 +199,41 @@ PanelContainer {
                 }
             }
 
+            RingMenu {
+                id: backgroundRingMenu
+
+                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Backgrounds
+                anchors.centerIn: parent
+                width: parent.width - 200
+                height: parent.height - 200
+                model: backgroundModel
+
+                function evaluateLowerMenuOverlay(index) {
+                    if (index == UpperMenuOverlay.BackgroundMenu.Clock ||
+                        index == UpperMenuOverlay.BackgroundMenu.Married ||
+                        index == UpperMenuOverlay.BackgroundMenu.Kuiken ||
+                        index == UpperMenuOverlay.BackgroundMenu.Countdown) {
+                        lowerMenuOverlay.showMediaSelection(index)
+                    } else {
+                        lowerMenuOverlay.closePanels()
+                    }
+                }
+
+                onVisibleChanged: {
+                    if (visible) {
+                        evaluateLowerMenuOverlay(backgroundRingMenu.selectedIndex)
+                    }
+                }
+
+                onItemSelected: (index) => {
+                    evaluateLowerMenuOverlay(index)
+                }
+            }
+
             Circle {
                 anchors.centerIn: parent
-                width: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
-                height: settingsRingMenu.visible || colorRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
+                width: settingsRingMenu.visible || colorRingMenu.visible || backgroundRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
+                height: settingsRingMenu.visible || colorRingMenu.visible || backgroundRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
                 color: "transparent"
 
                 MouseArea {

@@ -78,6 +78,21 @@ Circle {
             backgroundSource: BeeBackend.Applications.kuikenTimer.background
             backgroundOpacity: BeeBackend.Applications.kuikenTimer.backgroundOpacity
         }
+
+        CountdownPanel {
+            id: countdownTimer
+
+            anchors.fill: parent
+            backgroundSource: BeeBackend.Applications.countdownTimer.background
+            backgroundOpacity: BeeBackend.Applications.countdownTimer.backgroundOpacity
+            enabled: BeeBackend.Applications.countdownTimer.enabled
+            initialized: BeeBackend.Applications.countdownTimer.initialized
+            days: BeeBackend.Applications.countdownTimer.days
+            hours: BeeBackend.Applications.countdownTimer.hours
+            minutes: BeeBackend.Applications.countdownTimer.minutes
+            seconds: BeeBackend.Applications.countdownTimer.seconds
+            onClicked: menuOverlay.visible = true
+        }
     }
 
     UpperMenuOverlay {

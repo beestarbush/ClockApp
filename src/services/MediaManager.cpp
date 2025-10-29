@@ -13,9 +13,9 @@
 #ifdef PLATFORM_IS_TARGET
 const QString MEDIA_PATH = QStringLiteral("/usr/share/bee/media");
 #else
-const QString MEDIA_PATH = QStringLiteral("/workdir/media");
+const QString MEDIA_PATH = QStringLiteral("/workdir/build/bee/media");
 #endif
-const QString DEFAULT_MEDIA = QStringLiteral("qrc:/media/test.gif");
+const QString DEFAULT_MEDIA = QStringLiteral("qrc:/media/default.gif");
 constexpr int MIN_MEDIA_FILE_SIZE = 50;         // Minimum reasonable file size in bytes
 constexpr int SCAN_DELAY_MS = 500;              // Delay in milliseconds for scanning directory
 constexpr int SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
@@ -45,7 +45,18 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     setupFileWatcher();
     scanDirectory();
 
-    // Start sync timer if RemoteApi is enabled
+    // Connect to remote API enabled changes, since we then want to start a sync, and start the sync timer. Also
+    // when we disable the remote API, we want to stop the sync timer.
+    connect(&m_remoteApi, &RemoteApi::enabledChanged, this, [this]() {
+        if (m_remoteApi.enabled()) {
+            triggerSync();
+        }
+        else {
+            m_syncTimer.stop();
+        }
+    });
+
+    // Start sync timer if remote API is enabled
     if (m_remoteApi.enabled()) {
         m_syncTimer.start();
         // Trigger initial sync after a short delay
@@ -85,7 +96,13 @@ void MediaManager::triggerSync()
         return;
     }
 
-    startMediaSync();
+    m_syncing = true;
+    m_lastError.clear();
+    emit syncingChanged();
+    emit lastErrorChanged();
+
+    qDebug() << "Starting media manager synchronization...";
+    fetchMediaList();
 }
 
 QString MediaManager::getMediaPath(const QString& name) const
@@ -208,17 +225,6 @@ QString MediaManager::getMediaDirectory() const
     return MEDIA_PATH;
 }
 
-void MediaManager::startMediaSync()
-{
-    m_syncing = true;
-    m_lastError.clear();
-    emit syncingChanged();
-    emit lastErrorChanged();
-
-    qDebug() << "Starting media sync...";
-    fetchMediaList();
-}
-
 void MediaManager::fetchMediaList()
 {
     MediaList listTemplate;
@@ -259,6 +265,11 @@ void MediaManager::fetchMediaList()
 
         qDebug() << "Media to download:" << mediaToDownload.count();
         qDebug() << "Media to delete:" << mediaToDelete.count();
+        if (mediaToDownload.isEmpty() && mediaToDelete.isEmpty()) {
+            qDebug() << "Media lists are in sync, no changes needed";
+            completeSyncWithSuccess();
+            return;
+        }
 
         // Delete old media files first (using metadata to find filenames)
         if (!mediaToDelete.isEmpty()) {
@@ -281,13 +292,6 @@ void MediaManager::fetchMediaList()
             }
         }
 
-        // If nothing to download and nothing changed, we're done
-        if (mediaToDownload.isEmpty() && mediaToDelete.isEmpty()) {
-            qDebug() << "Media lists are in sync, no changes needed";
-            completeSyncWithSuccess();
-            return;
-        }
-
         // If we have media to download, start downloading
         if (!mediaToDownload.isEmpty()) {
             m_pendingDownloads.clear();
@@ -302,6 +306,7 @@ void MediaManager::fetchMediaList()
         else {
             // No downloads, but we had deletions
             // Update local media.json to match server
+            qDebug() << "No media to download, completing sync after deletions.";
             MediaList updatedList;
             updatedList.deviceId = m_remoteApi.deviceId();
             updatedList.mediaIds = serverMediaIds;
@@ -340,7 +345,6 @@ void MediaManager::downloadMedia(const QString& mediaId)
                 updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
-                cleanupOldMedia(m_downloadedFilenames);
                 completeSyncWithError("Failed to download some media files");
             }
             return;
@@ -367,7 +371,6 @@ void MediaManager::downloadMedia(const QString& mediaId)
                     updatedList.deviceId = m_remoteApi.deviceId();
                     updatedList.mediaIds = m_currentServerMediaIds;
                     updatedList.saveToFile(getMediaDirectory());
-                    cleanupOldMedia(m_downloadedFilenames);
                     completeSyncWithSuccess();
                 }
                 else {
@@ -376,7 +379,6 @@ void MediaManager::downloadMedia(const QString& mediaId)
                     updatedList.deviceId = m_remoteApi.deviceId();
                     updatedList.mediaIds = m_currentServerMediaIds;
                     updatedList.saveToFile(getMediaDirectory());
-                    cleanupOldMedia(m_downloadedFilenames);
                     completeSyncWithError("Some downloads failed");
                 }
             }
@@ -405,7 +407,6 @@ void MediaManager::downloadMedia(const QString& mediaId)
                 updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
-                cleanupOldMedia(m_downloadedFilenames);
                 completeSyncWithSuccess();
             }
             else {
@@ -414,35 +415,10 @@ void MediaManager::downloadMedia(const QString& mediaId)
                 updatedList.deviceId = m_remoteApi.deviceId();
                 updatedList.mediaIds = m_currentServerMediaIds;
                 updatedList.saveToFile(getMediaDirectory());
-                cleanupOldMedia(m_downloadedFilenames);
                 completeSyncWithError("Some downloads failed");
             }
         }
     });
-}
-
-void MediaManager::cleanupOldMedia(const QStringList& serverMediaList)
-{
-    QString mediaDir = getMediaDirectory();
-    QDir dir(mediaDir);
-
-    if (!dir.exists()) {
-        return;
-    }
-
-    QStringList nameFilters;
-    nameFilters << "*.gif" << "*.GIF" << "*.png" << "*.PNG"
-                << "*.jpg" << "*.JPG" << "*.jpeg" << "*.JPEG";
-
-    QFileInfoList localFiles = dir.entryInfoList(nameFilters, QDir::Files);
-
-    for (const QFileInfo& fileInfo : localFiles) {
-        QString fileName = fileInfo.fileName();
-        if (!serverMediaList.contains(fileName)) {
-            qDebug() << "Removing old media file:" << fileName;
-            QFile::remove(fileInfo.absoluteFilePath());
-        }
-    }
 }
 
 void MediaManager::completeSyncWithSuccess()
