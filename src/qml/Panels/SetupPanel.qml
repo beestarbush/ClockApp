@@ -73,6 +73,21 @@ RoundPanel {
                 BeeBackend.Services.remoteApi.deviceId = deviceIdPanel.valueText
 
                 BeeBackend.Applications.setup.nextSetupStep()
+                panelContainer.showPanel(serverConnectionEnablePanel)
+            }
+        }
+
+        ToggleButtonPanel {
+            id: serverConnectionEnablePanel
+
+            anchors.fill: parent
+            titleText: "Server connection"
+            descriptionText: "Use the toggle to turn a connection with server on or off. This connection can be used to synchronize status of the clock, and add/remove media from the clock."
+            toggleTarget: BeeBackend.Services.remoteApi
+            toggleProperty: "enabled"
+
+            onButtonClicked: {
+                BeeBackend.Applications.setup.nextSetupStep()
                 panelContainer.showPanel(marriedTimerEnablePanel)
             }
         }
@@ -252,21 +267,6 @@ RoundPanel {
 
             onButtonClicked: {
                 lowerMenuOverlay.visible = false
-                BeeBackend.Applications.setup.nextSetupStep()
-                panelContainer.showPanel(serverConnectionEnablePanel)
-            }
-        }
-
-        ToggleButtonPanel {
-            id: serverConnectionEnablePanel
-
-            anchors.fill: parent
-            titleText: "Server connection"
-            descriptionText: "Use the toggle to turn a connection with server on or off. This connection can be used to synchronize status of the clock, and add/remove media from the clock."
-            toggleTarget: BeeBackend.Services.remoteApi
-            toggleProperty: "enabled"
-
-            onButtonClicked: {
                 BeeBackend.Applications.setup.nextSetupStep()
                 panelContainer.showPanel(finishPanel)
             }

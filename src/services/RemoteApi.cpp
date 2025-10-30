@@ -18,7 +18,7 @@ const bool PROPERTY_ENABLED_DEFAULT = false;
 const QString PROPERTY_SERVER_URL_KEY = QStringLiteral("url");
 const QString PROPERTY_SERVER_URL_DEFAULT = QStringLiteral("https://bijsterbosch.org/clock");
 const QString PROPERTY_DEVICE_ID_KEY = QStringLiteral("device-id");
-const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("");
+const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("SN-XXXX");
 
 RemoteApi::RemoteApi(Network& network, QObject* parent)
     : QObject(parent),
