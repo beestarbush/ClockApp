@@ -25,6 +25,7 @@ qt_add_qml_module(PanelLib
         Setup/TitlePanel.qml
         Setup/ToggleButtonPanel.qml
         SevenSegmentPanel.qml
+        StartupPanel.qml
         UpperMainPanel.qml
         UpperMenuOverlay.qml
 )

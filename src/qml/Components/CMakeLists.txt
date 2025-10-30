@@ -13,6 +13,7 @@ set(regular_qml_components
 	Dialog.qml
 	DialogOverlay.qml
 	DialWheel.qml
+	DynamicPanel.qml
 	Flickable.qml
 	MediaCarousel.qml
 	MenuDialog.qml

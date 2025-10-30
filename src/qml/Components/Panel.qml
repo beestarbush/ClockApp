@@ -36,7 +36,7 @@ Item {
 	enabled: shown
 	z: shown ? 1 : -1
 
-	anchors.centerIn: parent
+	//anchors.centerIn: parent
 	width: parent.width
 	height: parent.height
 
