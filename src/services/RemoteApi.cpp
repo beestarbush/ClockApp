@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSettings>
+#include <QSslSocket>
 #include <QTimer>
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
@@ -30,6 +31,14 @@ RemoteApi::RemoteApi(Network& network, QObject* parent)
       m_connected(false),
       m_pendingRequests()
 {
+    if (QSslSocket::supportsSsl()) {
+        qInfo() << "SSL build version:" << QSslSocket::sslLibraryBuildVersionString();
+        qInfo() << "CA certs available:" << QSslConfiguration::defaultConfiguration().caCertificates().count();
+    }
+    else {
+        qWarning() << "SSL is not supported on this system. Remote API connections will fail.";
+    }
+
     loadProperties();
 
     // Test connection if enabled and configured
@@ -111,6 +120,13 @@ void RemoteApi::get(const QString& endpoint, ResponseCallback callback)
     pending.responseCallback = callback;
     pending.isBinaryDownload = false;
     m_pendingRequests[reply] = pending;
+
+    // Log SSL errors
+    connect(reply, QOverload<const QList<QSslError>&>::of(&QNetworkReply::sslErrors), [](const QList<QSslError>& errors) {
+        for (const auto& err : errors) {
+            qWarning() << "SSL Error:" << err.errorString();
+        }
+    });
 
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         handleResponse(reply);
