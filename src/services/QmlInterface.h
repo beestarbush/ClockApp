@@ -1,6 +1,7 @@
 #ifndef SERVICES_QMLINTERFACE_H
 #define SERVICES_QMLINTERFACE_H
 
+#include <QElapsedTimer>
 #include <QObject>
 #include <QQmlApplicationEngine>
 
@@ -16,8 +17,10 @@ class QmlInterface : public QObject
     template <typename T>
     void registerType(const char* name)
     {
+        QElapsedTimer lTimer;
+        lTimer.start();
         qmlRegisterType<T>("Bee", 1, 0, name);
-        qDebug() << "Registered QML type:" << name;
+        qDebug() << "Registered QML type:" << name << "in" << lTimer.elapsed() << "ms";
     }
 
   private:

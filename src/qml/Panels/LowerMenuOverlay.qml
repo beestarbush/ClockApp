@@ -29,6 +29,7 @@ PanelContainer {
     }
 
     function showMediaSelection(index) {
+        console.log("DBG showMediaSelection (should not happen)")
         mediaSelectionDialog.setIndex(index)
         dialogOverlay.showPanel(mediaSelectionDialog)
     }

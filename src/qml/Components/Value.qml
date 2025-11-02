@@ -35,7 +35,8 @@ QtObject {
 	readonly property int smallTextSize: 18
 	readonly property int defaultTextSize: 20
 	readonly property int largeTextSize: 32
-	readonly property int veryLargeTextSize: 56
+	readonly property int extraLargeTextSize: 56
+	readonly property int extraExtraLargeTextSize: 72
 
 	function defaultWidthRatio(referenceItem) {
 		return referenceItem.width * 0.7

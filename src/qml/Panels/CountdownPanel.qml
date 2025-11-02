@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 
 import Components
 import Bee as BeeBackend
@@ -14,6 +15,8 @@ RoundPanel {
     property alias minutes: minutesText.text
     property alias seconds: secondsText.text
     property bool initialized
+    property int valueTextSize: width * 0.1
+    property int labelTextSize: width * 0.05
 
     signal clicked()
 
@@ -28,33 +31,69 @@ RoundPanel {
         anchors.fill: parent
         visible: countdownPanel.initialized
 
-        Row {
+        GridLayout {
+            columns: 2
             anchors.centerIn: parent
-            spacing: Value.defaultMargin
 
             Text {
                 id: daysText
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Value.largeTextSize
+                font.pixelSize: valueTextSize
+                font.bold: true
                 color: Color.lightGray
+                horizontalAlignment: Text.AlignRight
+                Layout.fillWidth: true
+                Layout.rightMargin: Value.defaultMargin
+            }
+            Text {
+                id: daysLabel
+                font.pixelSize: labelTextSize
+                color: Color.lightGray
+                text: "dagen"
             }
             Text {
                 id: hoursText
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Value.largeTextSize
+                font.pixelSize: valueTextSize
+                font.bold: true
                 color: Color.lightGray
+                horizontalAlignment: Text.AlignRight
+                Layout.fillWidth: true
+                Layout.rightMargin: Value.defaultMargin
+            }
+            Text {
+                id: hoursLabel
+                font.pixelSize: labelTextSize
+                color: Color.lightGray
+                text: "uren"
             }
             Text {
                 id: minutesText
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Value.largeTextSize
+                font.pixelSize: valueTextSize
+                font.bold: true
                 color: Color.lightGray
+                horizontalAlignment: Text.AlignRight
+                Layout.fillWidth: true
+                Layout.rightMargin: Value.defaultMargin
+            }
+            Text {
+                id: minutesLabel
+                font.pixelSize: labelTextSize
+                color: Color.lightGray
+                text: "minuten"
             }
             Text {
                 id: secondsText
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: Value.largeTextSize
+                font.pixelSize: valueTextSize
+                font.bold: true
                 color: Color.lightGray
+                horizontalAlignment: Text.AlignRight
+                Layout.fillWidth: true
+                Layout.rightMargin: Value.defaultMargin
+            }
+            Text {
+                id: secondsLabel
+                font.pixelSize: labelTextSize
+                color: Color.lightGray
+                text: "seconden"
             }
         }
     }

@@ -1,8 +1,8 @@
 #include "Setup.h"
-#include "applications/BirthdayTimer.h"
-#include "applications/CountdownTimer.h"
-#include "applications/MarriedTimer.h"
-#include "applications/TimeElapsedTimer.h"
+#include "BirthdayTimer.h"
+#include "CountdownTimer.h"
+#include "MarriedTimer.h"
+#include "TimeElapsedTimer.h"
 #include "services/RemoteApi.h"
 #include "services/remoteapi/DeviceStatus.h"
 #include <QDebug>
@@ -109,8 +109,6 @@ void Setup::registerDevice()
 
     DeviceStatus status;
     status.deviceId = m_remoteApi.deviceId();
-    status.deviceName = "Clock device";
-
     m_remoteApi.createObject(status, [](bool success, const QString& error) {
         if (success) {
             qDebug() << "Device registered successfully";

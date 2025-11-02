@@ -31,6 +31,8 @@ qt_add_executable(clockapp
     services/MediaManager.h
     services/RemoteApi.cpp
     services/RemoteApi.h
+    services/SystemMonitor.cpp
+    services/SystemMonitor.h
     services/remoteapi/SerializableObject.h
     services/remoteapi/DeviceStatus.cpp
     services/remoteapi/DeviceStatus.h
@@ -66,12 +68,7 @@ qt_add_executable(clockapp
     applications/Setup.h
 )
 
-qt_add_qml_module(clockapp
-    URI ClockApp
-    VERSION 1.0
-    QML_FILES
-        qml/Main.qml
-)
+target_include_directories(clockapp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # This only contains default media (when lookup on filesystem is not possible)
 qt_add_resources(clockapp "media"
@@ -102,7 +99,7 @@ set_target_properties(clockapp PROPERTIES
 )
 
 target_link_libraries(clockapp
-    PRIVATE Qt6::Quick Qt6::Network ComponentLibplugin PanelLibplugin
+    PRIVATE Qt6::Quick Qt6::Network MainLibplugin ComponentLibplugin PanelLibplugin
 )
 
 include(GNUInstallDirs)

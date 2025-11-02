@@ -8,6 +8,7 @@
 #include "NotificationManager.h"
 #include "QmlInterface.h"
 #include "RemoteApi.h"
+#include "SystemMonitor.h"
 #include "Version.h"
 
 class HAL;
@@ -21,6 +22,7 @@ class Services : public QObject
     Q_PROPERTY(QmlInterface* qmlInterface MEMBER m_qmlInterface CONSTANT)
     Q_PROPERTY(Version* version MEMBER m_version CONSTANT)
     Q_PROPERTY(RemoteApi* remoteApi MEMBER m_remoteApi CONSTANT)
+    Q_PROPERTY(SystemMonitor* systemMonitor MEMBER m_systemMonitor CONSTANT)
 
   public:
     friend class Applications;
@@ -28,12 +30,13 @@ class Services : public QObject
     Services(HAL& hal, QObject* parent = nullptr);
 
   private:
+    Version* m_version;
     RemoteApi* m_remoteApi;
     MediaManager* m_mediaManager;
+    SystemMonitor* m_systemMonitor;
     DateTime* m_dateTime;
     NotificationManager* m_notificationManager;
     QmlInterface* m_qmlInterface;
-    Version* m_version;
 };
 
 #endif // SERVICES_H

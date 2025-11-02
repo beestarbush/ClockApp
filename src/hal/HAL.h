@@ -1,10 +1,10 @@
 #include <QObject>
 
-#include "hal/Network.h"
-#include "hal/Screen.h"
-#include "hal/Storage.h"
-#include "hal/System.h"
-#include "hal/Temperature.h"
+#include "Network.h"
+#include "Screen.h"
+#include "Storage.h"
+#include "System.h"
+#include "Temperature.h"
 
 class HAL : public QObject
 {

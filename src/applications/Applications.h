@@ -1,10 +1,10 @@
 #include <QObject>
 
-#include "applications/BirthdayTimer.h"
-#include "applications/Clock.h"
-#include "applications/CountdownTimer.h"
-#include "applications/MarriedTimer.h"
-#include "applications/Setup.h"
+#include "BirthdayTimer.h"
+#include "Clock.h"
+#include "CountdownTimer.h"
+#include "MarriedTimer.h"
+#include "Setup.h"
 
 class Services;
 

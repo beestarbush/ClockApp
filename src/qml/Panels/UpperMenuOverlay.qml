@@ -159,12 +159,12 @@ PanelContainer {
 
                 onVisibleChanged: {
                     if (visible) {
-                        evaluateLowerMenuOverlay(settingsRingMenu.selectedIndex)
+                        settingsRingMenu.evaluateLowerMenuOverlay(settingsRingMenu.selectedIndex)
                     }
                 }
 
                 onItemSelected: (index) => {
-                    evaluateLowerMenuOverlay(index)
+                    settingsRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 
@@ -190,12 +190,12 @@ PanelContainer {
 
                 onVisibleChanged: {
                     if (visible) {
-                        evaluateLowerMenuOverlay(colorRingMenu.selectedIndex)
+                        colorRingMenu.evaluateLowerMenuOverlay(colorRingMenu.selectedIndex)
                     }
                 }
 
                 onItemSelected: (index) => {
-                    evaluateLowerMenuOverlay(index)
+                    colorRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 
@@ -221,12 +221,12 @@ PanelContainer {
 
                 onVisibleChanged: {
                     if (visible) {
-                        evaluateLowerMenuOverlay(backgroundRingMenu.selectedIndex)
+                        backgroundRingMenu.evaluateLowerMenuOverlay(backgroundRingMenu.selectedIndex)
                     }
                 }
 
                 onItemSelected: (index) => {
-                    evaluateLowerMenuOverlay(index)
+                    backgroundRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 

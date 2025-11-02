@@ -10,12 +10,22 @@ const QString SHUTDOWN_COMMAND = QStringLiteral("echo");
 const QStringList SHUTDOWN_ARGUMENTS = {QStringLiteral("System shutdown command not available on this platform")};
 const QString REBOOT_COMMAND = QStringLiteral("reboot");
 #endif
+constexpr int UPTIME_POLL_INTERVAL_MS = 1000; // 1 second
 
 System::System(QObject* parent)
     : QObject(parent),
       m_shutdownProcess(this),
-      m_rebootProcess(this)
+      m_rebootProcess(this),
+      m_uptimeTimer(this),
+      m_uptimeSeconds(0)
 {
+    m_uptimeTimer.setInterval(UPTIME_POLL_INTERVAL_MS);
+    m_uptimeTimer.setSingleShot(false);
+    connect(&m_uptimeTimer, &QTimer::timeout, this, [this]() {
+        m_uptimeSeconds++;
+        emit uptimeSecondsChanged();
+    });
+    m_uptimeTimer.start();
 }
 
 void System::shutdown()
@@ -30,6 +40,11 @@ void System::reboot()
     connect(&m_rebootProcess, &QProcess::finished, this, &System::onRebootFinished);
     m_rebootProcess.start(REBOOT_COMMAND);
     qDebug() << "System reboot initiated.";
+}
+
+uint64_t System::uptimeSeconds() const
+{
+    return m_uptimeSeconds;
 }
 
 void System::onShutdownFinished()

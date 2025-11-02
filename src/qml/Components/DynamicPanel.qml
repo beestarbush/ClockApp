@@ -5,18 +5,25 @@ import Components
 Panel {
 	id: panel
 
-    property alias content: loader.sourceComponent
-    property alias active: loader.active
-
-    signal loaded()
+    default property alias content: loader.sourceComponent
+    readonly property bool loaded: status === Loader.Ready
+    property alias loadingRequest: loader.active
+    property alias status: loader.status
+    property alias asynchronous: loader.asynchronous
+    property alias dynamicContent: loader.item
+    property bool keepLoaded: false
 
     Loader {
         id: loader
+
+        active: panel.visible
+
+        asynchronous: true
         anchors.fill: parent
 
-        onStatusChanged: {
-            if (loader.status == Loader.Ready) {
-                panel.loaded()
+        onLoaded: {
+            if (keepLoaded) {
+                active = true
             }
         }
     }

@@ -1,0 +1,77 @@
+#include "SystemMonitor.h"
+#include "RemoteApi.h"
+#include "Version.h"
+#include "git_version.h"
+#include "hal/System.h"
+#include "hal/Temperature.h"
+#include "remoteapi/DeviceStatus.h"
+
+#include <QDebug>
+
+constexpr int MONITOR_INTERVAL = 10 * 1000;    // 10 seconds
+constexpr int REPORT_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+SystemMonitor::SystemMonitor(RemoteApi& remoteApi,
+                             Temperature& temperature,
+                             System& system,
+                             Version& version,
+                             QObject* parent)
+    : QObject(parent),
+      m_remoteApi(remoteApi),
+      m_temperature(temperature),
+      m_system(system),
+      m_version(version),
+      m_isReporting(false)
+{
+    // Configure timer
+    m_monitorTimer.setSingleShot(false);
+    m_monitorTimer.setInterval(MONITOR_INTERVAL);
+    connect(&m_monitorTimer, &QTimer::timeout, this, &SystemMonitor::monitor);
+    monitor();
+
+    m_reportTimer.setSingleShot(false);
+    m_reportTimer.setInterval(REPORT_INTERVAL);
+    connect(&m_reportTimer, &QTimer::timeout, this, &SystemMonitor::report);
+    report();
+}
+
+void SystemMonitor::monitor()
+{
+    // Not checking anything specific for now, just trigger.
+    m_monitorTimer.start();
+}
+
+void SystemMonitor::report()
+{
+    if (!m_remoteApi.enabled()) {
+        qDebug() << "Remote API not enabled, skipping status report";
+        return;
+    }
+    if (m_isReporting) {
+        qDebug() << "Status report already in progress, skipping...";
+        return;
+    }
+
+    m_isReporting = true;
+
+    // Create DeviceStatus object
+    DeviceStatus status;
+    status.deviceId = m_remoteApi.deviceId();
+    status.softwareVersion = m_version.tag();
+    status.cpuTemperature = m_temperature.processorTemperature();
+    status.uptimeSeconds = m_system.uptimeSeconds();
+
+    // Send update to remote API
+    m_remoteApi.updateObject(status, [this](bool success, const QString& error) {
+        if (success) {
+            qDebug() << "Device status reported successfully";
+            m_isReporting = false;
+            if (m_remoteApi.enabled()) {
+                m_reportTimer.start();
+            }
+        }
+        else {
+            qWarning() << "Failed to report device status:" << error;
+        }
+    });
+}

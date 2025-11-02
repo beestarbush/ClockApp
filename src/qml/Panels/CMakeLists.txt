@@ -28,4 +28,6 @@ qt_add_qml_module(PanelLib
         StartupPanel.qml
         UpperMainPanel.qml
         UpperMenuOverlay.qml
+    DEPENDENCIES
+        Components/1.0
 )
