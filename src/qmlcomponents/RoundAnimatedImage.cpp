@@ -19,17 +19,20 @@ QString RoundAnimatedImage::source() const
 
 void RoundAnimatedImage::setSource(const QString& path)
 {
-    if (m_source == path) {
-        return;
-    }
-
     // Store the original path
+    QString oldSource = m_source;
     m_source = path;
 
     // Convert qrc:/ to :/ for Qt resource compatibility, but use local variable
     QString actualPath = path;
     if (actualPath.startsWith("qrc:/")) {
         actualPath.replace(0, 4, ":");
+    }
+
+    // Only skip reload if both the path and the actual loaded source are identical
+    // This allows reloading when files change on disk
+    if (oldSource == path && m_movie && m_movie->fileName() == actualPath) {
+        return;
     }
 
     emit sourceChanged();
@@ -109,7 +112,8 @@ void RoundAnimatedImage::paint(QPainter* painter)
             bounds.y() + (bounds.height() - scaledFrame.height()) / 2);
 
         painter->drawImage(bounds, frame);
-    } else {
+    }
+    else {
         // Draw black background when there's no valid movie source
         painter->fillRect(bounds, Qt::black);
     }

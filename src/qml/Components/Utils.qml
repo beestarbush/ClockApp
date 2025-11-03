@@ -24,11 +24,8 @@ Bee.QmlUtils {
     function getAvailableInterfaces() {
         var interfaces = []
         
-        // Add main backend objects
-        interfaces.push({ name: "Backend", interface: Backend })
-        
         // Add registered QML interfaces
-        var registeredNames = Bee.QmlInterface.registeredObjectsNames
+        var registeredNames = Bee.Services.qmlInterface.registeredObjectsNames
         for (var i = 0; i < registeredNames.length; i++) {
             var name = registeredNames[i]
             if (Bee[name]) {

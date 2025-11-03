@@ -57,6 +57,8 @@ Item {
                 width: 200
                 height: 200
 
+                media: Services.mediaManager.availableMedia
+
                 onMediaSelected: (mediaName) => {
                     console.log("Selected media: " + mediaName)
                 }

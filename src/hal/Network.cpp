@@ -53,23 +53,42 @@ void Network::update()
 {
     for (const QNetworkInterface& interface : QNetworkInterface::allInterfaces()) {
         if (interface.name() == m_interfaceName) {
+            bool wasConnected = m_connected;
+            bool wasRunning = m_running;
+
             m_connected = interface.flags() & QNetworkInterface::IsUp;
             m_running = interface.flags() & QNetworkInterface::IsRunning;
-            emit connectedChanged();
-            emit runningChanged();
+
+            if (m_connected != wasConnected) {
+                emit connectedChanged();
+            }
+            if (m_running != wasRunning) {
+                emit runningChanged();
+            }
 
             auto entries = interface.addressEntries();
             if (!entries.isEmpty()) {
-                m_ipAddress = entries.first().ip().toString();
-                m_subnetMask = entries.first().netmask().toString();
-                emit ipAddressChanged();
-                emit subnetMaskChanged();
+                QString newIpAddress = entries.first().ip().toString();
+                QString newSubnetMask = entries.first().netmask().toString();
+
+                if (m_ipAddress != newIpAddress) {
+                    m_ipAddress = newIpAddress;
+                    emit ipAddressChanged();
+                }
+                if (m_subnetMask != newSubnetMask) {
+                    m_subnetMask = newSubnetMask;
+                    emit subnetMaskChanged();
+                }
             }
             else {
-                m_ipAddress.clear();
-                m_subnetMask.clear();
-                emit ipAddressChanged();
-                emit subnetMaskChanged();
+                if (!m_ipAddress.isEmpty()) {
+                    m_ipAddress.clear();
+                    emit ipAddressChanged();
+                }
+                if (!m_subnetMask.isEmpty()) {
+                    m_subnetMask.clear();
+                    emit subnetMaskChanged();
+                }
             }
             break;
         }

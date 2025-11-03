@@ -14,8 +14,8 @@ Item {
 
     signal mediaSelected(string mediaName)
 
-    function setMedia(mediaList) {
-        media = mediaList || []
+    // Watch for media changes and adjust currentIndex if needed
+    onMediaChanged: {
         if (currentIndex >= media.length) {
             currentIndex = Math.max(0, media.length - 1)
         }
@@ -222,17 +222,5 @@ Item {
                 snapAnimation.start()
             }
         }
-    }
-
-    // Update media when Backend properties change
-    Connections {
-        target: Backend
-        function onAvailableMediaChanged() {
-            setMedia(Backend.availableMedia)
-        }
-    }
-
-    Component.onCompleted: {
-        setMedia(Backend.availableMedia)
     }
 }

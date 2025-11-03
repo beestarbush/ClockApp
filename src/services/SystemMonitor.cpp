@@ -5,6 +5,7 @@
 #include "hal/System.h"
 #include "hal/Temperature.h"
 #include "remoteapi/DeviceStatus.h"
+#include "services/NotificationManager.h"
 
 #include <QDebug>
 
@@ -15,12 +16,14 @@ SystemMonitor::SystemMonitor(RemoteApi& remoteApi,
                              Temperature& temperature,
                              System& system,
                              Version& version,
+                             NotificationManager& notificationManager,
                              QObject* parent)
     : QObject(parent),
       m_remoteApi(remoteApi),
       m_temperature(temperature),
       m_system(system),
       m_version(version),
+      m_notificationManager(notificationManager),
       m_isReporting(false)
 {
     // Configure timer
@@ -33,11 +36,27 @@ SystemMonitor::SystemMonitor(RemoteApi& remoteApi,
     m_reportTimer.setInterval(REPORT_INTERVAL);
     connect(&m_reportTimer, &QTimer::timeout, this, &SystemMonitor::report);
     report();
+
+    // Connect to remote API connected changes, since we then want to start a report, and start the report timer. Also
+    // when we disconnect the remote API, we want to stop the report timer.
+    connect(&m_remoteApi, &RemoteApi::connectedChanged, this, [this]() {
+        if (m_remoteApi.connected()) {
+            report();
+        }
+        else {
+            m_reportTimer.stop();
+        }
+    });
 }
 
 void SystemMonitor::monitor()
 {
-    // Not checking anything specific for now, just trigger.
+    if (m_temperature.valid() && m_temperature.processorTemperature() > 85000) { // 85.0 °C
+        m_notificationManager.showWarning(
+            QStringLiteral("High CPU temperature"),
+            QStringLiteral("The CPU temperature is too high. Please ensure proper cooling."));
+    }
+
     m_monitorTimer.start();
 }
 

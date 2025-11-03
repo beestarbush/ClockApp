@@ -2,6 +2,7 @@ import QtQuick
 
 import Components
 import Panels
+import Bee as BeeBackend
 
 Item {
     id: content
@@ -31,7 +32,7 @@ Item {
     Loader {
         id: debugPanelLoader
         anchors.fill: parent
-        active: Backend.debugging.panelEnabled
+        active: BeeBackend.Applications.debug.panelEnabled
         sourceComponent: debugPanelComponent
 
         onStatusChanged: {

@@ -47,6 +47,16 @@ RemoteApi::RemoteApi(Network& network, QObject* parent)
             testConnection();
         });
     }
+
+    // When network connectivity changes, retest connection if needed.
+    connect(&m_network, &Network::connectedChanged, this, [this]() {
+        if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
+            testConnection();
+        }
+        else {
+            setConnected(false);
+        }
+    });
 }
 
 bool RemoteApi::enabled() const

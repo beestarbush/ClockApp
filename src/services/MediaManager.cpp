@@ -19,6 +19,7 @@ const QString DEFAULT_MEDIA = QStringLiteral("qrc:/media/default.gif");
 constexpr int MIN_MEDIA_FILE_SIZE = 50;         // Minimum reasonable file size in bytes
 constexpr int SCAN_DELAY_MS = 500;              // Delay in milliseconds for scanning directory
 constexpr int SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+constexpr int INITIAL_SYNC_DELAY_MS = 5000;     // 5 seconds
 
 MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     : QObject(parent),
@@ -36,6 +37,7 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
 
     // Setup sync timer
     m_syncTimer.setInterval(SYNC_INTERVAL_MS);
+    m_syncTimer.setSingleShot(false);
     connect(&m_syncTimer, &QTimer::timeout, this, &MediaManager::onSyncTimerTimeout);
 
     // Connect file watcher
@@ -45,11 +47,14 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     setupFileWatcher();
     scanDirectory();
 
-    // Connect to remote API enabled changes, since we then want to start a sync, and start the sync timer. Also
-    // when we disable the remote API, we want to stop the sync timer.
-    connect(&m_remoteApi, &RemoteApi::enabledChanged, this, [this]() {
-        if (m_remoteApi.enabled()) {
+    // Connect to remote API connected changes, since we then want to start a sync, and start the sync timer. Also
+    // when we disconnect the remote API, we want to stop the sync timer.
+    connect(&m_remoteApi, &RemoteApi::connectedChanged, this, [this]() {
+        if (m_remoteApi.connected()) {
             triggerSync();
+            if (!m_syncTimer.isActive()) {
+                m_syncTimer.start();
+            }
         }
         else {
             m_syncTimer.stop();
@@ -60,7 +65,7 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     if (m_remoteApi.enabled()) {
         m_syncTimer.start();
         // Trigger initial sync after a short delay
-        QTimer::singleShot(5000, this, &MediaManager::triggerSync);
+        QTimer::singleShot(INITIAL_SYNC_DELAY_MS, this, &MediaManager::triggerSync);
     }
 }
 
@@ -263,12 +268,13 @@ void MediaManager::fetchMediaList()
             }
         }
 
-        qDebug() << "Media to download:" << mediaToDownload.count();
-        qDebug() << "Media to delete:" << mediaToDelete.count();
         if (mediaToDownload.isEmpty() && mediaToDelete.isEmpty()) {
             qDebug() << "Media lists are in sync, no changes needed";
             completeSyncWithSuccess();
             return;
+        }
+        else {
+            qDebug() << "Media to download:" << mediaToDownload.count() << " , to delete: " << mediaToDelete.count();
         }
 
         // Delete old media files first (using metadata to find filenames)
@@ -430,6 +436,7 @@ void MediaManager::completeSyncWithSuccess()
     emit syncingChanged();
     emit lastSyncTimeChanged();
     emit lastErrorChanged();
+    emit syncCompleted();
 
     qDebug() << "Media sync completed successfully";
 

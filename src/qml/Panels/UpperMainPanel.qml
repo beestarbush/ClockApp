@@ -101,12 +101,9 @@ Circle {
         visible: false
         anchors.fill: parent
 
-        lowerMenuOverlay: upperMainPanel.lowerMenuOverlay
-
-        onClose: menuOverlay.visible = false
-
-        onVisibleChanged:  {
-            lowerMenuOverlay.visible = menuOverlay.visible
+        onClose: {
+            menuOverlay.visible = false
+            BeeBackend.Applications.menu.closeDialog()
         }
     }
 

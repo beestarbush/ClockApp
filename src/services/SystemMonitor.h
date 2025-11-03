@@ -1,5 +1,5 @@
-#ifndef SYSTEMMONITOR_H
-#define SYSTEMMONITOR_H
+#ifndef SERVICES_SYSTEM_MONITOR_H
+#define SERVICES_SYSTEM_MONITOR_H
 
 #include <QObject>
 #include <QTimer>
@@ -8,6 +8,7 @@ class RemoteApi;
 class Temperature;
 class System;
 class Version;
+class NotificationManager;
 
 /**
  * SystemMonitor
@@ -24,6 +25,7 @@ class SystemMonitor : public QObject
                            Temperature& temperature,
                            System& system,
                            Version& version,
+                           NotificationManager& notificationManager,
                            QObject* parent = nullptr);
 
   private:
@@ -34,10 +36,11 @@ class SystemMonitor : public QObject
     Temperature& m_temperature;
     System& m_system;
     Version& m_version;
+    NotificationManager& m_notificationManager;
 
     QTimer m_monitorTimer;
     QTimer m_reportTimer;
     bool m_isReporting;
 };
 
-#endif // SYSTEMMONITOR_H
+#endif // SERVICES_SYSTEM_MONITOR_H

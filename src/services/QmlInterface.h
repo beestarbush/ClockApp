@@ -22,6 +22,20 @@ class QmlInterface : public QObject
         qmlRegisterType<T>("Bee", 1, 0, name);
         qDebug() << "Registered QML type:" << name << "in" << lTimer.elapsed() << "ms";
     }
+    template <typename T>
+    void registerUncreatableType(const char* name)
+    {
+        QElapsedTimer lTimer;
+        lTimer.start();
+        qmlRegisterUncreatableMetaObject(
+            T::staticMetaObject,
+            "Bee",
+            1,
+            0,
+            name,
+            QString("Cannot create %1").arg(name));
+        qDebug() << "Registered QML type:" << name << "in" << lTimer.elapsed() << "ms";
+    }
 
   private:
     QStringList m_registeredObjectsNames;

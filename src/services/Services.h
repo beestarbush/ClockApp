@@ -29,13 +29,15 @@ class Services : public QObject
 
     Services(HAL& hal, QObject* parent = nullptr);
 
+    QmlInterface* qmlInterface() const;
+
   private:
     Version* m_version;
     RemoteApi* m_remoteApi;
+    NotificationManager* m_notificationManager;
     MediaManager* m_mediaManager;
     SystemMonitor* m_systemMonitor;
     DateTime* m_dateTime;
-    NotificationManager* m_notificationManager;
     QmlInterface* m_qmlInterface;
 };
 

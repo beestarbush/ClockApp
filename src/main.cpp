@@ -3,6 +3,8 @@
 #include <QQmlContext>
 
 #include "applications/Applications.h"
+#include "applications/Menu.h"
+#include "applications/Setup.h"
 #include "hal/HAL.h"
 #include "qmlcomponents/QmlUtils.h"
 #include "qmlcomponents/RoundAnimatedImage.h"
@@ -15,7 +17,6 @@ int main(int argc, char* argv[])
     app.setApplicationName("clockapp");
 
     QQmlApplicationEngine engine;
-    QmlInterface qmlInterface(&app);
     QElapsedTimer lTimer;
     lTimer.start();
 
@@ -26,12 +27,15 @@ int main(int argc, char* argv[])
     Applications applications(services, &app);
     qDebug() << "Initialized Applications in" << lTimer.elapsed() << "ms";
 
-    qmlInterface.registerObject("QmlInterface", &qmlInterface);
-    qmlInterface.registerObject("HAL", &hal);
-    qmlInterface.registerObject("Services", &services);
-    qmlInterface.registerObject("Applications", &applications);
-    qmlInterface.registerType<RoundAnimatedImage>("RoundAnimatedImage");
-    qmlInterface.registerType<QmlUtils>("QmlUtils");
+    auto qmlInterface = services.qmlInterface();
+    qmlInterface->registerObject("QmlInterface", qmlInterface);
+    qmlInterface->registerObject("HAL", &hal);
+    qmlInterface->registerObject("Services", &services);
+    qmlInterface->registerObject("Applications", &applications);
+    qmlInterface->registerType<RoundAnimatedImage>("RoundAnimatedImage");
+    qmlInterface->registerType<QmlUtils>("QmlUtils");
+    qmlInterface->registerUncreatableType<Menu>("MenuEnums");
+    qmlInterface->registerUncreatableType<Setup>("SetupEnums");
 
     QObject::connect(
         &engine,

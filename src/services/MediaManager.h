@@ -34,6 +34,7 @@ class MediaManager : public QObject
     void syncingChanged();
     void lastSyncTimeChanged();
     void lastErrorChanged();
+    void syncCompleted();
 
   private slots:
     void onDirectoryChanged(const QString& path);

@@ -2,245 +2,99 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
+import Bee as BeeBackend
 
 PanelContainer {
-    id: dialogOverlay
+    id: overlay
 
     currentIndex: indexOfPanel(mainDialog)
 
-    property Item lowerMenuOverlay
-
     signal close()
-
-    enum MainMenu {
-        Menu,
-        Settings,
-        Notifications,
-        Backgrounds,
-        Colors,
-        Version
-    }
-
-    enum SettingsMenu {
-        DisplayBrightness,
-        BackgroundOpacity,
-        SetupWizard
-    }
-
-    enum ColorMenu {
-        Hours,
-        Minutes,
-        Seconds,
-        Pendulum
-    }
-
-    enum BackgroundMenu {
-        Clock,
-        Married,
-        Kuiken,
-        Countdown
-    }
 
     MenuDialog {
         id: mainDialog
-
         backgroundOpacity: 0
-        signal closeDialog()
-
-        ListModel {
-            id: mainMenuModel
-
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Menu; label: "Menu" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Settings; label: "Settings" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Notifications; label: "Notifications" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Backgrounds; label: "Backgrounds" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Colors; label: "Colors" }
-            ListElement { menuId: UpperMenuOverlay.MainMenu.Version; label: "Version" }
-        }
-
-        ListModel {
-            id: settingsMenuModel
-
-            ListElement { menuId: UpperMenuOverlay.SettingsMenu.DisplayBrightness; label: "Display brightness" }
-            ListElement { menuId: UpperMenuOverlay.SettingsMenu.BackgroundOpacity; label: "Background opacity" }
-            ListElement { menuId: UpperMenuOverlay.SettingsMenu.SetupWizard; label: "Setup wizard" }
-        }
-
-        ListModel {
-            id: colorMenuModel
-
-            ListElement { menuId: UpperMenuOverlay.ColorMenu.Hours; label: "Hours" }
-            ListElement { menuId: UpperMenuOverlay.ColorMenu.Minutes; label: "Minutes" }
-            ListElement { menuId: UpperMenuOverlay.ColorMenu.Seconds; label: "Seconds" }
-            ListElement { menuId: UpperMenuOverlay.ColorMenu.Pendulum; label: "Pendulum" }
-        }
-
-        ListModel {
-            id: backgroundModel
-
-            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Clock; label: "Clock" }
-            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Married; label: "Married" }
-            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Kuiken; label: "Kuiken" }
-            ListElement { menuId: UpperMenuOverlay.BackgroundMenu.Countdown; label: "Countdown" }
-        }
 
         RingMenu {
             id: mainRingMenu
             anchors.centerIn: parent
-            anchors.fill: parent          
-            model: mainMenuModel
+            anchors.fill: parent
+            model: BeeBackend.Applications.menu.main
 
             onItemSelected: (index) => {
-                var menuId = mainMenuModel.get(index).menuId
-                if (menuId === UpperMenuOverlay.MainMenu.Settings) {
-                    colorRingMenu.visible = false
-                    settingsRingMenu.visible = true
-                    backgroundRingMenu.visible = false
-                }
-                else if (menuId === UpperMenuOverlay.MainMenu.Notifications) {
-                    colorRingMenu.visible = false
-                    settingsRingMenu.visible = false
-                    backgroundRingMenu.visible = false
-                    lowerMenuOverlay.showNotifications()
-                }
-                else if (menuId === UpperMenuOverlay.MainMenu.Backgrounds) {
-                    colorRingMenu.visible = false
-                    settingsRingMenu.visible = false
-                    backgroundRingMenu.visible = true
-                }
-                else if (menuId === UpperMenuOverlay.MainMenu.Colors) {
-                    settingsRingMenu.visible = false
-                    colorRingMenu.visible = true
-                    backgroundRingMenu.visible = false
-                }
-                else if (menuId === UpperMenuOverlay.MainMenu.Version)
-                {
-                    colorRingMenu.visible = false
-                    settingsRingMenu.visible = false
-                    backgroundRingMenu.visible = false
-                    lowerMenuOverlay.showVersion()
-                }
-                else {
-                    settingsRingMenu.visible = false
-                    settingsRingMenu.reset()
-
-                    colorRingMenu.visible = false
-                    colorRingMenu.reset()
-
-                    backgroundRingMenu.visible = false
-                    backgroundRingMenu.reset()
-
-                    lowerMenuOverlay.closePanels()
-                }
+                BeeBackend.Applications.menu.main.get(index).trigger()
             }
 
             RingMenu {
                 id: settingsRingMenu
-
-                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Settings
+                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainSettings
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: settingsMenuModel
+                model: BeeBackend.Applications.menu.settings
 
-                function evaluateLowerMenuOverlay(index) {
-                    var menuId = settingsMenuModel.get(index).menuId
-                    if (menuId === UpperMenuOverlay.SettingsMenu.DisplayBrightness) {
-                        lowerMenuOverlay.showScreenBrightnessConfiguration()
-                    } else if (menuId === UpperMenuOverlay.SettingsMenu.BackgroundOpacity) {
-                        lowerMenuOverlay.showBackgroundOpacityConfiguration()
-                    } else if (menuId === UpperMenuOverlay.SettingsMenu.SetupWizard) {
-                        lowerMenuOverlay.showSetupWizard()
-                    }
-                    else {
-                        lowerMenuOverlay.closePanels()
-                    }
+                onItemSelected: (index) => {
+                    BeeBackend.Applications.menu.settings.get(index).trigger()
                 }
 
                 onVisibleChanged: {
-                    if (visible) {
-                        settingsRingMenu.evaluateLowerMenuOverlay(settingsRingMenu.selectedIndex)
+                    if (visible && settingsRingMenu.selectedIndex >= 0) {
+                        BeeBackend.Applications.menu.settings.get(settingsRingMenu.selectedIndex).trigger()
                     }
-                }
-
-                onItemSelected: (index) => {
-                    settingsRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 
             RingMenu {
-                id: colorRingMenu
-
-                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Colors
+                id: colorsRingMenu
+                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainColors
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: colorMenuModel
+                model: BeeBackend.Applications.menu.colors
 
-                function evaluateLowerMenuOverlay(index) {
-                    if (index == UpperMenuOverlay.ColorMenu.Hours ||
-                        index == UpperMenuOverlay.ColorMenu.Minutes ||
-                        index == UpperMenuOverlay.ColorMenu.Seconds ||
-                        index == UpperMenuOverlay.ColorMenu.Pendulum) {
-                        lowerMenuOverlay.showColorSelection(index)
-                    } else {
-                        lowerMenuOverlay.closePanels()
-                    }
+                onItemSelected: (index) => {
+                    BeeBackend.Applications.menu.colors.get(index).trigger()
                 }
 
                 onVisibleChanged: {
-                    if (visible) {
-                        colorRingMenu.evaluateLowerMenuOverlay(colorRingMenu.selectedIndex)
+                    if (visible && colorsRingMenu.selectedIndex >= 0) {
+                        BeeBackend.Applications.menu.colors.get(colorsRingMenu.selectedIndex).trigger()
                     }
-                }
-
-                onItemSelected: (index) => {
-                    colorRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 
             RingMenu {
-                id: backgroundRingMenu
-
-                visible: mainRingMenu.selectedIndex == UpperMenuOverlay.MainMenu.Backgrounds
+                id: backgroundsRingMenu
+                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainBackgrounds
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: backgroundModel
+                model: BeeBackend.Applications.menu.backgrounds
 
-                function evaluateLowerMenuOverlay(index) {
-                    if (index == UpperMenuOverlay.BackgroundMenu.Clock ||
-                        index == UpperMenuOverlay.BackgroundMenu.Married ||
-                        index == UpperMenuOverlay.BackgroundMenu.Kuiken ||
-                        index == UpperMenuOverlay.BackgroundMenu.Countdown) {
-                        lowerMenuOverlay.showMediaSelection(index)
-                    } else {
-                        lowerMenuOverlay.closePanels()
-                    }
+                onItemSelected: (index) => {
+                    BeeBackend.Applications.menu.backgrounds.get(index).trigger()
                 }
 
                 onVisibleChanged: {
-                    if (visible) {
-                        backgroundRingMenu.evaluateLowerMenuOverlay(backgroundRingMenu.selectedIndex)
+                    if (visible && backgroundsRingMenu.selectedIndex >= 0) {
+                        BeeBackend.Applications.menu.backgrounds.get(backgroundsRingMenu.selectedIndex).trigger()
                     }
-                }
-
-                onItemSelected: (index) => {
-                    backgroundRingMenu.evaluateLowerMenuOverlay(index)
                 }
             }
 
             Circle {
                 anchors.centerIn: parent
-                width: settingsRingMenu.visible || colorRingMenu.visible || backgroundRingMenu.visible ? settingsRingMenu.width - 200 : mainRingMenu.width - 200
-                height: settingsRingMenu.visible || colorRingMenu.visible || backgroundRingMenu.visible ? settingsRingMenu.height - 200 : mainRingMenu.height - 200
+                width: (settingsRingMenu.visible || colorsRingMenu.visible || backgroundsRingMenu.visible) 
+                    ? settingsRingMenu.width - 200 
+                    : mainRingMenu.width - 200
+                height: width
                 color: "transparent"
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        dialogOverlay.close()
-                        lowerMenuOverlay.closePanels()
+                        overlay.close()
+                        BeeBackend.Applications.menu.closeDialog()
                         mainRingMenu.reset()
                     }
                 }

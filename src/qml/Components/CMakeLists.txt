@@ -33,7 +33,6 @@ set(regular_qml_components
 )
 
 set(qml_singletons
-	Backend.qml
 	Color.qml
 	PanelTransition.qml
 	Utils.qml

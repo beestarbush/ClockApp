@@ -41,6 +41,11 @@ TimeElapsedTimer::TimeElapsedTimer(const QString& name, MediaManager& mediaManag
 {
     loadProperties();
     startTimer();
+
+    // Refresh background when media sync completes
+    connect(&m_mediaManager, &MediaManager::syncCompleted, this, [this]() {
+        emit backgroundChanged();
+    });
 }
 
 QString TimeElapsedTimer::name() const

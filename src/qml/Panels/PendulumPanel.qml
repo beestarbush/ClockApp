@@ -16,6 +16,6 @@ RoundPanel {
         bobColor: BeeBackend.Applications.clock.pendulumBobColor
         rodColor: BeeBackend.Applications.clock.pendulumRodColor
         anchors.fill: parent
-        active: BeeBackend.Applications.setup.setupComplete || (!BeeBackend.Applications.setup.setupComplete && BeeBackend.Applications.setup.setupStep == BeeBackend.Applications.setup.maxSetupSteps)
+        active: BeeBackend.Applications.setup.setupComplete || (!BeeBackend.Applications.setup.setupComplete && BeeBackend.Applications.setup.currentPanel === BeeBackend.SetupEnums.Finish)
     }
 }

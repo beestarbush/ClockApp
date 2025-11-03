@@ -42,6 +42,11 @@ CountdownTimer::CountdownTimer(const QString& name, MediaManager& mediaManager, 
 {
     loadProperties();
     startTimer();
+
+    // Refresh background when media sync completes
+    connect(&m_mediaManager, &MediaManager::syncCompleted, this, [this]() {
+        emit backgroundChanged();
+    });
 }
 
 QString CountdownTimer::name() const

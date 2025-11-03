@@ -3,7 +3,9 @@
 #include "BirthdayTimer.h"
 #include "Clock.h"
 #include "CountdownTimer.h"
+#include "Debug.h"
 #include "MarriedTimer.h"
+#include "Menu.h"
 #include "Setup.h"
 
 class Services;
@@ -16,6 +18,8 @@ class Applications : public QObject
     Q_PROPERTY(MarriedTimer* marriedTimer MEMBER m_marriedTimer CONSTANT)
     Q_PROPERTY(BirthdayTimer* kuikenTimer MEMBER m_kuikenTimer CONSTANT)
     Q_PROPERTY(CountdownTimer* countdownTimer MEMBER m_countdownTimer CONSTANT)
+    Q_PROPERTY(Debug* debug MEMBER m_debug CONSTANT)
+    Q_PROPERTY(Menu* menu MEMBER m_menu CONSTANT)
 
   public:
     Applications(Services& services, QObject* parent = nullptr);
@@ -26,4 +30,6 @@ class Applications : public QObject
     BirthdayTimer* m_kuikenTimer;
     CountdownTimer* m_countdownTimer;
     Setup* m_setup;
+    Debug* m_debug;
+    Menu* m_menu;
 };

@@ -13,7 +13,7 @@ QJsonObject DeviceStatus::toJson() const
     QJsonObject json;
     json["device_id"] = deviceId;
     json["software_version"] = softwareVersion;
-    json["cpu_temperature"] = cpuTemperature;
+    json["cpu_temperature"] = cpuTemperature / 1000.0; // Convert m°C to °C
     json["uptime_seconds"] = uptimeSeconds;
 
     return json;
@@ -25,7 +25,7 @@ DeviceStatus DeviceStatus::fromJson(const QJsonObject& json)
 
     status.deviceId = json["device_id"].toString();
     status.softwareVersion = json["software_version"].toString();
-    status.cpuTemperature = json["cpu_temperature"].toDouble();
+    status.cpuTemperature = json["cpu_temperature"].toDouble() * 1000.0; // Convert °C to m°C
     status.uptimeSeconds = json["uptime_seconds"].toInt();
 
     return status;

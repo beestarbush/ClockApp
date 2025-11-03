@@ -32,6 +32,11 @@ Clock::Clock(MediaManager& mediaManager, QObject* parent)
       m_mediaManager(mediaManager)
 {
     loadProperties();
+
+    // Refresh background when media sync completes
+    connect(&m_mediaManager, &MediaManager::syncCompleted, this, [this]() {
+        emit backgroundChanged();
+    });
 }
 
 void Clock::loadProperties()

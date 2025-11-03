@@ -58,8 +58,18 @@ qt_add_executable(clockapp
     applications/BirthdayTimer.h
     applications/Clock.cpp
     applications/Clock.h
+    applications/CountdownTimer.cpp
+    applications/CountdownTimer.h
+    applications/Debug.cpp
+    applications/Debug.h
     applications/MarriedTimer.cpp
     applications/MarriedTimer.h
+    applications/Menu.cpp
+    applications/Menu.h
+    applications/menu/MenuItem.cpp
+    applications/menu/MenuItem.h
+    applications/menu/MenuModel.cpp
+    applications/menu/MenuModel.h
     applications/TimeElapsedTimer.cpp
     applications/TimeElapsedTimer.h
     applications/CountdownTimer.cpp
