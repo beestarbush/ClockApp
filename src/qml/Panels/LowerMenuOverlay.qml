@@ -207,7 +207,7 @@ PanelContainer {
             property bool incrementMode: true // true: increment, false: decrement
 
             // The value you want to control
-            property real value: BeeBackend.Applications.clock.backgroundOpacity
+            property real value: BeeBackend.Applications.clock.configuration.backgroundOpacity
 
             // Interpolate between Color.gray and Color.green1
             function lerpColor(a, b, t) {
@@ -237,7 +237,7 @@ PanelContainer {
                             opacityButton.value = Math.max(opacityButton.value - opacityButton.step, opacityButton.minValue)
                         }
                     }
-                    BeeBackend.Applications.clock.backgroundOpacity = opacityButton.value
+                    BeeBackend.Applications.clock.configuration.backgroundOpacity = opacityButton.value
                 }
             }
 
@@ -267,22 +267,22 @@ PanelContainer {
                 if (!setup.setupComplete && setup.mediaSelection.visible) {
                     var setupTarget = setup.mediaSelection.target
                     if (setupTarget === BeeBackend.SetupEnums.MarriedTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.configuration.background)
                     } else if (setupTarget === BeeBackend.SetupEnums.KuikenTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.configuration.background)
                     } else if (setupTarget === BeeBackend.SetupEnums.CountdownTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.configuration.background)
                     }
                 } else {
                     var param = menu.dialogParam
                     if (param === BeeBackend.MenuEnums.ClockBackground) {
-                        carousel.selectMediaByName(BeeBackend.Applications.clock.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.clock.configuration.background)
                     } else if (param === BeeBackend.MenuEnums.Married) {
-                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.configuration.background)
                     } else if (param === BeeBackend.MenuEnums.Kuiken) {
-                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.configuration.background)
                     } else if (param === BeeBackend.MenuEnums.Countdown) {
-                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.background)
+                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.configuration.background)
                     }
                 }
             }
@@ -329,13 +329,13 @@ PanelContainer {
             startColor: {
                 var param = menu.dialogParam
                 if (param === BeeBackend.MenuEnums.Hours) {
-                    return BeeBackend.Applications.clock.hourColor
+                    return BeeBackend.Applications.clock.configuration.hourColor
                 } else if (param === BeeBackend.MenuEnums.Minutes) {
-                    return BeeBackend.Applications.clock.minuteColor
+                    return BeeBackend.Applications.clock.configuration.minuteColor
                 } else if (param === BeeBackend.MenuEnums.Seconds) {
-                    return BeeBackend.Applications.clock.secondColor
+                    return BeeBackend.Applications.clock.configuration.secondColor
                 } else if (param === BeeBackend.MenuEnums.Pendulum) {
-                    return BeeBackend.Applications.clock.pendulumBobColor
+                    return BeeBackend.Applications.clock.configuration.pendulumBobColor
                 }
                 return "white"
             }

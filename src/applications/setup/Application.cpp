@@ -1,23 +1,22 @@
-#include "Setup.h"
-#include "BirthdayTimer.h"
-#include "CountdownTimer.h"
-#include "MarriedTimer.h"
-#include "TimeElapsedTimer.h"
+#include "Application.h"
+#include "applications/countdown/Application.h"
+#include "applications/timeelapsed/Application.h"
 #include "services/RemoteApi.h"
 #include "services/remoteapi/DeviceStatus.h"
 #include <QDate>
 #include <QDebug>
 #include <QSettings>
+using namespace Setup;
 
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("setup");
 const QString PROPERTY_SETUP_COMPLETE_KEY = QStringLiteral("setup-complete");
 const bool PROPERTY_SETUP_COMPLETE_DEFAULT = false;
 
-Setup::Setup(MarriedTimer& marriedTimer,
-             BirthdayTimer& kuikenTimer,
-             CountdownTimer& countdownTimer,
-             RemoteApi& remoteApi,
-             QObject* parent)
+Application::Application(TimeElapsed::Application& marriedTimer,
+                         TimeElapsed::Application& kuikenTimer,
+                         Countdown::Application& countdownTimer,
+                         RemoteApi& remoteApi,
+                         QObject* parent)
     : QObject(parent),
       m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
       m_currentPanel(Welcome),
@@ -31,27 +30,27 @@ Setup::Setup(MarriedTimer& marriedTimer,
     loadProperties();
 }
 
-bool Setup::isSetupComplete() const
+bool Application::isSetupComplete() const
 {
     return m_setupComplete;
 }
 
-Setup::PanelType Setup::currentPanel() const
+Application::PanelType Application::currentPanel() const
 {
     return m_currentPanel;
 }
 
-DialWheelParams Setup::dialWheel() const
+DialWheelParams Application::dialWheel() const
 {
     return m_dialWheel;
 }
 
-MediaSelectionParams Setup::mediaSelection() const
+MediaSelectionParams Application::mediaSelection() const
 {
     return m_mediaSelection;
 }
 
-void Setup::finish()
+void Application::finish()
 {
     m_setupComplete = true;
     m_currentPanel = Welcome;
@@ -71,7 +70,7 @@ void Setup::finish()
     emit setupCompleteChanged();
 }
 
-void Setup::next()
+void Application::next()
 {
     // Hide current dialogs
     if (m_dialWheel.visible) {
@@ -110,7 +109,7 @@ void Setup::next()
     }
 }
 
-void Setup::reset()
+void Application::reset()
 {
     m_setupComplete = false;
 
@@ -119,7 +118,7 @@ void Setup::reset()
     emit setupCompleteChanged();
 }
 
-void Setup::loadProperties()
+void Application::loadProperties()
 {
     static QSettings settings;
     settings.beginGroup(PROPERTIES_GROUP_NAME);
@@ -127,7 +126,7 @@ void Setup::loadProperties()
     settings.endGroup();
 }
 
-void Setup::saveProperty(const QString& key, const QVariant& value)
+void Application::saveProperty(const QString& key, const QVariant& value)
 {
     static QSettings settings;
     settings.beginGroup(PROPERTIES_GROUP_NAME);
@@ -136,7 +135,7 @@ void Setup::saveProperty(const QString& key, const QVariant& value)
     settings.sync();
 }
 
-void Setup::registerDevice()
+void Application::registerDevice()
 {
     if (!m_remoteApi.enabled()) {
         return;
@@ -154,7 +153,7 @@ void Setup::registerDevice()
     });
 }
 
-Setup::PanelType Setup::getNextPanel(PanelType current) const
+Application::PanelType Application::getNextPanel(PanelType current) const
 {
     // State machine transitions
     switch (current) {
@@ -169,7 +168,7 @@ Setup::PanelType Setup::getNextPanel(PanelType current) const
 
     case MarriedTimerEnable:
         // If married timer is enabled, go to date/time, otherwise skip to kuiken
-        if (m_marriedTimer.enabled()) {
+        if (m_marriedTimer.configuration()->enabled()) {
             return MarriedDateTime;
         }
         return KuikenTimerEnable;
@@ -182,7 +181,7 @@ Setup::PanelType Setup::getNextPanel(PanelType current) const
 
     case KuikenTimerEnable:
         // If kuiken timer is enabled, go to date/time, otherwise skip to countdown
-        if (m_kuikenTimer.enabled()) {
+        if (m_kuikenTimer.configuration()->enabled()) {
             return KuikenDateTime;
         }
         return CountdownTimerEnable;
@@ -195,7 +194,7 @@ Setup::PanelType Setup::getNextPanel(PanelType current) const
 
     case CountdownTimerEnable:
         // If countdown timer is enabled, go to date/time, otherwise skip to finish
-        if (m_countdownTimer.enabled()) {
+        if (m_countdownTimer.configuration()->enabled()) {
             return CountdownDateTime;
         }
         return Finish;
@@ -212,7 +211,7 @@ Setup::PanelType Setup::getNextPanel(PanelType current) const
     }
 }
 
-void Setup::showDialWheel(int min, int max, int step, int value)
+void Application::showDialWheel(int min, int max, int step, int value)
 {
     m_dialWheel.min = min;
     m_dialWheel.max = max;
@@ -223,7 +222,7 @@ void Setup::showDialWheel(int min, int max, int step, int value)
     emit dialWheelChanged();
 }
 
-void Setup::updateDialWheelValue(int value)
+void Application::updateDialWheelValue(int value)
 {
     if (m_dialWheel.value == value) {
         return;
@@ -233,17 +232,17 @@ void Setup::updateDialWheelValue(int value)
     emit dialWheelChanged();
 }
 
-void Setup::selectMedia(int target, const QString& mediaName)
+void Application::selectMedia(int target, const QString& mediaName)
 {
     switch (target) {
     case MarriedTarget:
-        m_marriedTimer.setBackground(mediaName);
+        m_marriedTimer.configuration()->setBackground(mediaName);
         break;
     case KuikenTarget:
-        m_kuikenTimer.setBackground(mediaName);
+        m_kuikenTimer.configuration()->setBackground(mediaName);
         break;
     case CountdownTarget:
-        m_countdownTimer.setBackground(mediaName);
+        m_countdownTimer.configuration()->setBackground(mediaName);
 
         break;
     default:
@@ -251,7 +250,7 @@ void Setup::selectMedia(int target, const QString& mediaName)
     }
 }
 
-void Setup::showDateTimeComponentPicker(int component, int year, int month, int day, int hour, int minute, int second)
+void Application::showDateTimeComponentPicker(int component, int year, int month, int day, int hour, int minute, int second)
 {
     int min = 0, max = 100, step = 1, value = 0;
 

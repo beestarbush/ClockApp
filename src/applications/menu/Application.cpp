@@ -1,12 +1,10 @@
-#include "Menu.h"
-#include "Applications.h"
-#include "BirthdayTimer.h"
-#include "Clock.h"
-#include "CountdownTimer.h"
-#include "MarriedTimer.h"
-#include "Setup.h"
+#include "Application.h"
+#include "applications/clock/Application.h"
+#include "applications/countdown/Application.h"
+#include "applications/timeelapsed/Application.h"
+using namespace Menu;
 
-Menu::Menu(BirthdayTimer& birthdayTimer, Clock& clock, CountdownTimer& countdownTimer, MarriedTimer& marriedTimer, QObject* parent)
+Application::Application(TimeElapsed::Application& birthdayTimer, Clock::Application& clock, Countdown::Application& countdownTimer, TimeElapsed::Application& marriedTimer, QObject* parent)
     : QObject(parent),
       m_birthdayTimer(birthdayTimer),
       m_clock(clock),
@@ -19,61 +17,61 @@ Menu::Menu(BirthdayTimer& birthdayTimer, Clock& clock, CountdownTimer& countdown
       m_dialog(None),
       m_dialogParam(-1),
       m_mainItems{
-          MenuItem("Menu", this),
-          MenuItem("Settings", this),
-          MenuItem("Notifications", this),
-          MenuItem("Backgrounds", this),
-          MenuItem("Colors", this),
-          MenuItem("Version", this)},
+          Item("Menu", this),
+          Item("Settings", this),
+          Item("Notifications", this),
+          Item("Backgrounds", this),
+          Item("Colors", this),
+          Item("Version", this)},
       m_settingsItems{
-          MenuItem("Display brightness", this),
-          MenuItem("Background opacity", this),
-          MenuItem("Setup wizard", this)},
+          Item("Display brightness", this),
+          Item("Background opacity", this),
+          Item("Setup wizard", this)},
       m_colorsItems{
-          MenuItem("Hours", this),
-          MenuItem("Minutes", this),
-          MenuItem("Seconds", this),
-          MenuItem("Pendulum", this)},
+          Item("Hours", this),
+          Item("Minutes", this),
+          Item("Seconds", this),
+          Item("Pendulum", this)},
       m_backgroundsItems{
-          MenuItem("Clock", this),
-          MenuItem("Married", this),
-          MenuItem("Kuiken", this),
-          MenuItem("Countdown", this)}
+          Item("Clock", this),
+          Item("Married", this),
+          Item("Kuiken", this),
+          Item("Countdown", this)}
 {
     buildMenus();
 }
 
-MenuModel* Menu::main()
+Menu::Model* Application::main()
 {
     return &m_main;
 }
 
-MenuModel* Menu::settings()
+Menu::Model* Application::settings()
 {
     return &m_settings;
 }
 
-MenuModel* Menu::colors()
+Menu::Model* Application::colors()
 {
     return &m_colors;
 }
 
-MenuModel* Menu::backgrounds()
+Menu::Model* Application::backgrounds()
 {
     return &m_backgrounds;
 }
 
-Menu::DialogType Menu::dialog() const
+Application::DialogType Application::dialog() const
 {
     return m_dialog;
 }
 
-int Menu::dialogParam() const
+int Application::dialogParam() const
 {
     return m_dialogParam;
 }
 
-void Menu::buildMenus()
+void Application::buildMenus()
 {
     // Build main menu using enum indices - no magic numbers!
     m_mainItems[MainMenu].setAction([this]() {
@@ -147,7 +145,7 @@ void Menu::buildMenus()
         m_backgrounds.add(item);
 }
 
-void Menu::showDialog(DialogType type, int param)
+void Application::showDialog(DialogType type, int param)
 {
     m_dialog = type;
     m_dialogParam = param;
@@ -155,7 +153,7 @@ void Menu::showDialog(DialogType type, int param)
     emit dialogParamChanged();
 }
 
-void Menu::closeDialog()
+void Application::closeDialog()
 {
     m_dialog = None;
     m_dialogParam = -1;
@@ -163,20 +161,20 @@ void Menu::closeDialog()
     emit dialogParamChanged();
 }
 
-void Menu::setBackground(BackgroundTarget target, const QString& mediaName)
+void Application::setBackground(BackgroundTarget target, const QString& mediaName)
 {
     switch (target) {
     case ClockBackground:
-        m_clock.setBackground(mediaName);
+        m_clock.configuration()->setBackground(mediaName);
         break;
     case Married:
-        m_marriedTimer.setBackground(mediaName);
+        m_marriedTimer.configuration()->setBackground(mediaName);
         break;
     case Kuiken:
-        m_birthdayTimer.setBackground(mediaName);
+        m_birthdayTimer.configuration()->setBackground(mediaName);
         break;
     case Countdown:
-        m_countdownTimer.setBackground(mediaName);
+        m_countdownTimer.configuration()->setBackground(mediaName);
         break;
     default:
         qWarning() << "Unknown background target:" << target;
@@ -184,20 +182,20 @@ void Menu::setBackground(BackgroundTarget target, const QString& mediaName)
     }
 }
 
-void Menu::setColor(ColorPointer pointer, const QColor& color)
+void Application::setColor(ColorPointer pointer, const QColor& color)
 {
     switch (pointer) {
     case Hours:
-        m_clock.setHourColor(color);
+        m_clock.configuration()->setHourColor(color);
         break;
     case Minutes:
-        m_clock.setMinuteColor(color);
+        m_clock.configuration()->setMinuteColor(color);
         break;
     case Seconds:
-        m_clock.setSecondColor(color);
+        m_clock.configuration()->setSecondColor(color);
         break;
     case Pendulum:
-        m_clock.setPendulumBobColor(color);
+        m_clock.configuration()->setPendulumBobColor(color);
         break;
     default:
         qWarning() << "Unknown color pointer:" << pointer;
@@ -205,7 +203,7 @@ void Menu::setColor(ColorPointer pointer, const QColor& color)
     }
 }
 
-void Menu::dialWheelValueChanged(int value)
+void Application::dialWheelValueChanged(int value)
 {
     qDebug() << "Dial wheel value changed:" << value;
     // Handle dial wheel value change based on context

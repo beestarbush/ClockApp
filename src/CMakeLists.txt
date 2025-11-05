@@ -52,30 +52,30 @@ qt_add_executable(clockapp
     services/Services.h
     services/Version.cpp
     services/Version.h
+    applications/common/Configuration.h
+    applications/common/Configuration.cpp
+    applications/common/TimerConfiguration.h
+    applications/common/TimerConfiguration.cpp
     applications/Applications.cpp
     applications/Applications.h
-    applications/BirthdayTimer.cpp
-    applications/BirthdayTimer.h
-    applications/Clock.cpp
-    applications/Clock.h
-    applications/CountdownTimer.cpp
-    applications/CountdownTimer.h
-    applications/Debug.cpp
-    applications/Debug.h
-    applications/MarriedTimer.cpp
-    applications/MarriedTimer.h
-    applications/Menu.cpp
-    applications/Menu.h
-    applications/menu/MenuItem.cpp
-    applications/menu/MenuItem.h
-    applications/menu/MenuModel.cpp
-    applications/menu/MenuModel.h
-    applications/TimeElapsedTimer.cpp
-    applications/TimeElapsedTimer.h
-    applications/CountdownTimer.cpp
-    applications/CountdownTimer.h
-    applications/Setup.cpp
-    applications/Setup.h
+    applications/clock/Application.cpp
+    applications/clock/Application.h
+    applications/clock/Configuration.cpp
+    applications/clock/Configuration.h
+    applications/timeelapsed/Application.h
+    applications/timeelapsed/Application.cpp
+    applications/countdown/Application.cpp
+    applications/countdown/Application.h
+    applications/debug/Application.cpp
+    applications/debug/Application.h
+    applications/menu/Application.cpp
+    applications/menu/Application.h
+    applications/menu/Item.cpp
+    applications/menu/Item.h
+    applications/menu/Model.cpp
+    applications/menu/Model.h
+    applications/setup/Application.cpp
+    applications/setup/Application.h
 )
 
 target_include_directories(clockapp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

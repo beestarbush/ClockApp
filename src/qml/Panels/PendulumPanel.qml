@@ -13,8 +13,8 @@ RoundPanel {
     Pendulum {
         id: pendulum
 
-        bobColor: BeeBackend.Applications.clock.pendulumBobColor
-        rodColor: BeeBackend.Applications.clock.pendulumRodColor
+        bobColor: BeeBackend.Applications.clock.configuration.pendulumBobColor
+        rodColor: BeeBackend.Applications.clock.configuration.pendulumRodColor
         anchors.fill: parent
         active: BeeBackend.Applications.setup.setupComplete || (!BeeBackend.Applications.setup.setupComplete && BeeBackend.Applications.setup.currentPanel === BeeBackend.SetupEnums.Finish)
     }

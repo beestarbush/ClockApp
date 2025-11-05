@@ -3,8 +3,8 @@
 #include <QQmlContext>
 
 #include "applications/Applications.h"
-#include "applications/Menu.h"
-#include "applications/Setup.h"
+#include "applications/menu/Application.h"
+#include "applications/setup/Application.h"
 #include "hal/HAL.h"
 #include "qmlcomponents/QmlUtils.h"
 #include "qmlcomponents/RoundAnimatedImage.h"
@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
     qmlInterface->registerObject("Applications", &applications);
     qmlInterface->registerType<RoundAnimatedImage>("RoundAnimatedImage");
     qmlInterface->registerType<QmlUtils>("QmlUtils");
-    qmlInterface->registerUncreatableType<Menu>("MenuEnums");
-    qmlInterface->registerUncreatableType<Setup>("SetupEnums");
+    qmlInterface->registerUncreatableType<Menu::Application>("MenuEnums");
+    qmlInterface->registerUncreatableType<Setup::Application>("SetupEnums");
 
     QObject::connect(
         &engine,

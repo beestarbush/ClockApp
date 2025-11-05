@@ -154,7 +154,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Married timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.marriedTimer
+            toggleTarget: BeeBackend.Applications.marriedTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -166,7 +166,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure married timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.marriedTimer.timestamp * 1000)
+            dateTime: new Date(BeeBackend.Applications.marriedTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -176,8 +176,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.marriedTimer.timestamp = selectedTimestamp
-                BeeBackend.Applications.marriedTimer.initialized = true
+                BeeBackend.Applications.marriedTimer.configuration.timestamp = selectedTimestamp
+                BeeBackend.Applications.marriedTimer.configuration.initialized = true
                 setup.next()
             }
         }
@@ -199,7 +199,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Kuiken timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.kuikenTimer
+            toggleTarget: BeeBackend.Applications.kuikenTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -211,7 +211,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure kuiken timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.kuikenTimer.timestamp * 1000)
+            dateTime: new Date(BeeBackend.Applications.kuikenTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -221,8 +221,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.kuikenTimer.timestamp = selectedTimestamp
-                BeeBackend.Applications.kuikenTimer.initialized = true
+                BeeBackend.Applications.kuikenTimer.configuration.timestamp = selectedTimestamp
+                BeeBackend.Applications.kuikenTimer.configuration.initialized = true
                 setup.next()
             }
         }
@@ -244,7 +244,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Countdown timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.countdownTimer
+            toggleTarget: BeeBackend.Applications.countdownTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -256,7 +256,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure countdown timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.countdownTimer.targetTimestamp * 1000)
+            dateTime: new Date(BeeBackend.Applications.countdownTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -266,8 +266,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.countdownTimer.targetTimestamp = selectedTimestamp
-                BeeBackend.Applications.countdownTimer.initialized = true
+                BeeBackend.Applications.countdownTimer.configuration.timestamp = selectedTimestamp
+                BeeBackend.Applications.countdownTimer.configuration.initialized = true
                 setup.next()
             }
         }

@@ -1,14 +1,18 @@
-#ifndef APPS_SETUP_H
-#define APPS_SETUP_H
+#ifndef APPS_SETUP_APPLICATION_H
+#define APPS_SETUP_APPLICATION_H
 
 #include <QObject>
 #include <QString>
 
-class TimeElapsedTimer;
-class CountdownTimer;
-class BirthdayTimer;
-class MarriedTimer;
 class RemoteApi;
+namespace TimeElapsed
+{
+class Application;
+}
+namespace Countdown
+{
+class Application;
+}
 
 // Dial wheel parameters as a value type
 struct DialWheelParams
@@ -40,7 +44,9 @@ struct MediaSelectionParams
     int target = -1;
 };
 
-class Setup : public QObject
+namespace Setup
+{
+class Application : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool setupComplete READ isSetupComplete NOTIFY setupCompleteChanged)
@@ -79,7 +85,7 @@ class Setup : public QObject
     };
     Q_ENUM(MediaTarget)
 
-    Setup(MarriedTimer& marriedTimer, BirthdayTimer& kuikenTimer, CountdownTimer& countdownTimer, RemoteApi& remoteApi, QObject* parent = nullptr);
+    Application(TimeElapsed::Application& marriedTimer, TimeElapsed::Application& kuikenTimer, Countdown::Application& countdownTimer, RemoteApi& remoteApi, QObject* parent = nullptr);
 
     bool isSetupComplete() const;
 
@@ -123,10 +129,11 @@ class Setup : public QObject
     MediaSelectionParams m_mediaSelection;
 
     // Application references
-    MarriedTimer& m_marriedTimer;
-    BirthdayTimer& m_kuikenTimer;
-    CountdownTimer& m_countdownTimer;
+    TimeElapsed::Application& m_marriedTimer;
+    TimeElapsed::Application& m_kuikenTimer;
+    Countdown::Application& m_countdownTimer;
     RemoteApi& m_remoteApi;
 };
+} // namespace Setup
 
-#endif // APPS_SETUP_H
+#endif // APPS_SETUP_APPLICATION_H

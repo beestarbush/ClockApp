@@ -1,26 +1,35 @@
-#ifndef APPS_MENU_H
-#define APPS_MENU_H
+#ifndef APPS_MENU_APPLICATION_H
+#define APPS_MENU_APPLICATION_H
 
 #include <QColor>
 #include <QObject>
 #include <QString>
 #include <QVariant>
 
-#include "menu/MenuItem.h"
-#include "menu/MenuModel.h"
+#include "Item.h"
+#include "Model.h"
+namespace Clock
+{
+class Application;
+}
+namespace TimeElapsed
+{
+class Application;
+}
+namespace Countdown
+{
+class Application;
+}
 
-class BirthdayTimer;
-class Clock;
-class CountdownTimer;
-class MarriedTimer;
-
-class Menu : public QObject
+namespace Menu
+{
+class Application : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(MenuModel* main READ main CONSTANT)
-    Q_PROPERTY(MenuModel* settings READ settings CONSTANT)
-    Q_PROPERTY(MenuModel* colors READ colors CONSTANT)
-    Q_PROPERTY(MenuModel* backgrounds READ backgrounds CONSTANT)
+    Q_PROPERTY(Menu::Model* main READ main CONSTANT)
+    Q_PROPERTY(Menu::Model* settings READ settings CONSTANT)
+    Q_PROPERTY(Menu::Model* colors READ colors CONSTANT)
+    Q_PROPERTY(Menu::Model* backgrounds READ backgrounds CONSTANT)
     Q_PROPERTY(DialogType dialog READ dialog NOTIFY dialogChanged)
     Q_PROPERTY(int dialogParam READ dialogParam NOTIFY dialogParamChanged)
 
@@ -85,12 +94,12 @@ class Menu : public QObject
     };
     Q_ENUM(BackgroundTarget)
 
-    Menu(BirthdayTimer& birthdayTimer, Clock& clock, CountdownTimer& countdownTimer, MarriedTimer& marriedTimer, QObject* parent = nullptr);
+    Application(TimeElapsed::Application& birthdayTimer, Clock::Application& clock, Countdown::Application& countdownTimer, TimeElapsed::Application& marriedTimer, QObject* parent = nullptr);
 
-    MenuModel* main();
-    MenuModel* settings();
-    MenuModel* colors();
-    MenuModel* backgrounds();
+    Menu::Model* main();
+    Menu::Model* settings();
+    Menu::Model* colors();
+    Menu::Model* backgrounds();
 
     DialogType dialog() const;
     int dialogParam() const;
@@ -108,24 +117,25 @@ class Menu : public QObject
   private:
     void buildMenus();
 
-    BirthdayTimer& m_birthdayTimer;
-    Clock& m_clock;
-    CountdownTimer& m_countdownTimer;
-    MarriedTimer& m_marriedTimer;
+    TimeElapsed::Application& m_birthdayTimer;
+    Clock::Application& m_clock;
+    Countdown::Application& m_countdownTimer;
+    TimeElapsed::Application& m_marriedTimer;
 
-    MenuModel m_main;
-    MenuModel m_settings;
-    MenuModel m_colors;
-    MenuModel m_backgrounds;
+    Menu::Model m_main;
+    Menu::Model m_settings;
+    Menu::Model m_colors;
+    Menu::Model m_backgrounds;
 
     DialogType m_dialog;
     int m_dialogParam;
 
     // Store menu items to manage lifetime - sized using enum counts
-    MenuItem m_mainItems[MainMenuCount];
-    MenuItem m_settingsItems[SettingsMenuCount];
-    MenuItem m_colorsItems[ColorPointerCount];
-    MenuItem m_backgroundsItems[BackgroundTargetCount];
+    Menu::Item m_mainItems[MainMenuCount];
+    Menu::Item m_settingsItems[SettingsMenuCount];
+    Menu::Item m_colorsItems[ColorPointerCount];
+    Menu::Item m_backgroundsItems[BackgroundTargetCount];
 };
+} // namespace Menu
 
-#endif // APPS_MENU_H
+#endif // APPS_MENU_APPLICATION_H

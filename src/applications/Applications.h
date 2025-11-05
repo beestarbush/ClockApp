@@ -1,35 +1,34 @@
 #include <QObject>
 
-#include "BirthdayTimer.h"
-#include "Clock.h"
-#include "CountdownTimer.h"
-#include "Debug.h"
-#include "MarriedTimer.h"
-#include "Menu.h"
-#include "Setup.h"
+#include "clock/Application.h"
+#include "countdown/Application.h"
+#include "debug/Application.h"
+#include "menu/Application.h"
+#include "setup/Application.h"
+#include "timeelapsed/Application.h"
 
 class Services;
 
 class Applications : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Setup* setup MEMBER m_setup CONSTANT)
-    Q_PROPERTY(Clock* clock MEMBER m_clock CONSTANT)
-    Q_PROPERTY(MarriedTimer* marriedTimer MEMBER m_marriedTimer CONSTANT)
-    Q_PROPERTY(BirthdayTimer* kuikenTimer MEMBER m_kuikenTimer CONSTANT)
-    Q_PROPERTY(CountdownTimer* countdownTimer MEMBER m_countdownTimer CONSTANT)
-    Q_PROPERTY(Debug* debug MEMBER m_debug CONSTANT)
-    Q_PROPERTY(Menu* menu MEMBER m_menu CONSTANT)
+    Q_PROPERTY(Setup::Application* setup MEMBER m_setup CONSTANT)
+    Q_PROPERTY(Clock::Application* clock MEMBER m_clock CONSTANT)
+    Q_PROPERTY(TimeElapsed::Application* marriedTimer MEMBER m_marriedTimer CONSTANT)
+    Q_PROPERTY(TimeElapsed::Application* kuikenTimer MEMBER m_kuikenTimer CONSTANT)
+    Q_PROPERTY(Countdown::Application* countdownTimer MEMBER m_countdownTimer CONSTANT)
+    Q_PROPERTY(Debug::Application* debug MEMBER m_debug CONSTANT)
+    Q_PROPERTY(Menu::Application* menu MEMBER m_menu CONSTANT)
 
   public:
     Applications(Services& services, QObject* parent = nullptr);
 
   private:
-    Clock* m_clock;
-    MarriedTimer* m_marriedTimer;
-    BirthdayTimer* m_kuikenTimer;
-    CountdownTimer* m_countdownTimer;
-    Setup* m_setup;
-    Debug* m_debug;
-    Menu* m_menu;
+    Clock::Application* m_clock;
+    TimeElapsed::Application* m_marriedTimer;
+    TimeElapsed::Application* m_kuikenTimer;
+    Countdown::Application* m_countdownTimer;
+    Setup::Application* m_setup;
+    Debug::Application* m_debug;
+    Menu::Application* m_menu;
 };

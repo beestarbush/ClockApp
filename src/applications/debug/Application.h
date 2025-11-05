@@ -1,15 +1,17 @@
-#ifndef APPS_DEBUG_H
-#define APPS_DEBUG_H
+#ifndef APPS_DEBUG_APPLICATION_H
+#define APPS_DEBUG_APPLICATION_H
 
 #include <QObject>
 
-class Debug : public QObject
+namespace Debug
+{
+class Application : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool panelEnabled READ panelEnabled WRITE setPanelEnabled NOTIFY panelEnabledChanged)
 
   public:
-    explicit Debug(QObject* parent = nullptr);
+    explicit Application(QObject* parent = nullptr);
 
     bool panelEnabled() const;
     void setPanelEnabled(const bool& panelEnabled);
@@ -20,5 +22,6 @@ class Debug : public QObject
   private:
     bool m_panelEnabled;
 };
+} // namespace Debug
 
-#endif // APPS_DEBUG_H
+#endif // APPS_DEBUG_APPLICATION_H

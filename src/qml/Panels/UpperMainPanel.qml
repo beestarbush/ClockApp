@@ -40,7 +40,7 @@ Circle {
             id: clockPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.clock.enabled
+            enabled: BeeBackend.Applications.clock.configuration.enabled
 
             onClicked: menuOverlay.visible = true
         }
@@ -49,8 +49,8 @@ Circle {
             id: marriedPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.marriedTimer.enabled
-            initialized: BeeBackend.Applications.marriedTimer.initialized
+            enabled: BeeBackend.Applications.marriedTimer.configuration.enabled
+            initialized: BeeBackend.Applications.marriedTimer.configuration.initialized
             onClicked: menuOverlay.visible = true
             years: BeeBackend.Applications.marriedTimer.years
             days: BeeBackend.Applications.marriedTimer.days
@@ -63,8 +63,8 @@ Circle {
             id: kuikenBirthdayPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.kuikenTimer.enabled
-            initialized: BeeBackend.Applications.kuikenTimer.initialized
+            enabled: BeeBackend.Applications.kuikenTimer.configuration.enabled
+            initialized: BeeBackend.Applications.kuikenTimer.configuration.initialized
             onClicked: menuOverlay.visible = true
             years: BeeBackend.Applications.kuikenTimer.years
             days: BeeBackend.Applications.kuikenTimer.days
@@ -73,20 +73,20 @@ Circle {
             hours: BeeBackend.Applications.kuikenTimer.hours
             minutes: BeeBackend.Applications.kuikenTimer.minutes
             seconds: BeeBackend.Applications.kuikenTimer.seconds
-            barColor: BeeBackend.Applications.kuikenTimer.barColor
-            textColor: BeeBackend.Applications.kuikenTimer.textColor
-            backgroundSource: BeeBackend.Applications.kuikenTimer.background
-            backgroundOpacity: BeeBackend.Applications.kuikenTimer.backgroundOpacity
+            barColor: BeeBackend.Applications.kuikenTimer.configuration.baseColor
+            textColor: BeeBackend.Applications.kuikenTimer.configuration.accentColor
+            backgroundSource: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.kuikenTimer.configuration.background)
+            backgroundOpacity: BeeBackend.Applications.kuikenTimer.configuration.backgroundOpacity
         }
 
         CountdownPanel {
             id: countdownTimer
 
             anchors.fill: parent
-            backgroundSource: BeeBackend.Applications.countdownTimer.background
-            backgroundOpacity: BeeBackend.Applications.countdownTimer.backgroundOpacity
-            enabled: BeeBackend.Applications.countdownTimer.enabled
-            initialized: BeeBackend.Applications.countdownTimer.initialized
+            backgroundSource: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.countdownTimer.configuration.background)
+            backgroundOpacity: BeeBackend.Applications.countdownTimer.configuration.backgroundOpacity
+            enabled: BeeBackend.Applications.countdownTimer.configuration.enabled
+            initialized: BeeBackend.Applications.countdownTimer.configuration.initialized
             days: BeeBackend.Applications.countdownTimer.days
             hours: BeeBackend.Applications.countdownTimer.hours
             minutes: BeeBackend.Applications.countdownTimer.minutes

@@ -15,16 +15,16 @@ RoundPanel {
 
         anchors.fill: parent
         
-        source: BeeBackend.Applications.clock.background
-        opacity: BeeBackend.Applications.clock.backgroundOpacity
+        source: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.clock.configuration.background)
+        opacity: BeeBackend.Applications.clock.configuration.backgroundOpacity
     }
 
     Clock {
         id: clock
 
-        hourColor: BeeBackend.Applications.clock.hourColor
-        minuteColor: BeeBackend.Applications.clock.minuteColor
-        secondColor: BeeBackend.Applications.clock.secondColor
+        hourColor: BeeBackend.Applications.clock.configuration.hourColor
+        minuteColor: BeeBackend.Applications.clock.configuration.minuteColor
+        secondColor: BeeBackend.Applications.clock.configuration.secondColor
 
         anchors.fill: parent
         anchors.horizontalCenter: parent.horizontalCenter

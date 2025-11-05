@@ -1,17 +1,15 @@
-#ifndef APPS_CLOCK_H
-#define APPS_CLOCK_H
+#ifndef CLOCKCONFIG_H
+#define CLOCKCONFIG_H
 
+#include "applications/common/Configuration.h"
 #include <QColor>
-#include <QObject>
+#include <QDebug>
 
-class MediaManager;
-
-class Clock : public QObject
+namespace Clock
+{
+class Configuration : public Common::Configuration
 {
     Q_OBJECT
-    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
-    Q_PROPERTY(qreal backgroundOpacity READ backgroundOpacity WRITE setBackgroundOpacity NOTIFY backgroundOpacityChanged)
-    Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
     Q_PROPERTY(QColor hourColor READ hourColor WRITE setHourColor NOTIFY hourColorChanged)
     Q_PROPERTY(QColor minuteColor READ minuteColor WRITE setMinuteColor NOTIFY minuteColorChanged)
     Q_PROPERTY(QColor secondColor READ secondColor WRITE setSecondColor NOTIFY secondColorChanged)
@@ -19,16 +17,12 @@ class Clock : public QObject
     Q_PROPERTY(QColor pendulumRodColor READ pendulumRodColor WRITE setPendulumRodColor NOTIFY pendulumRodColorChanged)
 
   public:
-    Clock(MediaManager& mediaManager, QObject* parent = nullptr);
+    Configuration(QString name, QObject* parent = nullptr);
 
-    bool enabled() const;
-    void setEnabled(const bool& enabled);
+    void load() override;
 
-    qreal backgroundOpacity() const;
-    void setBackgroundOpacity(const qreal& backgroundOpacity);
-
-    QString background() const;
-    void setBackground(const QString& background);
+    QJsonObject toJson() const;
+    void fromJson(const QJsonObject& json);
 
     QColor hourColor() const;
     void setHourColor(const QColor& hourColor);
@@ -45,10 +39,10 @@ class Clock : public QObject
     QColor pendulumRodColor() const;
     void setPendulumRodColor(const QColor& pendulumRodColor);
 
+    Configuration& operator=(const Configuration& other);
+    friend QDebug operator<<(QDebug debug, const Configuration& config);
+
   signals:
-    void enabledChanged();
-    void backgroundOpacityChanged();
-    void backgroundChanged();
     void hourColorChanged();
     void minuteColorChanged();
     void secondColorChanged();
@@ -56,20 +50,12 @@ class Clock : public QObject
     void pendulumRodColorChanged();
 
   private:
-    void loadProperties();
-
-    // Properties
-    bool m_enabled;
-    qreal m_backgroundOpacity;
-    QString m_background;
     QColor m_hourColor;
     QColor m_minuteColor;
     QColor m_secondColor;
     QColor m_pendulumBobColor;
     QColor m_pendulumRodColor;
-
-    // Dependencies
-    MediaManager& m_mediaManager;
 };
+} // namespace Clock
 
-#endif // APPS_CLOCK_H
+#endif // CLOCKCONFIG_H
