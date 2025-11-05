@@ -1,5 +1,5 @@
-#ifndef SERVICES_REMOTE_API_H
-#define SERVICES_REMOTE_API_H
+#ifndef SERVICES_REMOTEAPI_SERVICE_H
+#define SERVICES_REMOTEAPI_SERVICE_H
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -12,7 +12,9 @@
 class Network;
 class SerializableObject;
 
-class RemoteApi : public QObject
+namespace RemoteApi
+{
+class Service : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
@@ -21,7 +23,7 @@ class RemoteApi : public QObject
     Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
   public:
-    explicit RemoteApi(Network& network, QObject* parent = nullptr);
+    explicit Service(Network& network, QObject* parent = nullptr);
 
     // Properties
     bool enabled() const;
@@ -116,5 +118,6 @@ class RemoteApi : public QObject
     bool m_connected;
     QMap<QNetworkReply*, PendingRequest> m_pendingRequests;
 };
+} // namespace RemoteApi
 
-#endif // SERVICES_REMOTE_API_H
+#endif // SERVICES_REMOTEAPI_SERVICE_H

@@ -29,7 +29,7 @@ Item {
             }
 
             ToggleButton {
-                target: Applications.marriedTimer
+                target: Applications.marriedTimer.configuration
                 property: "enabled"
                 enabled: true
                 size: ToggleButton.Size.Large
@@ -57,7 +57,7 @@ Item {
                 width: 200
                 height: 200
 
-                media: Services.mediaManager.availableMedia
+                media: Services.media.availableMedia
 
                 onMediaSelected: (mediaName) => {
                     console.log("Selected media: " + mediaName)
@@ -84,7 +84,7 @@ Item {
                 NotificationCarousel {
                     anchors.fill: parent
                 
-                    model: Services.notificationManager
+                    model: Services.notification
                 }
             }
 

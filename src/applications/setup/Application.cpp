@@ -1,8 +1,8 @@
 #include "Application.h"
 #include "applications/countdown/Application.h"
 #include "applications/timeelapsed/Application.h"
-#include "services/RemoteApi.h"
 #include "services/remoteapi/DeviceStatus.h"
+#include "services/remoteapi/Service.h"
 #include <QDate>
 #include <QDebug>
 #include <QSettings>
@@ -15,7 +15,7 @@ const bool PROPERTY_SETUP_COMPLETE_DEFAULT = false;
 Application::Application(TimeElapsed::Application& marriedTimer,
                          TimeElapsed::Application& kuikenTimer,
                          Countdown::Application& countdownTimer,
-                         RemoteApi& remoteApi,
+                         RemoteApi::Service& remoteApi,
                          QObject* parent)
     : QObject(parent),
       m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),

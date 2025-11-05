@@ -7,16 +7,16 @@ Circle {
 
     color: Qt.rgba(0, 0, 0, 0.7)
 
-    visible: BeeBackend.Services.notificationManager.isVisible && BeeBackend.Services.notificationManager.activeCount > 0
+    visible: BeeBackend.Services.notification.isVisible && BeeBackend.Services.notification.activeCount > 0
 
     // Make it clickable to inactivate notifications
     MouseArea {
         anchors.fill: parent
         onClicked: {
             // Inactivate the highest priority active notification (the one currently showing)
-            let highestNotification = BeeBackend.Services.notificationManager.highestPriorityNotification
+            let highestNotification = BeeBackend.Services.notification.highestPriorityNotification
             if (highestNotification && highestNotification.isActive) {
-                BeeBackend.Services.notificationManager.setNotificationActive(highestNotification.id, false)
+                BeeBackend.Services.notification.setNotificationActive(highestNotification.id, false)
             }
         }
     }
@@ -30,7 +30,7 @@ Circle {
         // Notification title
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: BeeBackend.Services.notificationManager.highestPriorityNotification ? BeeBackend.Services.notificationManager.highestPriorityNotification.title : ""
+            text: BeeBackend.Services.notification.highestPriorityNotification ? BeeBackend.Services.notification.highestPriorityNotification.title : ""
             color: "white"
             font.pixelSize: 62
             font.bold: true
@@ -40,7 +40,7 @@ Circle {
         // Show only the highest priority active notification
         Text {
             width: parent.width
-            text: BeeBackend.Services.notificationManager.highestPriorityNotification ? BeeBackend.Services.notificationManager.highestPriorityNotification.message : ""
+            text: BeeBackend.Services.notification.highestPriorityNotification ? BeeBackend.Services.notification.highestPriorityNotification.message : ""
             color: "white"
             font.pixelSize: 18
             wrapMode: Text.WordWrap

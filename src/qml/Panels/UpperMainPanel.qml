@@ -75,7 +75,7 @@ Circle {
             seconds: BeeBackend.Applications.kuikenTimer.seconds
             barColor: BeeBackend.Applications.kuikenTimer.configuration.baseColor
             textColor: BeeBackend.Applications.kuikenTimer.configuration.accentColor
-            backgroundSource: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.kuikenTimer.configuration.background)
+            backgroundSource: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.kuikenTimer.configuration.background)
             backgroundOpacity: BeeBackend.Applications.kuikenTimer.configuration.backgroundOpacity
         }
 
@@ -83,7 +83,7 @@ Circle {
             id: countdownTimer
 
             anchors.fill: parent
-            backgroundSource: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.countdownTimer.configuration.background)
+            backgroundSource: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.countdownTimer.configuration.background)
             backgroundOpacity: BeeBackend.Applications.countdownTimer.configuration.backgroundOpacity
             enabled: BeeBackend.Applications.countdownTimer.configuration.enabled
             initialized: BeeBackend.Applications.countdownTimer.configuration.initialized

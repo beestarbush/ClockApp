@@ -1,13 +1,14 @@
-#include "QmlInterface.h"
+#include "Service.h"
 #include <QDebug>
 #include <QQmlApplicationEngine>
+using namespace QmlInterface;
 
-QmlInterface::QmlInterface(QObject* parent)
+Service::Service(QObject* parent)
     : QObject(parent)
 {
 }
 
-void QmlInterface::registerObject(const char* name, QObject* object)
+void Service::registerObject(const char* name, QObject* object)
 {
     if (!object) {
         qWarning() << "Cannot register null object with name:" << name;

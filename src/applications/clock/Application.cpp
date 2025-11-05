@@ -1,20 +1,20 @@
 #include "Application.h"
-#include "services/MediaManager.h"
+#include "services/media/Service.h"
 #include <QDebug>
 #include <QSettings>
 using namespace Clock;
 
-Application::Application(QString name, MediaManager& mediaManager, QObject* parent)
+Application::Application(QString name, Media::Service& media, QObject* parent)
     : QObject(parent),
       m_configuration(new Configuration(name, parent)),
-      m_mediaManager(mediaManager)
+      m_media(media)
 {
     m_configuration->load();
     qInfo() << "Clock configuration: \n"
             << *m_configuration;
 
     // Refresh background when media sync completes
-    connect(&m_mediaManager, &MediaManager::syncCompleted, this, [this]() {
+    connect(&m_media, &Media::Service::syncCompleted, this, [this]() {
         emit m_configuration->backgroundChanged();
     });
 }

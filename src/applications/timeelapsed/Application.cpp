@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "services/MediaManager.h"
+#include "services/media/Service.h"
 #include <QDateTime>
 #include <QDebug>
 #include <QSettings>
@@ -11,10 +11,10 @@ constexpr quint64 SECONDS_IN_A_DAY = SECONDS_IN_HOUR * 24;
 constexpr quint64 DAYS_IN_A_WEEK = 7;
 constexpr quint64 DAYS_IN_YEAR = 365;
 
-Application::Application(QString name, MediaManager& mediaManager, QObject* parent)
+Application::Application(QString name, Media::Service& media, QObject* parent)
     : QObject(parent),
       m_configuration(new Common::TimerConfiguration(name, parent)),
-      m_mediaManager(mediaManager),
+      m_media(media),
       m_years(0),
       m_days(0),
       m_daysInWeek(0),
@@ -31,7 +31,7 @@ Application::Application(QString name, MediaManager& mediaManager, QObject* pare
     startTimer();
 
     // Refresh background when media sync completes
-    connect(&m_mediaManager, &MediaManager::syncCompleted, this, [this]() {
+    connect(&m_media, &Media::Service::syncCompleted, this, [this]() {
         emit m_configuration->backgroundChanged();
     });
 

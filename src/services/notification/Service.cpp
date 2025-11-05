@@ -1,26 +1,27 @@
-#include "NotificationManager.h"
+#include "Service.h"
 #include <QDateTime>
+using namespace Notification;
 
-NotificationManager::NotificationManager(QObject* parent)
+Service::Service(QObject* parent)
     : QAbstractListModel(parent),
       m_isVisible(false),
       m_highestPriorityItem(nullptr)
 {
-    m_highestPriorityItem = new Notification(this);
+    m_highestPriorityItem = new Item(this);
 }
 
-int NotificationManager::rowCount(const QModelIndex& parent) const
+int Service::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
     return m_notifications.size();
 }
 
-QVariant NotificationManager::data(const QModelIndex& index, int role) const
+QVariant Service::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid() || index.row() >= m_notifications.size())
         return QVariant();
 
-    const Notification* notification = m_notifications.at(index.row());
+    const Item* notification = m_notifications.at(index.row());
 
     switch (role) {
     case TitleRole:
@@ -42,7 +43,7 @@ QVariant NotificationManager::data(const QModelIndex& index, int role) const
     }
 }
 
-QHash<int, QByteArray> NotificationManager::roleNames() const
+QHash<int, QByteArray> Service::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[TitleRole] = "title";
@@ -55,7 +56,7 @@ QHash<int, QByteArray> NotificationManager::roleNames() const
     return roles;
 }
 
-int NotificationManager::getActiveCount() const
+int Service::getActiveCount() const
 {
     int activeCount = 0;
     for (const auto* notification : m_notifications) {
@@ -66,7 +67,7 @@ int NotificationManager::getActiveCount() const
     return activeCount;
 }
 
-bool NotificationManager::hasNotifications() const
+bool Service::hasNotifications() const
 {
     // Check if there are any active notifications
     for (const auto* notification : m_notifications) {
@@ -77,17 +78,17 @@ bool NotificationManager::hasNotifications() const
     return false;
 }
 
-bool NotificationManager::isVisible() const
+bool Service::isVisible() const
 {
     return m_isVisible && hasNotifications();
 }
 
-Notification* NotificationManager::getHighestPriorityNotification()
+Item* Service::getHighestPriorityNotification()
 {
     return m_highestPriorityItem;
 }
 
-void NotificationManager::updateHighestPriorityNotification()
+void Service::updateHighestPriorityNotification()
 {
     // Find the first active notification (since list is sorted by type/priority)
     for (const auto* notification : m_notifications) {
@@ -101,9 +102,9 @@ void NotificationManager::updateHighestPriorityNotification()
     m_highestPriorityItem->reset();
 }
 
-void NotificationManager::addNotification(const QString& title, const QString& message, Notification::Type type, bool active, quint64 duration)
+void Service::addNotification(const QString& title, const QString& message, Item::Type type, bool active, quint64 duration)
 {
-    Notification* notification = new Notification(title, message, type, duration, active, this);
+    Item* notification = new Item(title, message, type, duration, active, this);
 
     insertNotificationSorted(notification);
 
@@ -124,22 +125,22 @@ void NotificationManager::addNotification(const QString& title, const QString& m
     emit notificationAdded(notification->id());
 }
 
-void NotificationManager::showInfo(const QString& title, const QString& message, bool active, quint64 duration)
+void Service::showInfo(const QString& title, const QString& message, bool active, quint64 duration)
 {
-    addNotification(title, message, Notification::Type::Info, active, duration);
+    addNotification(title, message, Item::Type::Info, active, duration);
 }
 
-void NotificationManager::showWarning(const QString& title, const QString& message, quint64 duration)
+void Service::showWarning(const QString& title, const QString& message, quint64 duration)
 {
-    addNotification(title, message, Notification::Type::Warning, duration);
+    addNotification(title, message, Item::Type::Warning, duration);
 }
 
-void NotificationManager::showError(const QString& title, const QString& message, quint64 duration)
+void Service::showError(const QString& title, const QString& message, quint64 duration)
 {
-    addNotification(title, message, Notification::Type::Error, duration);
+    addNotification(title, message, Item::Type::Error, duration);
 }
 
-void NotificationManager::removeNotification(const quint64 id)
+void Service::removeNotification(const quint64 id)
 {
     for (int i = 0; i < m_notifications.size(); ++i) {
         if (m_notifications[i]->id() == id) {
@@ -149,12 +150,12 @@ void NotificationManager::removeNotification(const quint64 id)
     }
 }
 
-void NotificationManager::removeNotificationAt(int index)
+void Service::removeNotificationAt(int index)
 {
     if (index < 0 || index >= m_notifications.size())
         return;
 
-    Notification* notification = m_notifications[index];
+    Item* notification = m_notifications[index];
     quint64 id = notification->id();
 
     // Clean up auto-remove timer
@@ -185,13 +186,13 @@ void NotificationManager::removeNotificationAt(int index)
     }
 }
 
-void NotificationManager::deleteNotification(const quint64 id)
+void Service::deleteNotification(const quint64 id)
 {
     // Same as removeNotification but with a different name for clarity
     removeNotification(id);
 }
 
-void NotificationManager::clearInactive()
+void Service::clearInactive()
 {
     // Remove all inactive notifications
     for (int i = m_notifications.size() - 1; i >= 0; --i) {
@@ -201,7 +202,7 @@ void NotificationManager::clearInactive()
     }
 }
 
-void NotificationManager::clearAll()
+void Service::clearAll()
 {
     if (m_notifications.isEmpty())
         return;
@@ -232,7 +233,7 @@ void NotificationManager::clearAll()
     emit highestPriorityChanged();
 }
 
-void NotificationManager::insertNotificationSorted(Notification* notification)
+void Service::insertNotificationSorted(Item* notification)
 {
     int insertIndex = 0;
 
@@ -272,7 +273,7 @@ void NotificationManager::insertNotificationSorted(Notification* notification)
     emit hasNotificationsChanged();
 }
 
-void NotificationManager::setupAutoRemove(Notification* notification)
+void Service::setupAutoRemove(Item* notification)
 {
     QTimer* timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -287,7 +288,7 @@ void NotificationManager::setupAutoRemove(Notification* notification)
     timer->start();
 }
 
-void NotificationManager::setNotificationActive(const quint64 id, bool active)
+void Service::setNotificationActive(const quint64 id, bool active)
 {
     for (int i = 0; i < m_notifications.size(); ++i) {
         if (m_notifications[i]->id() == id) {
@@ -322,7 +323,7 @@ void NotificationManager::setNotificationActive(const quint64 id, bool active)
     }
 }
 
-void NotificationManager::toggleNotificationActive(const quint64 id)
+void Service::toggleNotificationActive(const quint64 id)
 {
     for (int i = 0; i < m_notifications.size(); ++i) {
         if (m_notifications[i]->id() == id) {

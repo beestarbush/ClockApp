@@ -1,16 +1,18 @@
-#ifndef SERVICES_NOTIFICATION_H
-#define SERVICES_NOTIFICATION_H
+#ifndef SERVICES_NOTIFICATION_ITEM_H
+#define SERVICES_NOTIFICATION_ITEM_H
 
 #include <QObject>
 #include <QTimer>
 
-class Notification : public QObject
+namespace Notification
+{
+class Item : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(quint64 id READ id CONSTANT)
     Q_PROPERTY(QString title READ title CONSTANT)
     Q_PROPERTY(QString message READ message CONSTANT)
-    Q_PROPERTY(Notification::Type type READ type CONSTANT)
+    Q_PROPERTY(Type type READ type CONSTANT)
     Q_PROPERTY(quint64 duration READ duration CONSTANT)
     Q_PROPERTY(quint64 timestamp READ timestamp CONSTANT)
     Q_PROPERTY(bool isActive READ isActive NOTIFY isActiveChanged)
@@ -24,12 +26,12 @@ class Notification : public QObject
     };
     Q_ENUM(Type)
 
-    Notification(QObject* parent = nullptr);
+    Item(QObject* parent = nullptr);
 
     // Constructor for creating new notifications
-    Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, bool active = true, QObject* parent = nullptr);
+    Item(const QString& title, const QString& message, Type type, quint64 duration, bool active = true, QObject* parent = nullptr);
 
-    ~Notification();
+    ~Item();
 
     quint64 id() const
     {
@@ -43,7 +45,7 @@ class Notification : public QObject
     {
         return m_message;
     }
-    Notification::Type type() const
+    Type type() const
     {
         return m_type;
     }
@@ -82,7 +84,7 @@ class Notification : public QObject
     {
         m_message = message;
     }
-    void setType(Notification::Type type)
+    void setType(Type type)
     {
         m_type = type;
     }
@@ -97,7 +99,7 @@ class Notification : public QObject
     void setIsActive(bool active);
 
     // Assignment operator
-    Notification& operator=(const Notification& other);
+    Item& operator=(const Item& other);
 
     // Reset to default/empty state
     void reset();
@@ -117,5 +119,6 @@ class Notification : public QObject
 
     static quint64 s_nextId; // Static member for generating unique IDs
 };
+} // namespace Notification
 
-#endif // SERVICES_NOTIFICATION_H
+#endif // SERVICES_NOTIFICATION_ITEM_H

@@ -25,7 +25,7 @@ RoundPanel {
 
         anchors.fill: parent
         
-        source: BeeBackend.Services.mediaManager.getMediaPath(BeeBackend.Applications.marriedTimer.configuration.background)
+        source: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.marriedTimer.configuration.background)
         opacity: BeeBackend.Applications.marriedTimer.configuration.backgroundOpacity
     }
     

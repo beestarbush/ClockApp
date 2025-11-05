@@ -1,27 +1,28 @@
-#include "Version.h"
+#include "Service.h"
 #include "git_version.h"
+using namespace Version;
 
-Version::Version(QObject* parent)
+Service::Service(QObject* parent)
     : QObject(parent)
 {
 }
 
-QString Version::tag() const
+QString Service::tag() const
 {
     return QStringLiteral(GIT_TAG);
 }
 
-QString Version::commitHash() const
+QString Service::commitHash() const
 {
     return QStringLiteral(GIT_COMMIT_HASH);
 }
 
-QString Version::shortCommitHash() const
+QString Service::shortCommitHash() const
 {
     return QStringLiteral(GIT_COMMIT_HASH_SHORT);
 }
 
-QString Version::dirty() const
+QString Service::dirty() const
 {
     return QStringLiteral(GIT_DIRTY);
 }

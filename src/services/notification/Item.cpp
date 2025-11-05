@@ -1,16 +1,17 @@
-#include "Notification.h"
+#include "Item.h"
 #include <QDateTime>
+using namespace Notification;
 
 // Initialize static member
-quint64 Notification::s_nextId = 1;
+quint64 Item::s_nextId = 1;
 
-Notification::Notification(QObject* parent)
+Item::Item(QObject* parent)
     : QObject(parent),
       m_autoRemoveTimer(nullptr)
 {
 }
 
-Notification::Notification(const QString& title, const QString& message, Notification::Type type, quint64 duration, bool active, QObject* parent)
+Item::Item(const QString& title, const QString& message, Type type, quint64 duration, bool active, QObject* parent)
     : QObject(parent),
       m_autoRemoveTimer(nullptr)
 {
@@ -23,7 +24,7 @@ Notification::Notification(const QString& title, const QString& message, Notific
     m_isActive = active;
 }
 
-Notification::~Notification()
+Item::~Item()
 {
     if (m_autoRemoveTimer) {
         m_autoRemoveTimer->deleteLater();
@@ -31,7 +32,7 @@ Notification::~Notification()
     }
 }
 
-void Notification::setIsActive(bool active)
+void Item::setIsActive(bool active)
 {
     if (m_isActive != active) {
         m_isActive = active;
@@ -39,7 +40,7 @@ void Notification::setIsActive(bool active)
     }
 }
 
-Notification& Notification::operator=(const Notification& other)
+Item& Item::operator=(const Item& other)
 {
     if (this == &other) {
         return *this; // Self-assignment check
@@ -62,7 +63,7 @@ Notification& Notification::operator=(const Notification& other)
     return *this;
 }
 
-void Notification::reset()
+void Item::reset()
 {
     bool activeChanged = m_isActive;
 

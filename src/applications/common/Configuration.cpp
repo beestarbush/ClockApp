@@ -111,7 +111,7 @@ void Configuration::setBackgroundOpacity(const qreal& backgroundOpacity)
 
 QString Configuration::background() const
 {
-    return m_background; // m_mediaManager.getMediaPath(m_background);
+    return m_background;
 }
 
 void Configuration::setBackground(const QString& background)

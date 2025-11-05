@@ -27,12 +27,20 @@ qt_add_executable(clockapp
     qmlcomponents/QmlUtils.h
     qmlcomponents/RoundAnimatedImage.cpp
     qmlcomponents/RoundAnimatedImage.h
-    services/MediaManager.cpp
-    services/MediaManager.h
-    services/RemoteApi.cpp
-    services/RemoteApi.h
-    services/SystemMonitor.cpp
-    services/SystemMonitor.h
+    services/datetime/Service.cpp
+    services/datetime/Service.h
+    services/media/Service.cpp
+    services/media/Service.h
+    services/notification/Service.cpp
+    services/notification/Service.h
+    services/qmlinterface/Service.cpp
+    services/qmlinterface/Service.h
+    services/remoteapi/Service.cpp
+    services/remoteapi/Service.h
+    services/systemmonitor/Service.cpp
+    services/systemmonitor/Service.h
+    services/version/Service.cpp
+    services/version/Service.h
     services/remoteapi/SerializableObject.h
     services/remoteapi/DeviceStatus.cpp
     services/remoteapi/DeviceStatus.h
@@ -40,18 +48,12 @@ qt_add_executable(clockapp
     services/remoteapi/MediaInfo.h
     services/remoteapi/MediaList.cpp
     services/remoteapi/MediaList.h
-    services/DateTime.cpp
-    services/DateTime.h
-    services/Notification.cpp
-    services/Notification.h
-    services/NotificationManager.cpp
-    services/NotificationManager.h
-    services/QmlInterface.cpp
-    services/QmlInterface.h
+    services/notification/Item.cpp
+    services/notification/Item.h
+    services/notification/Service.cpp
+    services/notification/Service.h
     services/Services.cpp
     services/Services.h
-    services/Version.cpp
-    services/Version.h
     applications/common/Configuration.h
     applications/common/Configuration.cpp
     applications/common/TimerConfiguration.h

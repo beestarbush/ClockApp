@@ -1,45 +1,46 @@
-#include "SystemMonitor.h"
-#include "RemoteApi.h"
-#include "Version.h"
+#include "Service.h"
 #include "git_version.h"
 #include "hal/System.h"
 #include "hal/Temperature.h"
-#include "remoteapi/DeviceStatus.h"
-#include "services/NotificationManager.h"
+#include "services/notification/Service.h"
+#include "services/remoteapi/DeviceStatus.h"
+#include "services/remoteapi/Service.h"
+#include "services/version/Service.h"
 
 #include <QDebug>
+using namespace SystemMonitor;
 
 constexpr int MONITOR_INTERVAL = 10 * 1000;    // 10 seconds
 constexpr int REPORT_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-SystemMonitor::SystemMonitor(RemoteApi& remoteApi,
-                             Temperature& temperature,
-                             System& system,
-                             Version& version,
-                             NotificationManager& notificationManager,
-                             QObject* parent)
+Service::Service(RemoteApi::Service& remoteApi,
+                 Temperature& temperature,
+                 System& system,
+                 Version::Service& version,
+                 Notification::Service& notification,
+                 QObject* parent)
     : QObject(parent),
       m_remoteApi(remoteApi),
       m_temperature(temperature),
       m_system(system),
       m_version(version),
-      m_notificationManager(notificationManager),
+      m_notification(notification),
       m_isReporting(false)
 {
     // Configure timer
     m_monitorTimer.setSingleShot(false);
     m_monitorTimer.setInterval(MONITOR_INTERVAL);
-    connect(&m_monitorTimer, &QTimer::timeout, this, &SystemMonitor::monitor);
+    connect(&m_monitorTimer, &QTimer::timeout, this, &Service::monitor);
     monitor();
 
     m_reportTimer.setSingleShot(false);
     m_reportTimer.setInterval(REPORT_INTERVAL);
-    connect(&m_reportTimer, &QTimer::timeout, this, &SystemMonitor::report);
+    connect(&m_reportTimer, &QTimer::timeout, this, &Service::report);
     report();
 
     // Connect to remote API connected changes, since we then want to start a report, and start the report timer. Also
     // when we disconnect the remote API, we want to stop the report timer.
-    connect(&m_remoteApi, &RemoteApi::connectedChanged, this, [this]() {
+    connect(&m_remoteApi, &RemoteApi::Service::connectedChanged, this, [this]() {
         if (m_remoteApi.connected()) {
             report();
         }
@@ -49,10 +50,10 @@ SystemMonitor::SystemMonitor(RemoteApi& remoteApi,
     });
 }
 
-void SystemMonitor::monitor()
+void Service::monitor()
 {
     if (m_temperature.valid() && m_temperature.processorTemperature() > 85000) { // 85.0 °C
-        m_notificationManager.showWarning(
+        m_notification.showWarning(
             QStringLiteral("High CPU temperature"),
             QStringLiteral("The CPU temperature is too high. Please ensure proper cooling."));
     }
@@ -60,7 +61,7 @@ void SystemMonitor::monitor()
     m_monitorTimer.start();
 }
 
-void SystemMonitor::report()
+void Service::report()
 {
     if (!m_remoteApi.enabled()) {
         qDebug() << "Remote API not enabled, skipping status report";

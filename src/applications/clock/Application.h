@@ -4,7 +4,10 @@
 #include "Configuration.h"
 #include <QObject>
 
-class MediaManager;
+namespace Media
+{
+class Service;
+}
 
 namespace Clock
 {
@@ -16,7 +19,7 @@ class Application : public QObject
     Q_PROPERTY(Configuration* configuration MEMBER m_configuration CONSTANT)
 
   public:
-    Application(QString name, MediaManager& mediaManager, QObject* parent = nullptr);
+    Application(QString name, Media::Service& media, QObject* parent = nullptr);
 
     Configuration* configuration() const;
 
@@ -24,7 +27,7 @@ class Application : public QObject
 
   private:
     Configuration* m_configuration;
-    MediaManager& m_mediaManager;
+    Media::Service& m_media;
 };
 } // namespace Clock
 

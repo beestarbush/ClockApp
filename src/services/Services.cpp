@@ -1,20 +1,20 @@
 #include "Services.h"
-#include "DateTime.h"
+#include "datetime/Service.h"
 #include "hal/HAL.h"
 
 Services::Services(HAL& hal, QObject* parent)
     : QObject(parent),
-      m_version(new Version(this)),
-      m_remoteApi(new RemoteApi(*hal.m_network, this)),
-      m_notificationManager(new NotificationManager(this)),
-      m_mediaManager(new MediaManager(*m_remoteApi, this)),
-      m_systemMonitor(new SystemMonitor(*m_remoteApi, *hal.m_temperature, *hal.m_system, *m_version, *m_notificationManager, this)),
-      m_dateTime(new DateTime(this)),
-      m_qmlInterface(new QmlInterface(this))
+      m_version(new Version::Service(this)),
+      m_remoteApi(new RemoteApi::Service(*hal.m_network, this)),
+      m_notification(new Notification::Service(this)),
+      m_media(new Media::Service(*m_remoteApi, this)),
+      m_systemMonitor(new SystemMonitor::Service(*m_remoteApi, *hal.m_temperature, *hal.m_system, *m_version, *m_notification, this)),
+      m_dateTime(new DateTime::Service(this)),
+      m_qmlInterface(new QmlInterface::Service(this))
 {
 }
 
-QmlInterface* Services::qmlInterface() const
+QmlInterface::Service* Services::qmlInterface() const
 {
     return m_qmlInterface;
 }

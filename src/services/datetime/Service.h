@@ -1,17 +1,19 @@
-#ifndef SERVICES_DATETIME_H
-#define SERVICES_DATETIME_H
+#ifndef SERVICES_DATETIME_SERVICE_H
+#define SERVICES_DATETIME_SERVICE_H
 
 #include <QObject>
 #include <QTimeZone>
 
-class DateTime : public QObject
+namespace DateTime
+{
+class Service : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString localTime READ localTime NOTIFY timeChanged)
     Q_PROPERTY(QString utcTime READ utcTime NOTIFY timeChanged)
 
   public:
-    DateTime(QObject* parent = nullptr);
+    Service(QObject* parent = nullptr);
 
     QString localTime() const;
     QString utcTime() const;
@@ -22,5 +24,6 @@ class DateTime : public QObject
   private:
     QTimeZone m_timeZone;
 };
+} // namespace DateTime
 
-#endif // SERVICES_DATETIME_H
+#endif // SERVICES_DATETIME_SERVICE_H

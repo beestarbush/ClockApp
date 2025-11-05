@@ -1,21 +1,22 @@
-#include "DateTime.h"
+#include "Service.h"
 #include <QDebug>
 #include <cassert>
+using namespace DateTime;
 
-DateTime::DateTime(QObject* parent)
+Service::Service(QObject* parent)
     : QObject(parent),
       m_timeZone(QTimeZone("Europe/Amsterdam"))
 {
     assert(m_timeZone.isValid()); // Time zones not available on system (install tzdata).
 }
 
-QString DateTime::localTime() const
+QString Service::localTime() const
 {
     QDateTime now = QDateTime::currentDateTimeUtc().toTimeZone(m_timeZone);
     return now.toString("HH:mm:ss");
 }
 
-QString DateTime::utcTime() const
+QString Service::utcTime() const
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
     return now.toString("HH:mm:ss");

@@ -1,7 +1,7 @@
-#include "MediaManager.h"
-#include "RemoteApi.h"
-#include "remoteapi/MediaInfo.h"
-#include "remoteapi/MediaList.h"
+#include "Service.h"
+#include "services/remoteapi/MediaInfo.h"
+#include "services/remoteapi/MediaList.h"
+#include "services/remoteapi/Service.h"
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+using namespace Media;
 
 #ifdef PLATFORM_IS_TARGET
 const QString MEDIA_PATH = QStringLiteral("/usr/share/bee/media");
@@ -18,10 +19,10 @@ const QString MEDIA_PATH = QStringLiteral("/workdir/build/bee/media");
 const QString DEFAULT_MEDIA = QStringLiteral("qrc:/media/default.gif");
 constexpr int MIN_MEDIA_FILE_SIZE = 50;         // Minimum reasonable file size in bytes
 constexpr int SCAN_DELAY_MS = 500;              // Delay in milliseconds for scanning directory
-constexpr int SYNC_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+constexpr int SYNC_INTERVAL_MS = 1 * 30 * 1000; // 5 minutes
 constexpr int INITIAL_SYNC_DELAY_MS = 5000;     // 5 seconds
 
-MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
+Service::Service(RemoteApi::Service& remoteApi, QObject* parent)
     : QObject(parent),
       m_fileWatcher(this),
       m_scanTimer(this),
@@ -33,15 +34,15 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     // Setup delayed scanning to avoid excessive file system operations
     m_scanTimer.setSingleShot(true);
     m_scanTimer.setInterval(SCAN_DELAY_MS);
-    connect(&m_scanTimer, &QTimer::timeout, this, &MediaManager::scanDirectory);
+    connect(&m_scanTimer, &QTimer::timeout, this, &Service::scanDirectory);
 
     // Setup sync timer
     m_syncTimer.setInterval(SYNC_INTERVAL_MS);
     m_syncTimer.setSingleShot(false);
-    connect(&m_syncTimer, &QTimer::timeout, this, &MediaManager::onSyncTimerTimeout);
+    connect(&m_syncTimer, &QTimer::timeout, this, &Service::onSyncTimerTimeout);
 
     // Connect file watcher
-    connect(&m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, &MediaManager::onDirectoryChanged);
+    connect(&m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, &Service::onDirectoryChanged);
 
     // Setup file watcher and initial scan
     setupFileWatcher();
@@ -49,7 +50,7 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
 
     // Connect to remote API connected changes, since we then want to start a sync, and start the sync timer. Also
     // when we disconnect the remote API, we want to stop the sync timer.
-    connect(&m_remoteApi, &RemoteApi::connectedChanged, this, [this]() {
+    connect(&m_remoteApi, &RemoteApi::Service::connectedChanged, this, [this]() {
         if (m_remoteApi.connected()) {
             triggerSync();
             if (!m_syncTimer.isActive()) {
@@ -65,31 +66,31 @@ MediaManager::MediaManager(RemoteApi& remoteApi, QObject* parent)
     if (m_remoteApi.enabled()) {
         m_syncTimer.start();
         // Trigger initial sync after a short delay
-        QTimer::singleShot(INITIAL_SYNC_DELAY_MS, this, &MediaManager::triggerSync);
+        QTimer::singleShot(INITIAL_SYNC_DELAY_MS, this, &Service::triggerSync);
     }
 }
 
-QStringList MediaManager::availableMedia() const
+QStringList Service::availableMedia() const
 {
     return m_availableMedia;
 }
 
-bool MediaManager::syncing() const
+bool Service::syncing() const
 {
     return m_syncing;
 }
 
-QDateTime MediaManager::lastSyncTime() const
+QDateTime Service::lastSyncTime() const
 {
     return m_lastSyncTime;
 }
 
-QString MediaManager::lastError() const
+QString Service::lastError() const
 {
     return m_lastError;
 }
 
-void MediaManager::triggerSync()
+void Service::triggerSync()
 {
     if (m_syncing) {
         qDebug() << "Sync already in progress";
@@ -106,11 +107,11 @@ void MediaManager::triggerSync()
     emit syncingChanged();
     emit lastErrorChanged();
 
-    qDebug() << "Starting media manager synchronization...";
+    qDebug() << "Starting media synchronization...";
     fetchMediaList();
 }
 
-QString MediaManager::getMediaPath(const QString& name) const
+QString Service::getMediaPath(const QString& name) const
 {
     if (name.isEmpty()) {
         return QString();
@@ -128,19 +129,19 @@ QString MediaManager::getMediaPath(const QString& name) const
     return DEFAULT_MEDIA;
 }
 
-void MediaManager::onDirectoryChanged(const QString& path)
+void Service::onDirectoryChanged(const QString& path)
 {
     Q_UNUSED(path)
     // Use delayed scanning to avoid excessive updates when multiple files change
     m_scanTimer.start();
 }
 
-void MediaManager::onSyncTimerTimeout()
+void Service::onSyncTimerTimeout()
 {
     triggerSync();
 }
 
-void MediaManager::setupFileWatcher()
+void Service::setupFileWatcher()
 {
     QString mediaDir = getMediaDirectory();
 
@@ -155,7 +156,7 @@ void MediaManager::setupFileWatcher()
     }
 }
 
-void MediaManager::scanDirectory()
+void Service::scanDirectory()
 {
     QStringList newMedia;
     QString mediaDir = getMediaDirectory();
@@ -202,7 +203,7 @@ void MediaManager::scanDirectory()
     }
 }
 
-bool MediaManager::isValidFile(const QString& filePath) const
+bool Service::isValidFile(const QString& filePath) const
 {
     QFileInfo fileInfo(filePath);
 
@@ -225,12 +226,12 @@ bool MediaManager::isValidFile(const QString& filePath) const
     return true;
 }
 
-QString MediaManager::getMediaDirectory() const
+QString Service::getMediaDirectory() const
 {
     return MEDIA_PATH;
 }
 
-void MediaManager::fetchMediaList()
+void Service::fetchMediaList()
 {
     MediaList listTemplate;
     listTemplate.deviceId = m_remoteApi.deviceId();
@@ -322,7 +323,7 @@ void MediaManager::fetchMediaList()
     });
 }
 
-void MediaManager::downloadMedia(const QString& mediaId)
+void Service::downloadMedia(const QString& mediaId)
 {
     m_activeDownloads++;
 
@@ -427,7 +428,7 @@ void MediaManager::downloadMedia(const QString& mediaId)
     });
 }
 
-void MediaManager::completeSyncWithSuccess()
+void Service::completeSyncWithSuccess()
 {
     m_syncing = false;
     m_lastSyncTime = QDateTime::currentDateTime();
@@ -444,7 +445,7 @@ void MediaManager::completeSyncWithSuccess()
     m_scanTimer.start();
 }
 
-void MediaManager::completeSyncWithError(const QString& error)
+void Service::completeSyncWithError(const QString& error)
 {
     m_syncing = false;
     m_lastError = error;

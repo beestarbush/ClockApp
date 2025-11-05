@@ -1,5 +1,5 @@
-#ifndef SERVICES_MEDIAMANAGER_H
-#define SERVICES_MEDIAMANAGER_H
+#ifndef SERVICES_MEDIA_SERVICE_H
+#define SERVICES_MEDIA_SERVICE_H
 
 #include <QDateTime>
 #include <QFileSystemWatcher>
@@ -7,10 +7,15 @@
 #include <QStringList>
 #include <QTimer>
 
-class RemoteApi;
+namespace RemoteApi
+{
+class Service;
+}
 class MediaInfo;
 
-class MediaManager : public QObject
+namespace Media
+{
+class Service : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QStringList availableMedia READ availableMedia NOTIFY availableMediaChanged)
@@ -19,7 +24,7 @@ class MediaManager : public QObject
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
 
   public:
-    explicit MediaManager(RemoteApi& remoteApi, QObject* parent = nullptr);
+    explicit Service(RemoteApi::Service& remoteApi, QObject* parent = nullptr);
 
     QStringList availableMedia() const;
     bool syncing() const;
@@ -56,7 +61,7 @@ class MediaManager : public QObject
     QFileSystemWatcher m_fileWatcher;
     QTimer m_scanTimer;
     QTimer m_syncTimer;
-    RemoteApi& m_remoteApi;
+    RemoteApi::Service& m_remoteApi;
 
     bool m_syncing;
     QDateTime m_lastSyncTime;
@@ -66,5 +71,6 @@ class MediaManager : public QObject
     QStringList m_currentServerMediaIds; // Store server media IDs for final save
     int m_activeDownloads;
 };
+} // namespace Media
 
-#endif // SERVICES_MEDIAMANAGER_H
+#endif // SERVICES_MEDIA_SERVICE_H

@@ -1,17 +1,19 @@
-#ifndef SERVICES_QMLINTERFACE_H
-#define SERVICES_QMLINTERFACE_H
+#ifndef SERVICES_QMLINTERFACE_SERVICE_H
+#define SERVICES_QMLINTERFACE_SERVICE_H
 
 #include <QElapsedTimer>
 #include <QObject>
 #include <QQmlApplicationEngine>
 
-class QmlInterface : public QObject
+namespace QmlInterface
+{
+class Service : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QStringList registeredObjectsNames MEMBER m_registeredObjectsNames CONSTANT)
 
   public:
-    QmlInterface(QObject* parent = nullptr);
+    Service(QObject* parent = nullptr);
 
     void registerObject(const char* name, QObject* object);
     template <typename T>
@@ -40,5 +42,6 @@ class QmlInterface : public QObject
   private:
     QStringList m_registeredObjectsNames;
 };
+} // namespace QmlInterface
 
-#endif // SERVICES_QMLINTERFACE_H
+#endif // SERVICES_QMLINTERFACE_SERVICE_H

@@ -110,7 +110,7 @@ Item {
                     BeeBackend.RoundAnimatedImage {
                         id: previewImage
                         anchors.fill: parent
-                        source: BeeBackend.Services.mediaManager.getMediaPath(mediaName)
+                        source: BeeBackend.Services.media.getMediaPath(mediaName)
                         opacity: 1.0
                         visible: isSelected // Only the selected image is visible (and thus playing).
 

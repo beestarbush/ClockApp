@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QString>
 
-class RemoteApi;
+namespace RemoteApi
+{
+class Service;
+}
 namespace TimeElapsed
 {
 class Application;
@@ -85,7 +88,7 @@ class Application : public QObject
     };
     Q_ENUM(MediaTarget)
 
-    Application(TimeElapsed::Application& marriedTimer, TimeElapsed::Application& kuikenTimer, Countdown::Application& countdownTimer, RemoteApi& remoteApi, QObject* parent = nullptr);
+    Application(TimeElapsed::Application& marriedTimer, TimeElapsed::Application& kuikenTimer, Countdown::Application& countdownTimer, RemoteApi::Service& remoteApi, QObject* parent = nullptr);
 
     bool isSetupComplete() const;
 
@@ -132,7 +135,7 @@ class Application : public QObject
     TimeElapsed::Application& m_marriedTimer;
     TimeElapsed::Application& m_kuikenTimer;
     Countdown::Application& m_countdownTimer;
-    RemoteApi& m_remoteApi;
+    RemoteApi::Service& m_remoteApi;
 };
 } // namespace Setup
 

@@ -1,9 +1,11 @@
-#ifndef SERVICES_VERSION_H
-#define SERVICES_VERSION_H
+#ifndef SERVICES_VERSION_SERVICE_H
+#define SERVICES_VERSION_SERVICE_H
 
 #include <QObject>
 
-class Version : public QObject
+namespace Version
+{
+class Service : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString tag READ tag CONSTANT)
@@ -12,12 +14,13 @@ class Version : public QObject
     Q_PROPERTY(QString dirty READ dirty CONSTANT)
 
   public:
-    Version(QObject* parent = nullptr);
+    Service(QObject* parent = nullptr);
 
     QString tag() const;
     QString commitHash() const;
     QString shortCommitHash() const;
     QString dirty() const;
 };
+} // namespace Version
 
-#endif // SERVICES_VERSION_H
+#endif // SERVICES_VERSION_SERVICE_H

@@ -9,56 +9,56 @@ Item {
 
         Button {
             text: "Test Info"
-            onClicked: BeeBackend.Services.notificationManager.showInfo("Information", "This is an info notification")
+            onClicked: BeeBackend.Services.notification.showInfo("Information", "This is an info notification")
         }
 
         Button {
             text: "Test Warning"
-            onClicked: BeeBackend.Services.notificationManager.showWarning("Warning", "This is a warning notification")
+            onClicked: BeeBackend.Services.notification.showWarning("Warning", "This is a warning notification")
         }
 
         Button {
             text: "Test Error"
-            onClicked: BeeBackend.Services.notificationManager.showError("Error", "This is an error notification")
+            onClicked: BeeBackend.Services.notification.showError("Error", "This is an error notification")
         }
 
         Button {
             text: "Clear All"
-            onClicked: BeeBackend.Services.notificationManager.clearAll()
+            onClicked: BeeBackend.Services.notification.clearAll()
         }
 
         Button {
             text: "Clear Inactive"
-            onClicked: BeeBackend.Services.notificationManager.clearInactive()
+            onClicked: BeeBackend.Services.notification.clearInactive()
         }
 
         Button {
             text: "Inactivate Top"
             onClicked: {
-                let highest = BeeBackend.Services.notificationManager.highestPriorityNotification
+                let highest = BeeBackend.Services.notification.highestPriorityNotification
                 if (highest && highest.isActive) {
-                    BeeBackend.Services.notificationManager.setNotificationActive(highest.id, false)
+                    BeeBackend.Services.notification.setNotificationActive(highest.id, false)
                 }
             }
         }
 
         Text {
-            text: "Total Count: " + BeeBackend.Services.notificationManager.count
+            text: "Total Count: " + BeeBackend.Services.notification.count
             color: "white"
         }
 
         Text {
-            text: "Active Count: " + BeeBackend.Services.notificationManager.activeCount
+            text: "Active Count: " + BeeBackend.Services.notification.activeCount
             color: "white"
         }
 
         Text {
-            text: "Has Active: " + BeeBackend.Services.notificationManager.hasNotifications
+            text: "Has Active: " + BeeBackend.Services.notification.hasNotifications
             color: "white"
         }
 
         Text {
-            text: "Is Visible: " + BeeBackend.Services.notificationManager.isVisible
+            text: "Is Visible: " + BeeBackend.Services.notification.isVisible
             color: "white"
         }
     }

@@ -1,5 +1,5 @@
-#include "RemoteApi.h"
-#include "remoteapi/SerializableObject.h"
+#include "Service.h"
+#include "services/remoteapi/SerializableObject.h"
 
 #include "hal/Network.h"
 
@@ -11,6 +11,7 @@
 #include <QSettings>
 #include <QSslSocket>
 #include <QTimer>
+using namespace RemoteApi;
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("remote-api");
@@ -21,7 +22,7 @@ const QString PROPERTY_SERVER_URL_DEFAULT = QStringLiteral("https://bijsterbosch
 const QString PROPERTY_DEVICE_ID_KEY = QStringLiteral("device-id");
 const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("SN-XXXX");
 
-RemoteApi::RemoteApi(Network& network, QObject* parent)
+Service::Service(Network& network, QObject* parent)
     : QObject(parent),
       m_network(network),
       m_networkManager(this),
@@ -59,27 +60,27 @@ RemoteApi::RemoteApi(Network& network, QObject* parent)
     });
 }
 
-bool RemoteApi::enabled() const
+bool Service::enabled() const
 {
     return m_enabled;
 }
 
-QString RemoteApi::serverUrl() const
+QString Service::serverUrl() const
 {
     return m_serverUrl;
 }
 
-QString RemoteApi::deviceId() const
+QString Service::deviceId() const
 {
     return m_deviceId;
 }
 
-bool RemoteApi::connected() const
+bool Service::connected() const
 {
     return m_connected;
 }
 
-void RemoteApi::setEnabled(bool enabled)
+void Service::setEnabled(bool enabled)
 {
     if (m_enabled == enabled) {
         return;
@@ -90,7 +91,7 @@ void RemoteApi::setEnabled(bool enabled)
     emit enabledChanged();
 }
 
-void RemoteApi::setServerUrl(const QString& url)
+void Service::setServerUrl(const QString& url)
 {
     if (m_serverUrl == url) {
         return;
@@ -102,7 +103,7 @@ void RemoteApi::setServerUrl(const QString& url)
     setConnected(false);
 }
 
-void RemoteApi::setDeviceId(const QString& id)
+void Service::setDeviceId(const QString& id)
 {
     if (m_deviceId == id) {
         return;
@@ -113,7 +114,7 @@ void RemoteApi::setDeviceId(const QString& id)
     emit deviceIdChanged();
 }
 
-void RemoteApi::get(const QString& endpoint, ResponseCallback callback)
+void Service::get(const QString& endpoint, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -145,7 +146,7 @@ void RemoteApi::get(const QString& endpoint, ResponseCallback callback)
     qDebug() << "GET:" << request.url().toString();
 }
 
-void RemoteApi::post(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
+void Service::post(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -175,7 +176,7 @@ void RemoteApi::post(const QString& endpoint, const QJsonObject& payload, Respon
     qDebug() << "POST:" << request.url().toString();
 }
 
-void RemoteApi::put(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
+void Service::put(const QString& endpoint, const QJsonObject& payload, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -205,7 +206,7 @@ void RemoteApi::put(const QString& endpoint, const QJsonObject& payload, Respons
     qDebug() << "PUT:" << request.url().toString();
 }
 
-void RemoteApi::deleteRequest(const QString& endpoint, ResponseCallback callback)
+void Service::deleteRequest(const QString& endpoint, ResponseCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -230,7 +231,7 @@ void RemoteApi::deleteRequest(const QString& endpoint, ResponseCallback callback
     qDebug() << "DELETE:" << request.url().toString();
 }
 
-void RemoteApi::download(const QString& endpoint, DataCallback callback)
+void Service::download(const QString& endpoint, DataCallback callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         if (callback) {
@@ -255,7 +256,7 @@ void RemoteApi::download(const QString& endpoint, DataCallback callback)
     qDebug() << "DOWNLOAD:" << request.url().toString();
 }
 
-void RemoteApi::createObject(const SerializableObject& object, SuccessCallback callback)
+void Service::createObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -282,7 +283,7 @@ void RemoteApi::createObject(const SerializableObject& object, SuccessCallback c
     });
 }
 
-void RemoteApi::updateObject(const SerializableObject& object, SuccessCallback callback)
+void Service::updateObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -309,7 +310,7 @@ void RemoteApi::updateObject(const SerializableObject& object, SuccessCallback c
     });
 }
 
-void RemoteApi::deleteObject(const SerializableObject& object, SuccessCallback callback)
+void Service::deleteObject(const SerializableObject& object, SuccessCallback callback)
 {
     if (!object.isValid()) {
         if (callback) {
@@ -335,7 +336,7 @@ void RemoteApi::deleteObject(const SerializableObject& object, SuccessCallback c
     });
 }
 
-void RemoteApi::testConnection(std::function<void(bool, const QString&)> callback)
+void Service::testConnection(std::function<void(bool, const QString&)> callback)
 {
     if (!m_enabled || m_serverUrl.isEmpty()) {
         QString error = "Server not configured";
@@ -372,7 +373,7 @@ void RemoteApi::testConnection(std::function<void(bool, const QString&)> callbac
     });
 }
 
-void RemoteApi::loadProperties()
+void Service::loadProperties()
 {
     QSettings settings;
     settings.beginGroup(PROPERTIES_GROUP_NAME);
@@ -382,7 +383,7 @@ void RemoteApi::loadProperties()
     settings.endGroup();
 }
 
-void RemoteApi::saveProperty(const QString& key, const QVariant& value)
+void Service::saveProperty(const QString& key, const QVariant& value)
 {
     QSettings settings;
     settings.beginGroup(PROPERTIES_GROUP_NAME);
@@ -390,7 +391,7 @@ void RemoteApi::saveProperty(const QString& key, const QVariant& value)
     settings.endGroup();
 }
 
-QNetworkRequest RemoteApi::createRequest(const QString& endpoint)
+QNetworkRequest Service::createRequest(const QString& endpoint)
 {
     QUrl url(m_serverUrl + endpoint);
     QNetworkRequest request(url);
@@ -399,7 +400,7 @@ QNetworkRequest RemoteApi::createRequest(const QString& endpoint)
     return request;
 }
 
-void RemoteApi::handleResponse(QNetworkReply* reply)
+void Service::handleResponse(QNetworkReply* reply)
 {
     reply->deleteLater();
 
@@ -457,7 +458,7 @@ void RemoteApi::handleResponse(QNetworkReply* reply)
     }
 }
 
-void RemoteApi::setConnected(bool connected)
+void Service::setConnected(bool connected)
 {
     if (m_connected != connected) {
         m_connected = connected;

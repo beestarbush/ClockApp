@@ -3,42 +3,42 @@
 
 #include <QObject>
 
-#include "DateTime.h"
-#include "MediaManager.h"
-#include "NotificationManager.h"
-#include "QmlInterface.h"
-#include "RemoteApi.h"
-#include "SystemMonitor.h"
-#include "Version.h"
+#include "datetime/Service.h"
+#include "media/Service.h"
+#include "notification/Service.h"
+#include "qmlinterface/Service.h"
+#include "remoteapi/Service.h"
+#include "systemmonitor/Service.h"
+#include "version/Service.h"
 
 class HAL;
 
 class Services : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(MediaManager* mediaManager MEMBER m_mediaManager CONSTANT)
-    Q_PROPERTY(DateTime* dateTime MEMBER m_dateTime CONSTANT)
-    Q_PROPERTY(NotificationManager* notificationManager MEMBER m_notificationManager CONSTANT)
-    Q_PROPERTY(QmlInterface* qmlInterface MEMBER m_qmlInterface CONSTANT)
-    Q_PROPERTY(Version* version MEMBER m_version CONSTANT)
-    Q_PROPERTY(RemoteApi* remoteApi MEMBER m_remoteApi CONSTANT)
-    Q_PROPERTY(SystemMonitor* systemMonitor MEMBER m_systemMonitor CONSTANT)
+    Q_PROPERTY(Media::Service* media MEMBER m_media CONSTANT)
+    Q_PROPERTY(DateTime::Service* dateTime MEMBER m_dateTime CONSTANT)
+    Q_PROPERTY(Notification::Service* notification MEMBER m_notification CONSTANT)
+    Q_PROPERTY(QmlInterface::Service* qmlInterface MEMBER m_qmlInterface CONSTANT)
+    Q_PROPERTY(Version::Service* version MEMBER m_version CONSTANT)
+    Q_PROPERTY(RemoteApi::Service* remoteApi MEMBER m_remoteApi CONSTANT)
+    Q_PROPERTY(SystemMonitor::Service* systemMonitor MEMBER m_systemMonitor CONSTANT)
 
   public:
     friend class Applications;
 
     Services(HAL& hal, QObject* parent = nullptr);
 
-    QmlInterface* qmlInterface() const;
+    QmlInterface::Service* qmlInterface() const;
 
   private:
-    Version* m_version;
-    RemoteApi* m_remoteApi;
-    NotificationManager* m_notificationManager;
-    MediaManager* m_mediaManager;
-    SystemMonitor* m_systemMonitor;
-    DateTime* m_dateTime;
-    QmlInterface* m_qmlInterface;
+    Version::Service* m_version;
+    RemoteApi::Service* m_remoteApi;
+    Notification::Service* m_notification;
+    Media::Service* m_media;
+    SystemMonitor::Service* m_systemMonitor;
+    DateTime::Service* m_dateTime;
+    QmlInterface::Service* m_qmlInterface;
 };
 
 #endif // SERVICES_H
