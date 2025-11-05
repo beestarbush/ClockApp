@@ -16,8 +16,14 @@ namespace Notification
 {
 class Service;
 }
-class Temperature;
-class System;
+namespace Temperature
+{
+class Driver;
+}
+namespace System
+{
+class Driver;
+}
 
 namespace SystemMonitor
 {
@@ -33,10 +39,10 @@ class Service : public QObject
 
   public:
     explicit Service(RemoteApi::Service& remoteApi,
-                     Temperature& temperature,
-                     System& system,
+                     Temperature::Driver& temperature,
+                     System::Driver& system,
                      Version::Service& version,
-                     Notification::Service& notification,
+                     Notification::Service& notificationManager,
                      QObject* parent = nullptr);
 
   private:
@@ -44,10 +50,10 @@ class Service : public QObject
     void report();
 
     RemoteApi::Service& m_remoteApi;
-    Temperature& m_temperature;
-    System& m_system;
+    Temperature::Driver& m_temperature;
+    System::Driver& m_system;
     Version::Service& m_version;
-    Notification::Service& m_notification;
+    Notification::Service& m_notificationManager;
 
     QTimer m_monitorTimer;
     QTimer m_reportTimer;

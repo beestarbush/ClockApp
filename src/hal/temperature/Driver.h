@@ -1,17 +1,19 @@
-#ifndef HAL_TEMPERATURE_H
-#define HAL_TEMPERATURE_H
+#ifndef HAL_TEMPERATURE_DRIVER_H
+#define HAL_TEMPERATURE_DRIVER_H
 
 #include <QObject>
 #include <QTimer>
 
-class Temperature : public QObject
+namespace Temperature
+{
+class Driver : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qint32 processorTemperature READ processorTemperature NOTIFY processorTemperatureChanged)
     Q_PROPERTY(bool valid READ valid NOTIFY validChanged)
 
   public:
-    Temperature(QObject* parent = nullptr);
+    Driver(QObject* parent = nullptr);
 
     qint32 processorTemperature() const;
     bool valid() const;
@@ -27,5 +29,6 @@ class Temperature : public QObject
     qint32 m_processorTemperature;
     bool m_valid;
 };
+} // namespace Temperature
 
-#endif // HAL_TEMPERATURE_H
+#endif // HAL_TEMPERATURE_DRIVER_H

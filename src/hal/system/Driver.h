@@ -1,17 +1,19 @@
-#ifndef HAL_SYSTEM_H
-#define HAL_SYSTEM_H
+#ifndef HAL_SYSTEM_DRIVER_H
+#define HAL_SYSTEM_DRIVER_H
 
 #include <QObject>
 #include <QProcess>
 #include <QTimer>
 
-class System : public QObject
+namespace System
+{
+class Driver : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(uint64_t uptimeSeconds READ uptimeSeconds NOTIFY uptimeSecondsChanged)
 
   public:
-    System(QObject* parent = nullptr);
+    Driver(QObject* parent = nullptr);
 
     Q_INVOKABLE void shutdown();
     Q_INVOKABLE void reboot();
@@ -30,5 +32,6 @@ class System : public QObject
     QTimer m_uptimeTimer;
     uint64_t m_uptimeSeconds;
 };
+} // namespace System
 
-#endif // HAL_SYSTEM_H
+#endif // HAL_SYSTEM_DRIVER_H

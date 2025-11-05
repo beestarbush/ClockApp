@@ -2,10 +2,10 @@
 
 HAL::HAL(QObject* parent)
     : QObject(parent),
-      m_storage(new Storage(this)),
-      m_network(new Network(this)),
-      m_screen(new Screen(this)),
-      m_system(new System(this)),
-      m_temperature(new Temperature(this))
+      m_storage(new Storage::Driver(this)),
+      m_network(new Network::Driver(this)),
+      m_screen(new Screen::Driver(this)),
+      m_system(new System::Driver(this)),
+      m_temperature(new Temperature::Driver(this))
 {
 }

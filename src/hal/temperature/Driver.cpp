@@ -1,6 +1,7 @@
-#include "Temperature.h"
+#include "Driver.h"
 #include <QDebug>
 #include <QFile>
+using namespace Temperature;
 
 #ifdef PLATFORM_IS_TARGET
 const QString PROCESSOR_TEMPERATURE_INTERFACE_NAME = QStringLiteral("/sys/class/thermal/thermal_zone0/hwmon0/temp1_input");
@@ -9,7 +10,7 @@ const QString PROCESSOR_TEMPERATURE_INTERFACE_NAME = QStringLiteral("/tmp/proces
 #endif
 constexpr quint16 REFRESH_INTERVAL_MS = 5 * 1000; // Refresh every 5 seconds
 
-Temperature::Temperature(QObject* parent)
+Driver::Driver(QObject* parent)
     : QObject(parent),
       m_refreshTimer(this),
       m_processorTemperature(0),
@@ -17,21 +18,21 @@ Temperature::Temperature(QObject* parent)
 {
     update();
 
-    connect(&m_refreshTimer, &QTimer::timeout, this, &Temperature::update);
+    connect(&m_refreshTimer, &QTimer::timeout, this, &Driver::update);
     m_refreshTimer.start(REFRESH_INTERVAL_MS);
 }
 
-qint32 Temperature::processorTemperature() const
+qint32 Driver::processorTemperature() const
 {
     return m_processorTemperature;
 }
 
-bool Temperature::valid() const
+bool Driver::valid() const
 {
     return m_valid;
 }
 
-void Temperature::update()
+void Driver::update()
 {
     QFile file(PROCESSOR_TEMPERATURE_INTERFACE_NAME);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {

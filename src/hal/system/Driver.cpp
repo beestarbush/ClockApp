@@ -1,5 +1,6 @@
-#include "System.h"
+#include "Driver.h"
 #include <QDebug>
+using namespace System;
 
 #ifdef PLATFORM_IS_TARGET
 const QString SHUTDOWN_COMMAND = QStringLiteral("shutdown");
@@ -12,7 +13,7 @@ const QString REBOOT_COMMAND = QStringLiteral("reboot");
 #endif
 constexpr int UPTIME_POLL_INTERVAL_MS = 1000; // 1 second
 
-System::System(QObject* parent)
+Driver::Driver(QObject* parent)
     : QObject(parent),
       m_shutdownProcess(this),
       m_rebootProcess(this),
@@ -28,28 +29,28 @@ System::System(QObject* parent)
     m_uptimeTimer.start();
 }
 
-void System::shutdown()
+void Driver::shutdown()
 {
-    connect(&m_shutdownProcess, &QProcess::finished, this, &System::onShutdownFinished);
+    connect(&m_shutdownProcess, &QProcess::finished, this, &Driver::onShutdownFinished);
     m_shutdownProcess.start(SHUTDOWN_COMMAND, SHUTDOWN_ARGUMENTS);
     qDebug() << "System shutdown initiated.";
 }
 
-void System::reboot()
+void Driver::reboot()
 {
-    connect(&m_rebootProcess, &QProcess::finished, this, &System::onRebootFinished);
+    connect(&m_rebootProcess, &QProcess::finished, this, &Driver::onRebootFinished);
     m_rebootProcess.start(REBOOT_COMMAND);
     qDebug() << "System reboot initiated.";
 }
 
-uint64_t System::uptimeSeconds() const
+uint64_t Driver::uptimeSeconds() const
 {
     return m_uptimeSeconds;
 }
 
-void System::onShutdownFinished()
+void Driver::onShutdownFinished()
 {
-    disconnect(&m_shutdownProcess, &QProcess::finished, this, &System::onShutdownFinished);
+    disconnect(&m_shutdownProcess, &QProcess::finished, this, &Driver::onShutdownFinished);
     if (m_shutdownProcess.exitCode() != 0) {
         qWarning() << "Shutdown command failed:" << m_shutdownProcess.errorString();
         return;
@@ -57,9 +58,9 @@ void System::onShutdownFinished()
     qDebug() << "Shutdown process completed.";
 }
 
-void System::onRebootFinished()
+void Driver::onRebootFinished()
 {
-    disconnect(&m_rebootProcess, &QProcess::finished, this, &System::onRebootFinished);
+    disconnect(&m_rebootProcess, &QProcess::finished, this, &Driver::onRebootFinished);
     if (m_rebootProcess.exitCode() != 0) {
         qWarning() << "Reboot command failed:" << m_rebootProcess.errorString();
         return;

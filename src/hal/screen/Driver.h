@@ -1,15 +1,17 @@
-#ifndef HAL_SCREEN_H
-#define HAL_SCREEN_H
+#ifndef HAL_SCREEN_DRIVER_H
+#define HAL_SCREEN_DRIVER_H
 
 #include <QObject>
 
-class Screen : public QObject
+namespace Screen
+{
+class Driver : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qint8 brightness READ brightness WRITE setBrightness NOTIFY brightnessChanged)
 
   public:
-    Screen(QObject* parent = nullptr);
+    Driver(QObject* parent = nullptr);
 
     qint8 brightness() const;
     void setBrightness(const qint8 value);
@@ -24,5 +26,6 @@ class Screen : public QObject
     void loadProperties();
     void saveProperty(const QString& key, const QVariant& value);
 };
+} // namespace Screen
 
-#endif // HAL_SCREEN_H
+#endif // HAL_SCREEN_DRIVER_H

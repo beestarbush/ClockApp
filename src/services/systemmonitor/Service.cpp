@@ -1,7 +1,7 @@
 #include "Service.h"
 #include "git_version.h"
-#include "hal/System.h"
-#include "hal/Temperature.h"
+#include "hal/system/Driver.h"
+#include "hal/temperature/Driver.h"
 #include "services/notification/Service.h"
 #include "services/remoteapi/DeviceStatus.h"
 #include "services/remoteapi/Service.h"
@@ -14,17 +14,17 @@ constexpr int MONITOR_INTERVAL = 10 * 1000;    // 10 seconds
 constexpr int REPORT_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 Service::Service(RemoteApi::Service& remoteApi,
-                 Temperature& temperature,
-                 System& system,
+                 Temperature::Driver& temperature,
+                 System::Driver& system,
                  Version::Service& version,
-                 Notification::Service& notification,
+                 Notification::Service& notificationManager,
                  QObject* parent)
     : QObject(parent),
       m_remoteApi(remoteApi),
       m_temperature(temperature),
       m_system(system),
       m_version(version),
-      m_notification(notification),
+      m_notificationManager(notificationManager),
       m_isReporting(false)
 {
     // Configure timer
@@ -53,7 +53,7 @@ Service::Service(RemoteApi::Service& remoteApi,
 void Service::monitor()
 {
     if (m_temperature.valid() && m_temperature.processorTemperature() > 85000) { // 85.0 °C
-        m_notification.showWarning(
+        m_notificationManager.showWarning(
             QStringLiteral("High CPU temperature"),
             QStringLiteral("The CPU temperature is too high. Please ensure proper cooling."));
     }

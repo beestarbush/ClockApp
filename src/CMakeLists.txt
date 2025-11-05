@@ -13,16 +13,16 @@ qt_add_executable(clockapp
     git_version.h
     hal/HAL.cpp
     hal/HAL.h
-    hal/Network.cpp
-    hal/Network.h
-    hal/Screen.cpp
-    hal/Screen.h
-    hal/Storage.cpp
-    hal/Storage.h
-    hal/System.cpp
-    hal/System.h
-    hal/Temperature.cpp
-    hal/Temperature.h
+    hal/network/Driver.cpp
+    hal/network/Driver.h
+    hal/screen/Driver.cpp
+    hal/screen/Driver.h
+    hal/storage/Driver.cpp
+    hal/storage/Driver.h
+    hal/system/Driver.cpp
+    hal/system/Driver.h
+    hal/temperature/Driver.cpp
+    hal/temperature/Driver.h
     qmlcomponents/QmlUtils.cpp
     qmlcomponents/QmlUtils.h
     qmlcomponents/RoundAnimatedImage.cpp

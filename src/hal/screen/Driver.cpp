@@ -1,5 +1,6 @@
-#include "Screen.h"
+#include "Driver.h"
 #include <QDebug>
+using namespace Screen;
 #include <QFile>
 #include <QSettings>
 
@@ -12,7 +13,7 @@ const QString PROPERTY_GROUP_NAME = QStringLiteral("screen");
 const QString PROPERTY_BRIGHTNESS_KEY = QStringLiteral("brightness");
 constexpr quint8 PROPERTY_BRIGHTNESS_DEFAULT = 100;
 
-Screen::Screen(QObject* parent)
+Driver::Driver(QObject* parent)
     : QObject(parent),
       m_brightness(0)
 {
@@ -20,12 +21,12 @@ Screen::Screen(QObject* parent)
     writeBrightnessToFile(BRIGHTNESS_FILE_PATH, m_brightness);
 }
 
-qint8 Screen::brightness() const
+qint8 Driver::brightness() const
 {
     return m_brightness;
 }
 
-void Screen::setBrightness(const qint8 value)
+void Driver::setBrightness(const qint8 value)
 {
     if (m_brightness != value) {
         m_brightness = value;
@@ -35,7 +36,7 @@ void Screen::setBrightness(const qint8 value)
     }
 }
 
-qint8 Screen::readBrightnessFromFile(const QString& filePath) const
+qint8 Driver::readBrightnessFromFile(const QString& filePath) const
 {
     QFile file(filePath);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -55,7 +56,7 @@ qint8 Screen::readBrightnessFromFile(const QString& filePath) const
     return 0; // Default value if reading fails
 }
 
-void Screen::writeBrightnessToFile(const QString& filePath, qint8 value) const
+void Driver::writeBrightnessToFile(const QString& filePath, qint8 value) const
 {
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -71,7 +72,7 @@ void Screen::writeBrightnessToFile(const QString& filePath, qint8 value) const
     }
 }
 
-void Screen::loadProperties()
+void Driver::loadProperties()
 {
     static QSettings settings;
     settings.beginGroup(PROPERTY_GROUP_NAME);
@@ -81,7 +82,7 @@ void Screen::loadProperties()
     settings.endGroup();
 }
 
-void Screen::saveProperty(const QString& key, const QVariant& value)
+void Driver::saveProperty(const QString& key, const QVariant& value)
 {
     static QSettings settings;
     settings.beginGroup(PROPERTY_GROUP_NAME);

@@ -1,5 +1,6 @@
-#include "Storage.h"
+#include "Driver.h"
 #include <QSettings>
+using namespace Storage;
 
 #ifdef PLATFORM_IS_TARGET
 const QString SETTINGS_PATH = QStringLiteral("/usr/share/");
@@ -7,7 +8,7 @@ const QString SETTINGS_PATH = QStringLiteral("/usr/share/");
 const QString SETTINGS_PATH = QStringLiteral("/workdir/build");
 #endif
 
-Storage::Storage(QObject* parent)
+Driver::Driver(QObject* parent)
     : QObject(parent)
 {
     QSettings::setDefaultFormat(QSettings::NativeFormat);

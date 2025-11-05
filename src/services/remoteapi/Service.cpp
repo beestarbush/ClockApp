@@ -1,7 +1,7 @@
 #include "Service.h"
 #include "services/remoteapi/SerializableObject.h"
 
-#include "hal/Network.h"
+#include "hal/network/Driver.h"
 
 #include <QDebug>
 #include <QHttpMultiPart>
@@ -22,7 +22,7 @@ const QString PROPERTY_SERVER_URL_DEFAULT = QStringLiteral("https://bijsterbosch
 const QString PROPERTY_DEVICE_ID_KEY = QStringLiteral("device-id");
 const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("SN-XXXX");
 
-Service::Service(Network& network, QObject* parent)
+Service::Service(Network::Driver& network, QObject* parent)
     : QObject(parent),
       m_network(network),
       m_networkManager(this),
@@ -50,7 +50,7 @@ Service::Service(Network& network, QObject* parent)
     }
 
     // When network connectivity changes, retest connection if needed.
-    connect(&m_network, &Network::connectedChanged, this, [this]() {
+    connect(&m_network, &Network::Driver::connectedChanged, this, [this]() {
         if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
             testConnection();
         }
