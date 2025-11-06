@@ -259,7 +259,7 @@ PanelContainer {
             id: carousel
             anchors.fill: parent
             anchors.centerIn: parent
-            media: BeeBackend.Services.media.availableMedia
+            media: BeeBackend.Services.media.model
 
             // Function to update selected media based on current mode
             function updateSelectedMedia() {

@@ -24,6 +24,7 @@ constexpr int INITIAL_SYNC_DELAY_MS = 5000;     // 5 seconds
 
 Service::Service(RemoteApi::Service& remoteApi, QObject* parent)
     : QObject(parent),
+      m_model(this),
       m_fileWatcher(this),
       m_scanTimer(this),
       m_syncTimer(this),
@@ -70,9 +71,9 @@ Service::Service(RemoteApi::Service& remoteApi, QObject* parent)
     }
 }
 
-QStringList Service::availableMedia() const
+Model* Service::model()
 {
-    return m_availableMedia;
+    return &m_model;
 }
 
 bool Service::syncing() const
@@ -196,11 +197,8 @@ void Service::scanDirectory()
         }
     }
 
-    // Update available media if changed
-    if (newMedia != m_availableMedia) {
-        m_availableMedia = newMedia;
-        emit availableMediaChanged();
-    }
+    // Update model with new media list
+    m_model.setMedia(newMedia, mediaDir);
 }
 
 bool Service::isValidFile(const QString& filePath) const

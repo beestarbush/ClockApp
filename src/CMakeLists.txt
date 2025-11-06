@@ -29,6 +29,10 @@ qt_add_executable(clockapp
     qmlcomponents/RoundAnimatedImage.h
     services/datetime/Service.cpp
     services/datetime/Service.h
+    services/media/Item.cpp
+    services/media/Item.h
+    services/media/Model.cpp
+    services/media/Model.h
     services/media/Service.cpp
     services/media/Service.h
     services/notification/Service.cpp

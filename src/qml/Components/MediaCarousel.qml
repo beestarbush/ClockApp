@@ -7,17 +7,21 @@ import Bee as BeeBackend
 Item {
     id: mediaCarousel
 
-    property var media: []
+    property var media: null
     property int currentIndex: 0
-    property string selectedMedia: media.length > 0 ? media[currentIndex] : ""
+    property string selectedMedia: {
+        if (!media || !media.get) return ""
+        var item = media.get(currentIndex)
+        return item ? item.filename : ""
+    }
     property int selectedIndex: 0
 
     signal mediaSelected(string mediaName)
 
     // Watch for media changes and adjust currentIndex if needed
     onMediaChanged: {
-        if (currentIndex >= media.length) {
-            currentIndex = Math.max(0, media.length - 1)
+        if (currentIndex >= media.count) {
+            currentIndex = Math.max(0, media.count - 1)
         }
     }
 
@@ -32,7 +36,7 @@ Item {
     // animates the flickable to that page and emits the `mediaSelected` signal.
     // If the name is not found, nothing happens.
     function selectMediaByName(name) {
-        if (!name) return;
+        if (!name || !media) return;
 
         // Extract filename from possible full paths or URLs
         var base = name;
@@ -47,10 +51,9 @@ Item {
         var hashIdx = base.indexOf('#');
         if (hashIdx !== -1) base = base.substring(0, hashIdx);
 
-        // Now find the index by filename
+        // Find the index using the model's indexOf method
         var idx = media.indexOf(base);
         if (idx === -1) {
-            // Fallback: try matching the full original string (in case model stores full paths)
             idx = media.indexOf(name);
         }
         if (idx === -1) return;
@@ -73,7 +76,7 @@ Item {
         color: Color.lightGray
         font.pixelSize: Value.defaultTextSize
         horizontalAlignment: Text.AlignHCenter
-        visible: media.length === 0
+        visible: !media || media.count === 0
     }
 
     // Main flickable for swiping through media
@@ -86,9 +89,9 @@ Item {
         flickDeceleration: 1500
         boundsBehavior: Flickable.StopAtBounds
         clip: true
-        interactive: media.length > 1
+        interactive: media && media.count > 1
         
-        visible: media.length > 0
+        visible: media && media.count > 0
 
         Row {
             id: mediaRow
@@ -96,7 +99,7 @@ Item {
             spacing: 0
 
             Repeater {
-                model: media
+                model: mediaCarousel.media
 
                 delegate: Item {
                     id: mediaItem
@@ -104,7 +107,7 @@ Item {
                     height: flickable.height
 
                     property bool isSelected: index === currentIndex
-                    property string mediaName: modelData
+                    property string mediaName: model.filename
 
                     // Full screen media preview
                     BeeBackend.RoundAnimatedImage {
@@ -112,7 +115,6 @@ Item {
                         anchors.fill: parent
                         source: BeeBackend.Services.media.getMediaPath(mediaName)
                         opacity: 1.0
-                        visible: isSelected // Only the selected image is visible (and thus playing).
 
                         Behavior on opacity {
                             NumberAnimation { duration: 300 }
@@ -141,7 +143,7 @@ Item {
         // Snap to pages when flicking stops
         onMovementEnded: {
             var targetIndex = Math.round(contentX / width)
-            targetIndex = Math.max(0, Math.min(targetIndex, media.length - 1))
+            targetIndex = Math.max(0, Math.min(targetIndex, media.count - 1))
             
             if (targetIndex !== currentIndex) {
                 currentIndex = targetIndex
@@ -172,7 +174,7 @@ Item {
         radius: width / 2
         color: Color.black
         opacity: currentIndex > 0 ? 0.7 : 0.3
-        visible: media.length > 1
+        visible: media && media.count > 1
 
         Text {
             anchors.centerIn: parent
@@ -202,8 +204,8 @@ Item {
         height: width
         radius: width / 2
         color: Color.black
-        opacity: currentIndex < media.length - 1 ? 0.7 : 0.3
-        visible: media.length > 1
+        opacity: media && currentIndex < media.count - 1 ? 0.7 : 0.3
+        visible: media && media.count > 1
 
         Text {
             anchors.centerIn: parent
@@ -215,9 +217,9 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            enabled: currentIndex < media.length - 1
+            enabled: media && currentIndex < media.count - 1
             onClicked: {
-                currentIndex = Math.min(media.length - 1, currentIndex + 1)
+                currentIndex = Math.min(media.count - 1, currentIndex + 1)
                 snapAnimation.to = currentIndex * flickable.width
                 snapAnimation.start()
             }

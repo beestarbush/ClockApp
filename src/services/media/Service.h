@@ -1,6 +1,7 @@
 #ifndef SERVICES_MEDIA_SERVICE_H
 #define SERVICES_MEDIA_SERVICE_H
 
+#include "Model.h"
 #include <QDateTime>
 #include <QFileSystemWatcher>
 #include <QObject>
@@ -18,7 +19,7 @@ namespace Services::Media
 class Service : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList availableMedia READ availableMedia NOTIFY availableMediaChanged)
+    Q_PROPERTY(Media::Model* model READ model CONSTANT)
     Q_PROPERTY(bool syncing READ syncing NOTIFY syncingChanged)
     Q_PROPERTY(QDateTime lastSyncTime READ lastSyncTime NOTIFY lastSyncTimeChanged)
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
@@ -26,7 +27,7 @@ class Service : public QObject
   public:
     explicit Service(Services::RemoteApi::Service& remoteApi, QObject* parent = nullptr);
 
-    QStringList availableMedia() const;
+    Model* model();
     bool syncing() const;
     QDateTime lastSyncTime() const;
     QString lastError() const;
@@ -35,7 +36,6 @@ class Service : public QObject
     Q_INVOKABLE void triggerSync();
 
   signals:
-    void availableMediaChanged();
     void syncingChanged();
     void lastSyncTimeChanged();
     void lastErrorChanged();
@@ -57,7 +57,7 @@ class Service : public QObject
     void completeSyncWithSuccess();
     void completeSyncWithError(const QString& error);
 
-    QStringList m_availableMedia;
+    Model m_model;
     QFileSystemWatcher m_fileWatcher;
     QTimer m_scanTimer;
     QTimer m_syncTimer;
