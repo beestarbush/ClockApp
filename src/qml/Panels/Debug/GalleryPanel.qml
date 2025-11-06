@@ -84,7 +84,7 @@ Item {
                 NotificationCarousel {
                     anchors.fill: parent
                 
-                    model: Services.notification
+                    model: Services.notification.model
                 }
             }
 

@@ -50,6 +50,8 @@ qt_add_executable(clockapp
     services/remoteapi/MediaList.h
     services/notification/Item.cpp
     services/notification/Item.h
+    services/notification/Model.cpp
+    services/notification/Model.h
     services/notification/Service.cpp
     services/notification/Service.h
     services/Container.cpp

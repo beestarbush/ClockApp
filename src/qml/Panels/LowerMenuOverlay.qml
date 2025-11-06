@@ -355,7 +355,7 @@ PanelContainer {
         NotificationCarousel {
             anchors.fill: parent
             anchors.centerIn: parent
-            model: BeeBackend.Services.notification
+            model: BeeBackend.Services.notification.model
         }
     }
 

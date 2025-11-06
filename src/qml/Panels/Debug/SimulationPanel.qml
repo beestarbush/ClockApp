@@ -24,36 +24,36 @@ Item {
 
         Button {
             text: "Clear All"
-            onClicked: BeeBackend.Services.notification.clearAll()
+            onClicked: BeeBackend.Services.notification.model.clearAll()
         }
 
         Button {
             text: "Clear Inactive"
-            onClicked: BeeBackend.Services.notification.clearInactive()
+            onClicked: BeeBackend.Services.notification.model.clearInactive()
         }
 
         Button {
             text: "Inactivate Top"
             onClicked: {
-                let highest = BeeBackend.Services.notification.highestPriorityNotification
+                let highest = BeeBackend.Services.notification.model.highestPriorityNotification
                 if (highest && highest.isActive) {
-                    BeeBackend.Services.notification.setNotificationActive(highest.id, false)
+                    BeeBackend.Services.notification.model.setNotificationActive(highest.id, false)
                 }
             }
         }
 
         Text {
-            text: "Total Count: " + BeeBackend.Services.notification.count
+            text: "Total Count: " + BeeBackend.Services.notification.model.count
             color: "white"
         }
 
         Text {
-            text: "Active Count: " + BeeBackend.Services.notification.activeCount
+            text: "Active Count: " + BeeBackend.Services.notification.model.activeCount
             color: "white"
         }
 
         Text {
-            text: "Has Active: " + BeeBackend.Services.notification.hasNotifications
+            text: "Has Active: " + BeeBackend.Services.notification.model.hasNotifications
             color: "white"
         }
 
