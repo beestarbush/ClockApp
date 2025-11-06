@@ -2,6 +2,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import Components
+
 Item {
     id: colorWheel
     width: 300
@@ -17,8 +19,14 @@ Item {
 
     onStartColorChanged: {
         rotationAngle = ((360 - Math.round(startColor.hslHue * 360) + 90 + 180) % 360)
-        saturation = startColor.hslSaturation
-        lightness = startColor.hslLightness
+        // Only update saturation and lightness if they're not extreme values
+        // This ensures the wheel remains visible even when starting from white/black
+        if (startColor.hslSaturation > 0.1) {
+            saturation = startColor.hslSaturation
+        }
+        if (startColor.hslLightness > 0.1 && startColor.hslLightness < 0.9) {
+            lightness = startColor.hslLightness
+        }
     }
 
     Canvas {

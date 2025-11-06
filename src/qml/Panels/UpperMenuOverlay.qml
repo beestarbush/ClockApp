@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 PanelContainer {
     id: overlay
@@ -19,65 +19,65 @@ PanelContainer {
             id: mainRingMenu
             anchors.centerIn: parent
             anchors.fill: parent
-            model: BeeBackend.Applications.menu.main
+            model: Backend.Applications.menu.main
 
             onItemSelected: (index) => {
-                BeeBackend.Applications.menu.main.get(index).trigger()
+                Backend.Applications.menu.main.get(index).trigger()
             }
 
             RingMenu {
                 id: settingsRingMenu
-                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainSettings
+                visible: mainRingMenu.selectedIndex === Backend.MenuEnums.MainSettings
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: BeeBackend.Applications.menu.settings
+                model: Backend.Applications.menu.settings
 
                 onItemSelected: (index) => {
-                    BeeBackend.Applications.menu.settings.get(index).trigger()
+                    Backend.Applications.menu.settings.get(index).trigger()
                 }
 
                 onVisibleChanged: {
                     if (visible && settingsRingMenu.selectedIndex >= 0) {
-                        BeeBackend.Applications.menu.settings.get(settingsRingMenu.selectedIndex).trigger()
+                        Backend.Applications.menu.settings.get(settingsRingMenu.selectedIndex).trigger()
                     }
                 }
             }
 
             RingMenu {
                 id: colorsRingMenu
-                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainColors
+                visible: mainRingMenu.selectedIndex === Backend.MenuEnums.MainColors
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: BeeBackend.Applications.menu.colors
+                model: Backend.Applications.menu.colors
 
                 onItemSelected: (index) => {
-                    BeeBackend.Applications.menu.colors.get(index).trigger()
+                    Backend.Applications.menu.colors.get(index).trigger()
                 }
 
                 onVisibleChanged: {
                     if (visible && colorsRingMenu.selectedIndex >= 0) {
-                        BeeBackend.Applications.menu.colors.get(colorsRingMenu.selectedIndex).trigger()
+                        Backend.Applications.menu.colors.get(colorsRingMenu.selectedIndex).trigger()
                     }
                 }
             }
 
             RingMenu {
                 id: backgroundsRingMenu
-                visible: mainRingMenu.selectedIndex === BeeBackend.MenuEnums.MainBackgrounds
+                visible: mainRingMenu.selectedIndex === Backend.MenuEnums.MainBackgrounds
                 anchors.centerIn: parent
                 width: parent.width - 200
                 height: parent.height - 200
-                model: BeeBackend.Applications.menu.backgrounds
+                model: Backend.Applications.menu.backgrounds
 
                 onItemSelected: (index) => {
-                    BeeBackend.Applications.menu.backgrounds.get(index).trigger()
+                    Backend.Applications.menu.backgrounds.get(index).trigger()
                 }
 
                 onVisibleChanged: {
                     if (visible && backgroundsRingMenu.selectedIndex >= 0) {
-                        BeeBackend.Applications.menu.backgrounds.get(backgroundsRingMenu.selectedIndex).trigger()
+                        Backend.Applications.menu.backgrounds.get(backgroundsRingMenu.selectedIndex).trigger()
                     }
                 }
             }
@@ -94,7 +94,7 @@ PanelContainer {
                     anchors.fill: parent
                     onClicked: {
                         overlay.close()
-                        BeeBackend.Applications.menu.closeDialog()
+                        Backend.Applications.menu.closeDialog()
                         mainRingMenu.reset()
                     }
                 }

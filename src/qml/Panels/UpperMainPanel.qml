@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 Circle {
     id: upperMainPanel
@@ -21,7 +21,7 @@ Circle {
             id: setupPanel
 
             anchors.fill: parent
-            enabled: !BeeBackend.Applications.setup.setupComplete
+            enabled: !Backend.Applications.setup.setupComplete
             lowerMenuOverlay: upperMainPanel.lowerMenuOverlay
 
             onFinished: {
@@ -40,7 +40,7 @@ Circle {
             id: clockPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.clock.configuration.enabled
+            enabled: Backend.Applications.clock.configuration.enabled
 
             onClicked: menuOverlay.visible = true
         }
@@ -49,48 +49,48 @@ Circle {
             id: marriedPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.marriedTimer.configuration.enabled
-            initialized: BeeBackend.Applications.marriedTimer.configuration.initialized
+            enabled: Backend.Applications.marriedTimer.configuration.enabled
+            initialized: Backend.Applications.marriedTimer.configuration.initialized
             onClicked: menuOverlay.visible = true
-            years: BeeBackend.Applications.marriedTimer.years
-            days: BeeBackend.Applications.marriedTimer.days
-            hours: BeeBackend.Applications.marriedTimer.hours
-            minutes: BeeBackend.Applications.marriedTimer.minutes
-            seconds: BeeBackend.Applications.marriedTimer.seconds
+            years: Backend.Applications.marriedTimer.years
+            days: Backend.Applications.marriedTimer.days
+            hours: Backend.Applications.marriedTimer.hours
+            minutes: Backend.Applications.marriedTimer.minutes
+            seconds: Backend.Applications.marriedTimer.seconds
         }
 
         RoundProgressBarPanel {
             id: kuikenBirthdayPanel
 
             anchors.fill: parent
-            enabled: BeeBackend.Applications.kuikenTimer.configuration.enabled
-            initialized: BeeBackend.Applications.kuikenTimer.configuration.initialized
+            enabled: Backend.Applications.kuikenTimer.configuration.enabled
+            initialized: Backend.Applications.kuikenTimer.configuration.initialized
             onClicked: menuOverlay.visible = true
-            years: BeeBackend.Applications.kuikenTimer.years
-            days: BeeBackend.Applications.kuikenTimer.days
-            daysInWeek: BeeBackend.Applications.kuikenTimer.daysInWeek
-            weeks: BeeBackend.Applications.kuikenTimer.weeks
-            hours: BeeBackend.Applications.kuikenTimer.hours
-            minutes: BeeBackend.Applications.kuikenTimer.minutes
-            seconds: BeeBackend.Applications.kuikenTimer.seconds
-            barColor: BeeBackend.Applications.kuikenTimer.configuration.baseColor
-            textColor: BeeBackend.Applications.kuikenTimer.configuration.accentColor
-            backgroundSource: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.kuikenTimer.configuration.background)
-            backgroundOpacity: BeeBackend.Applications.kuikenTimer.configuration.backgroundOpacity
+            years: Backend.Applications.kuikenTimer.years
+            days: Backend.Applications.kuikenTimer.days
+            daysInWeek: Backend.Applications.kuikenTimer.daysInWeek
+            weeks: Backend.Applications.kuikenTimer.weeks
+            hours: Backend.Applications.kuikenTimer.hours
+            minutes: Backend.Applications.kuikenTimer.minutes
+            seconds: Backend.Applications.kuikenTimer.seconds
+            barColor: Backend.Applications.kuikenTimer.configuration.baseColor
+            textColor: Backend.Applications.kuikenTimer.configuration.accentColor
+            backgroundSource: Backend.Services.media.getMediaPath(Backend.Applications.kuikenTimer.configuration.background)
+            backgroundOpacity: Backend.Applications.kuikenTimer.configuration.backgroundOpacity
         }
 
         CountdownPanel {
             id: countdownTimer
 
             anchors.fill: parent
-            backgroundSource: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.countdownTimer.configuration.background)
-            backgroundOpacity: BeeBackend.Applications.countdownTimer.configuration.backgroundOpacity
-            enabled: BeeBackend.Applications.countdownTimer.configuration.enabled
-            initialized: BeeBackend.Applications.countdownTimer.configuration.initialized
-            days: BeeBackend.Applications.countdownTimer.days
-            hours: BeeBackend.Applications.countdownTimer.hours
-            minutes: BeeBackend.Applications.countdownTimer.minutes
-            seconds: BeeBackend.Applications.countdownTimer.seconds
+            backgroundSource: Backend.Services.media.getMediaPath(Backend.Applications.countdownTimer.configuration.background)
+            backgroundOpacity: Backend.Applications.countdownTimer.configuration.backgroundOpacity
+            enabled: Backend.Applications.countdownTimer.configuration.enabled
+            initialized: Backend.Applications.countdownTimer.configuration.initialized
+            days: Backend.Applications.countdownTimer.days
+            hours: Backend.Applications.countdownTimer.hours
+            minutes: Backend.Applications.countdownTimer.minutes
+            seconds: Backend.Applications.countdownTimer.seconds
             onClicked: menuOverlay.visible = true
         }
     }
@@ -103,7 +103,7 @@ Circle {
 
         onClose: {
             menuOverlay.visible = false
-            BeeBackend.Applications.menu.closeDialog()
+            Backend.Applications.menu.closeDialog()
         }
     }
 

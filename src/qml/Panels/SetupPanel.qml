@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 RoundPanel {
 	id: setupPanel
@@ -9,7 +9,7 @@ RoundPanel {
     backgroundColor: Color.black
 
     property Item lowerMenuOverlay
-    property var setup: BeeBackend.Applications.setup
+    property var setup: Backend.Applications.setup
 
     signal finished()
 
@@ -21,13 +21,13 @@ RoundPanel {
             setup.updateDialWheelValue(newValue)
             
             // Update the active DateTimePickerPanel
-            if (setup.currentPanel === BeeBackend.SetupEnums.MarriedDateTime) {
+            if (setup.currentPanel === Backend.SetupEnums.MarriedDateTime) {
                 marriedDateTimePickerPanel.updateSelectedComponent(newValue)
-            } else if (setup.currentPanel === BeeBackend.SetupEnums.KuikenDateTime) {
+            } else if (setup.currentPanel === Backend.SetupEnums.KuikenDateTime) {
                 kuikenDateTimePickerPanel.updateSelectedComponent(newValue)
-            } else if (setup.currentPanel === BeeBackend.SetupEnums.CountdownDateTime) {
+            } else if (setup.currentPanel === Backend.SetupEnums.CountdownDateTime) {
                 countdownDateTimePickerPanel.updateSelectedComponent(newValue)
-            } else if (setup.currentPanel === BeeBackend.SetupEnums.DeviceId) {
+            } else if (setup.currentPanel === Backend.SetupEnums.DeviceId) {
                 // Ensure the value always shows 4 digits and prepend SN-
                 deviceIdPanel.valueText = `SN-${newValue.toString().padStart(4, '0')}`;
             }
@@ -40,43 +40,43 @@ RoundPanel {
         
         function onCurrentPanelChanged() {
             switch(setup.currentPanel) {
-                case BeeBackend.SetupEnums.Welcome:
+                case Backend.SetupEnums.Welcome:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(welcomePanel)
                     break
-                case BeeBackend.SetupEnums.DeviceId:
+                case Backend.SetupEnums.DeviceId:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(deviceIdPanel)
                     break
-                case BeeBackend.SetupEnums.ServerConnection:
+                case Backend.SetupEnums.ServerConnection:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(serverConnectionEnablePanel)
                     break
-                case BeeBackend.SetupEnums.MarriedTimerEnable:
+                case Backend.SetupEnums.MarriedTimerEnable:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(marriedTimerEnablePanel)
                     break
-                case BeeBackend.SetupEnums.MarriedDateTime:
+                case Backend.SetupEnums.MarriedDateTime:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(marriedDateTimePickerPanel)
                     break
-                case BeeBackend.SetupEnums.MarriedBackground:
+                case Backend.SetupEnums.MarriedBackground:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(marriedBackgroundPickerPanel)
                     break
-                case BeeBackend.SetupEnums.KuikenTimerEnable:
+                case Backend.SetupEnums.KuikenTimerEnable:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(kuikenTimerEnablePanel)
                     break
-                case BeeBackend.SetupEnums.KuikenDateTime:
+                case Backend.SetupEnums.KuikenDateTime:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(kuikenDateTimePickerPanel)
                     break
-                case BeeBackend.SetupEnums.KuikenBackground:
+                case Backend.SetupEnums.KuikenBackground:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(kuikenBackgroundPickerPanel)
                     break
-                case BeeBackend.SetupEnums.CountdownTimerEnable:
+                case Backend.SetupEnums.CountdownTimerEnable:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(countdownTimerEnablePanel)
                     break
-                case BeeBackend.SetupEnums.CountdownDateTime:
+                case Backend.SetupEnums.CountdownDateTime:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(countdownDateTimePickerPanel)
                     break
-                case BeeBackend.SetupEnums.CountdownBackground:
+                case Backend.SetupEnums.CountdownBackground:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(countdownBackgroundPickerPanel)
                     break
-                case BeeBackend.SetupEnums.Finish:
+                case Backend.SetupEnums.Finish:
                     panelContainer.currentIndex = panelContainer.indexOfPanel(finishPanel)
                     break
             }
@@ -90,20 +90,21 @@ RoundPanel {
         property Panel initialPanel: welcomePanel
 
         currentIndex: {
+            if (!setup) return indexOfPanel(welcomePanel)
             switch(setup.currentPanel) {
-                case BeeBackend.SetupEnums.Welcome: return indexOfPanel(welcomePanel)
-                case BeeBackend.SetupEnums.DeviceId: return indexOfPanel(deviceIdPanel)
-                case BeeBackend.SetupEnums.ServerConnection: return indexOfPanel(serverConnectionEnablePanel)
-                case BeeBackend.SetupEnums.MarriedTimerEnable: return indexOfPanel(marriedTimerEnablePanel)
-                case BeeBackend.SetupEnums.MarriedDateTime: return indexOfPanel(marriedDateTimePickerPanel)
-                case BeeBackend.SetupEnums.MarriedBackground: return indexOfPanel(marriedBackgroundPickerPanel)
-                case BeeBackend.SetupEnums.KuikenTimerEnable: return indexOfPanel(kuikenTimerEnablePanel)
-                case BeeBackend.SetupEnums.KuikenDateTime: return indexOfPanel(kuikenDateTimePickerPanel)
-                case BeeBackend.SetupEnums.KuikenBackground: return indexOfPanel(kuikenBackgroundPickerPanel)
-                case BeeBackend.SetupEnums.CountdownTimerEnable: return indexOfPanel(countdownTimerEnablePanel)
-                case BeeBackend.SetupEnums.CountdownDateTime: return indexOfPanel(countdownDateTimePickerPanel)
-                case BeeBackend.SetupEnums.CountdownBackground: return indexOfPanel(countdownBackgroundPickerPanel)
-                case BeeBackend.SetupEnums.Finish: return indexOfPanel(finishPanel)
+                case Backend.SetupEnums.Welcome: return indexOfPanel(welcomePanel)
+                case Backend.SetupEnums.DeviceId: return indexOfPanel(deviceIdPanel)
+                case Backend.SetupEnums.ServerConnection: return indexOfPanel(serverConnectionEnablePanel)
+                case Backend.SetupEnums.MarriedTimerEnable: return indexOfPanel(marriedTimerEnablePanel)
+                case Backend.SetupEnums.MarriedDateTime: return indexOfPanel(marriedDateTimePickerPanel)
+                case Backend.SetupEnums.MarriedBackground: return indexOfPanel(marriedBackgroundPickerPanel)
+                case Backend.SetupEnums.KuikenTimerEnable: return indexOfPanel(kuikenTimerEnablePanel)
+                case Backend.SetupEnums.KuikenDateTime: return indexOfPanel(kuikenDateTimePickerPanel)
+                case Backend.SetupEnums.KuikenBackground: return indexOfPanel(kuikenBackgroundPickerPanel)
+                case Backend.SetupEnums.CountdownTimerEnable: return indexOfPanel(countdownTimerEnablePanel)
+                case Backend.SetupEnums.CountdownDateTime: return indexOfPanel(countdownDateTimePickerPanel)
+                case Backend.SetupEnums.CountdownBackground: return indexOfPanel(countdownBackgroundPickerPanel)
+                case Backend.SetupEnums.Finish: return indexOfPanel(finishPanel)
                 default: return indexOfPanel(welcomePanel)
             }
         }
@@ -125,13 +126,13 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Register clock"
             descriptionText: "Tap the value to edit it, then use the dial below to adjust the value."
-            valueText: BeeBackend.Services.remoteApi.deviceId
-            valueTextSelected: setup.dialWheel.visible
+            valueText: Backend.Services.remoteApi.deviceId
+            valueTextSelected: setup && setup.dialWheel ? setup.dialWheel.visible : false
 
             onValueSelected: setup.showDialWheel(0, 10, 1, 0)
 
             onButtonClicked: {
-                BeeBackend.Services.remoteApi.deviceId = deviceIdPanel.valueText
+                Backend.Services.remoteApi.deviceId = deviceIdPanel.valueText
                 setup.next()
             }
         }
@@ -142,7 +143,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Server connection"
             descriptionText: "Use the toggle to turn a connection with server on or off. This connection can be used to synchronize status of the clock, and add/remove media from the clock."
-            toggleTarget: BeeBackend.Services.remoteApi
+            toggleTarget: Backend.Services.remoteApi
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -154,7 +155,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Married timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.marriedTimer.configuration
+            toggleTarget: Backend.Applications.marriedTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -166,7 +167,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure married timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.marriedTimer.configuration.timestamp * 1000)
+            dateTime: new Date(Backend.Applications.marriedTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -176,8 +177,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.marriedTimer.configuration.timestamp = selectedTimestamp
-                BeeBackend.Applications.marriedTimer.configuration.initialized = true
+                Backend.Applications.marriedTimer.configuration.timestamp = selectedTimestamp
+                Backend.Applications.marriedTimer.configuration.initialized = true
                 setup.next()
             }
         }
@@ -199,7 +200,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Kuiken timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.kuikenTimer.configuration
+            toggleTarget: Backend.Applications.kuikenTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -211,7 +212,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure kuiken timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.kuikenTimer.configuration.timestamp * 1000)
+            dateTime: new Date(Backend.Applications.kuikenTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -221,8 +222,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.kuikenTimer.configuration.timestamp = selectedTimestamp
-                BeeBackend.Applications.kuikenTimer.configuration.initialized = true
+                Backend.Applications.kuikenTimer.configuration.timestamp = selectedTimestamp
+                Backend.Applications.kuikenTimer.configuration.initialized = true
                 setup.next()
             }
         }
@@ -244,7 +245,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Countdown timer setting"
             descriptionText: "Use the toggle to turn the timer on or off."
-            toggleTarget: BeeBackend.Applications.countdownTimer.configuration
+            toggleTarget: Backend.Applications.countdownTimer.configuration
             toggleProperty: "enabled"
 
             onButtonClicked: setup.next()
@@ -256,7 +257,7 @@ RoundPanel {
             anchors.fill: parent
             titleText: "Configure countdown timer"
             descriptionText: "Tap a part of the date or time to edit it, then use the dial below to adjust the value."
-            dateTime: new Date(BeeBackend.Applications.countdownTimer.configuration.timestamp * 1000)
+            dateTime: new Date(Backend.Applications.countdownTimer.configuration.timestamp * 1000)
 
             onComponentSelected: function(component) {
                 var d = dateTime
@@ -266,8 +267,8 @@ RoundPanel {
 
             onButtonClicked: {
                 var selectedTimestamp = Math.floor(dateTime.getTime() / 1000)
-                BeeBackend.Applications.countdownTimer.configuration.timestamp = selectedTimestamp
-                BeeBackend.Applications.countdownTimer.configuration.initialized = true
+                Backend.Applications.countdownTimer.configuration.timestamp = selectedTimestamp
+                Backend.Applications.countdownTimer.configuration.initialized = true
                 setup.next()
             }
         }

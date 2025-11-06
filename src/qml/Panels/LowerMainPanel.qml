@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 Circle {
     id: lowerMainPanel
@@ -26,11 +26,11 @@ Circle {
         id: menuOverlay
 
         // This menu shall be visible when: any menu dialog is active, or setup is not complete and a setup dialog is visible.
-        visible: BeeBackend.Applications.menu.dialog !== BeeBackend.MenuEnums.None || 
-                 (!BeeBackend.Applications.setup.setupComplete && 
-                  (BeeBackend.Applications.setup.dialWheel.visible || BeeBackend.Applications.setup.mediaSelection.visible))
+        visible: Backend.Applications.menu.dialog !== Backend.MenuEnums.None || 
+                 (!Backend.Applications.setup.setupComplete && 
+                  (Backend.Applications.setup.dialWheel.visible || Backend.Applications.setup.mediaSelection.visible))
         anchors.fill: parent
 
-        onClose: BeeBackend.Applications.menu.closeDialog()
+        onClose: Backend.Applications.menu.closeDialog()
     }
 }

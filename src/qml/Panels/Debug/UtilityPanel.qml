@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 Item {
     id: utilities
@@ -14,12 +14,12 @@ Item {
 
             Button {
                 text: "Shutdown"
-                onClicked: BeeBackend.Drivers.system.shutdown()
+                onClicked: Backend.Drivers.system.shutdown()
             }
 
             Button {
                 text: "Reboot"
-                onClicked: BeeBackend.Drivers.system.reboot()
+                onClicked: Backend.Drivers.system.reboot()
             }
     }
 }

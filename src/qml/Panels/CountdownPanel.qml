@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 RoundPanel {
 	id: countdownPanel
@@ -20,7 +20,7 @@ RoundPanel {
 
     signal clicked()
 
-    BeeBackend.RoundAnimatedImage {
+    Backend.RoundAnimatedImage {
         id: background
 
         anchors.fill: parent

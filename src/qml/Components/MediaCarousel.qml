@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 Item {
     id: mediaCarousel
@@ -20,7 +20,7 @@ Item {
 
     // Watch for media changes and adjust currentIndex if needed
     onMediaChanged: {
-        if (currentIndex >= media.count) {
+        if (media && currentIndex >= media.count) {
             currentIndex = Math.max(0, media.count - 1)
         }
     }
@@ -110,10 +110,10 @@ Item {
                     property string mediaName: model.filename
 
                     // Full screen media preview
-                    BeeBackend.RoundAnimatedImage {
+                    Backend.RoundAnimatedImage {
                         id: previewImage
                         anchors.fill: parent
-                        source: BeeBackend.Services.media.getMediaPath(mediaName)
+                        source: Backend.Services.media.getMediaPath(mediaName)
                         opacity: 1.0
 
                         Behavior on opacity {

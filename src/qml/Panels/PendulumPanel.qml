@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 RoundPanel {
 	id: pendulumPanel
@@ -13,9 +13,9 @@ RoundPanel {
     Pendulum {
         id: pendulum
 
-        bobColor: BeeBackend.Applications.clock.configuration.pendulumBobColor
-        rodColor: BeeBackend.Applications.clock.configuration.pendulumRodColor
+        bobColor: Backend.Applications.clock.configuration.pendulumBobColor
+        rodColor: Backend.Applications.clock.configuration.pendulumRodColor
         anchors.fill: parent
-        active: BeeBackend.Applications.setup.setupComplete || (!BeeBackend.Applications.setup.setupComplete && BeeBackend.Applications.setup.currentPanel === BeeBackend.SetupEnums.Finish)
+        active: Backend.Applications.setup.setupComplete || (!Backend.Applications.setup.setupComplete && Backend.Applications.setup.currentPanel === Backend.SetupEnums.Finish)
     }
 }

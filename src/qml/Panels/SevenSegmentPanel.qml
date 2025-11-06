@@ -1,7 +1,7 @@
 import QtQuick
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 RoundPanel {
     id: sevenSegmentPanel
@@ -20,13 +20,13 @@ RoundPanel {
 
     signal clicked()
 
-    BeeBackend.RoundAnimatedImage {
+    Backend.RoundAnimatedImage {
         id: background
 
         anchors.fill: parent
         
-        source: BeeBackend.Services.media.getMediaPath(BeeBackend.Applications.marriedTimer.configuration.background)
-        opacity: BeeBackend.Applications.marriedTimer.configuration.backgroundOpacity
+        source: Backend.Services.media.getMediaPath(Backend.Applications.marriedTimer.configuration.background)
+        opacity: Backend.Applications.marriedTimer.configuration.backgroundOpacity
     }
     
     // Container for segments - shown when initialized

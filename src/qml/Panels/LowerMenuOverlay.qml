@@ -2,35 +2,35 @@ import QtQuick
 import QtQuick.Controls
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 PanelContainer {
     id: overlay
 
-    property var menu: BeeBackend.Applications.menu
-    property var setup: BeeBackend.Applications.setup
+    property var menu: Backend.Applications.menu
+    property var setup: Backend.Applications.setup
 
     currentIndex: {
         // Setup dialogs take priority only when setup is not complete
-        if (!setup.setupComplete) {
-            if (setup.dialWheel.visible) {
+        if (setup && !setup.setupComplete) {
+            if (setup.dialWheel && setup.dialWheel.visible) {
                 return indexOfPanel(dialWheelDialog)
             }
-            if (setup.mediaSelection.visible) {
+            if (setup.mediaSelection && setup.mediaSelection.visible) {
                 return indexOfPanel(mediaSelectionDialog)
             }
         }
         
         // Otherwise show menu dialogs
-        switch(menu.dialog) {
-            case BeeBackend.MenuEnums.Version: return indexOfPanel(versionDialog)
-            case BeeBackend.MenuEnums.SetupWizard: return indexOfPanel(setupWizardDialog)
-            case BeeBackend.MenuEnums.ScreenBrightness: return indexOfPanel(screenBrightnessDialog)
-            case BeeBackend.MenuEnums.BackgroundOpacity: return indexOfPanel(backgroundOpacityDialog)
-            case BeeBackend.MenuEnums.MediaSelection: return indexOfPanel(mediaSelectionDialog)
-            case BeeBackend.MenuEnums.ColorSelection: return indexOfPanel(colorSelectionDialog)
-            case BeeBackend.MenuEnums.Notifications: return indexOfPanel(notificationDialog)
-            case BeeBackend.MenuEnums.DialWheel: return indexOfPanel(dialWheelDialog)
+        switch(menu ? menu.dialog : 0) {
+            case Backend.MenuEnums.Version: return indexOfPanel(versionDialog)
+            case Backend.MenuEnums.SetupWizard: return indexOfPanel(setupWizardDialog)
+            case Backend.MenuEnums.ScreenBrightness: return indexOfPanel(screenBrightnessDialog)
+            case Backend.MenuEnums.BackgroundOpacity: return indexOfPanel(backgroundOpacityDialog)
+            case Backend.MenuEnums.MediaSelection: return indexOfPanel(mediaSelectionDialog)
+            case Backend.MenuEnums.ColorSelection: return indexOfPanel(colorSelectionDialog)
+            case Backend.MenuEnums.Notifications: return indexOfPanel(notificationDialog)
+            case Backend.MenuEnums.DialWheel: return indexOfPanel(dialWheelDialog)
             default: return indexOfPanel(emptyDialog)
         }
     }
@@ -59,7 +59,7 @@ PanelContainer {
             interval: 2000
             running: false
             repeat: false
-            onTriggered: BeeBackend.Applications.debug.panelEnabled = true
+            onTriggered: Backend.Applications.debug.panelEnabled = true
         }
 
         Text {
@@ -68,7 +68,7 @@ PanelContainer {
             font.bold: true
             font.pixelSize: Value.largeTextSize
             anchors.centerIn: parent
-            text: BeeBackend.Services.version.tag
+            text: Backend.Services.version.tag
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -84,10 +84,10 @@ PanelContainer {
 
             onTriggered: {
                 if (showVersion) {
-                    versionValue.text = BeeBackend.Services.version.tag
+                    versionValue.text = Backend.Services.version.tag
                     showVersion = false
                 } else {
-                    versionValue.text = BeeBackend.Services.remoteApi.deviceId
+                    versionValue.text = Backend.Services.remoteApi.deviceId
                     showVersion = true
                 }
             }
@@ -111,7 +111,7 @@ PanelContainer {
             running: false
             repeat: false
             onTriggered: {
-                BeeBackend.Applications.setup.reset()
+                Backend.Applications.setup.reset()
                 menu.closeDialog()
             }
         }
@@ -146,7 +146,7 @@ PanelContainer {
             property bool incrementMode: true // true: increment, false: decrement
 
             // The value you want to control
-            property real value: BeeBackend.Drivers.screen.brightness
+            property real value: Backend.Drivers.screen.brightness
 
             // Interpolate between Color.gray and Color.green1
             function lerpColor(a, b, t) {
@@ -177,7 +177,7 @@ PanelContainer {
                         }
                     }
 
-                    BeeBackend.Drivers.screen.brightness = brightnessButton.value
+                    Backend.Drivers.screen.brightness = brightnessButton.value
                 }
             }
 
@@ -207,7 +207,7 @@ PanelContainer {
             property bool incrementMode: true // true: increment, false: decrement
 
             // The value you want to control
-            property real value: BeeBackend.Applications.clock.configuration.backgroundOpacity
+            property real value: Backend.Applications.clock.configuration.backgroundOpacity
 
             // Interpolate between Color.gray and Color.green1
             function lerpColor(a, b, t) {
@@ -237,7 +237,7 @@ PanelContainer {
                             opacityButton.value = Math.max(opacityButton.value - opacityButton.step, opacityButton.minValue)
                         }
                     }
-                    BeeBackend.Applications.clock.configuration.backgroundOpacity = opacityButton.value
+                    Backend.Applications.clock.configuration.backgroundOpacity = opacityButton.value
                 }
             }
 
@@ -259,30 +259,30 @@ PanelContainer {
             id: carousel
             anchors.fill: parent
             anchors.centerIn: parent
-            media: BeeBackend.Services.media.model
+            media: Backend.Services.media.model
 
             // Function to update selected media based on current mode
             function updateSelectedMedia() {
                 // Check if we're in setup mode or menu mode
                 if (!setup.setupComplete && setup.mediaSelection.visible) {
                     var setupTarget = setup.mediaSelection.target
-                    if (setupTarget === BeeBackend.SetupEnums.MarriedTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.configuration.background)
-                    } else if (setupTarget === BeeBackend.SetupEnums.KuikenTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.configuration.background)
-                    } else if (setupTarget === BeeBackend.SetupEnums.CountdownTarget) {
-                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.configuration.background)
+                    if (setupTarget === Backend.SetupEnums.MarriedTarget) {
+                        carousel.selectMediaByName(Backend.Applications.marriedTimer.configuration.background)
+                    } else if (setupTarget === Backend.SetupEnums.KuikenTarget) {
+                        carousel.selectMediaByName(Backend.Applications.kuikenTimer.configuration.background)
+                    } else if (setupTarget === Backend.SetupEnums.CountdownTarget) {
+                        carousel.selectMediaByName(Backend.Applications.countdownTimer.configuration.background)
                     }
                 } else {
                     var param = menu.dialogParam
-                    if (param === BeeBackend.MenuEnums.ClockBackground) {
-                        carousel.selectMediaByName(BeeBackend.Applications.clock.configuration.background)
-                    } else if (param === BeeBackend.MenuEnums.Married) {
-                        carousel.selectMediaByName(BeeBackend.Applications.marriedTimer.configuration.background)
-                    } else if (param === BeeBackend.MenuEnums.Kuiken) {
-                        carousel.selectMediaByName(BeeBackend.Applications.kuikenTimer.configuration.background)
-                    } else if (param === BeeBackend.MenuEnums.Countdown) {
-                        carousel.selectMediaByName(BeeBackend.Applications.countdownTimer.configuration.background)
+                    if (param === Backend.MenuEnums.ClockBackground) {
+                        carousel.selectMediaByName(Backend.Applications.clock.configuration.background)
+                    } else if (param === Backend.MenuEnums.Married) {
+                        carousel.selectMediaByName(Backend.Applications.marriedTimer.configuration.background)
+                    } else if (param === Backend.MenuEnums.Kuiken) {
+                        carousel.selectMediaByName(Backend.Applications.kuikenTimer.configuration.background)
+                    } else if (param === Backend.MenuEnums.Countdown) {
+                        carousel.selectMediaByName(Backend.Applications.countdownTimer.configuration.background)
                     }
                 }
             }
@@ -327,15 +327,16 @@ PanelContainer {
             anchors.centerIn: parent
 
             startColor: {
-                var param = menu.dialogParam
-                if (param === BeeBackend.MenuEnums.Hours) {
-                    return BeeBackend.Applications.clock.configuration.hourColor
-                } else if (param === BeeBackend.MenuEnums.Minutes) {
-                    return BeeBackend.Applications.clock.configuration.minuteColor
-                } else if (param === BeeBackend.MenuEnums.Seconds) {
-                    return BeeBackend.Applications.clock.configuration.secondColor
-                } else if (param === BeeBackend.MenuEnums.Pendulum) {
-                    return BeeBackend.Applications.clock.configuration.pendulumBobColor
+                var param = menu ? menu.dialogParam : null
+                if (!param) return "white"
+                if (param === Backend.MenuEnums.Hours) {
+                    return Backend.Applications.clock.configuration.hourColor
+                } else if (param === Backend.MenuEnums.Minutes) {
+                    return Backend.Applications.clock.configuration.minuteColor
+                } else if (param === Backend.MenuEnums.Seconds) {
+                    return Backend.Applications.clock.configuration.secondColor
+                } else if (param === Backend.MenuEnums.Pendulum) {
+                    return Backend.Applications.clock.configuration.pendulumBobColor
                 }
                 return "white"
             }
@@ -355,7 +356,7 @@ PanelContainer {
         NotificationCarousel {
             anchors.fill: parent
             anchors.centerIn: parent
-            model: BeeBackend.Services.notification.model
+            model: Backend.Services.notification.model
         }
     }
 
@@ -368,13 +369,13 @@ PanelContainer {
             id: dialWheel
             anchors.fill: parent
             anchors.centerIn: parent
-            minimumValue: (!setup.setupComplete && setup.dialWheel.visible) ? setup.dialWheel.min : 1
-            maximumValue: (!setup.setupComplete && setup.dialWheel.visible) ? setup.dialWheel.max : 31
-            stepSize: (!setup.setupComplete && setup.dialWheel.visible) ? setup.dialWheel.step : 1
-            value: (!setup.setupComplete && setup.dialWheel.visible) ? setup.dialWheel.value : 1
+            minimumValue: (setup && !setup.setupComplete && setup.dialWheel && setup.dialWheel.visible) ? setup.dialWheel.min : 1
+            maximumValue: (setup && !setup.setupComplete && setup.dialWheel && setup.dialWheel.visible) ? setup.dialWheel.max : 31
+            stepSize: (setup && !setup.setupComplete && setup.dialWheel && setup.dialWheel.visible) ? setup.dialWheel.step : 1
+            value: (setup && !setup.setupComplete && setup.dialWheel && setup.dialWheel.visible) ? setup.dialWheel.value : 1
 
             onValueChanged: {
-                if (!setup.setupComplete && setup.dialWheel.visible) {
+                if (setup && !setup.setupComplete && setup.dialWheel && setup.dialWheel.visible) {
                     // In setup mode, just emit signal for SetupPanel to handle
                     dialWheelValueUpdated(dialWheel.value)
                 } else {

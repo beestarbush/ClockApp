@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 import Components
-import Bee as BeeBackend
+import Bee as Backend
 
 Rectangle {
 	id: debugPanel
@@ -42,7 +42,7 @@ Rectangle {
 
 			Button {
 				text: "Close"
-				onClicked: BeeBackend.Applications.debug.panelEnabled = false
+				onClicked: Backend.Applications.debug.panelEnabled = false
 			}
 		}
 
