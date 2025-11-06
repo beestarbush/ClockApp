@@ -9,7 +9,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-using namespace Media;
+using namespace Services::Media;
 
 #ifdef PLATFORM_IS_TARGET
 const QString MEDIA_PATH = QStringLiteral("/usr/share/bee/media");

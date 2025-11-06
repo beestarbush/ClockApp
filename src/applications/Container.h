@@ -7,9 +7,14 @@
 #include "setup/Application.h"
 #include "timeelapsed/Application.h"
 
-class Services;
+namespace Services
+{
+class Container;
+}
 
-class Applications : public QObject
+namespace Applications
+{
+class Container : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Setup::Application* setup MEMBER m_setup CONSTANT)
@@ -21,7 +26,7 @@ class Applications : public QObject
     Q_PROPERTY(Menu::Application* menu MEMBER m_menu CONSTANT)
 
   public:
-    Applications(Services& services, QObject* parent = nullptr);
+    Container(Services::Container& services, QObject* parent = nullptr);
 
   private:
     Clock::Application* m_clock;
@@ -32,3 +37,4 @@ class Applications : public QObject
     Debug::Application* m_debug;
     Menu::Application* m_menu;
 };
+} // namespace Applications

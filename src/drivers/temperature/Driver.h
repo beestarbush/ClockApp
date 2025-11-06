@@ -1,10 +1,10 @@
-#ifndef HAL_TEMPERATURE_DRIVER_H
-#define HAL_TEMPERATURE_DRIVER_H
+#ifndef DRIVERS_TEMPERATURE_DRIVER_H
+#define DRIVERS_TEMPERATURE_DRIVER_H
 
 #include <QObject>
 #include <QTimer>
 
-namespace Temperature
+namespace Drivers::Temperature
 {
 class Driver : public QObject
 {
@@ -29,6 +29,6 @@ class Driver : public QObject
     qint32 m_processorTemperature;
     bool m_valid;
 };
-} // namespace Temperature
+} // namespace Drivers::Temperature
 
-#endif // HAL_TEMPERATURE_DRIVER_H
+#endif // DRIVERS_TEMPERATURE_DRIVER_H

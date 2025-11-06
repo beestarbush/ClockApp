@@ -5,12 +5,12 @@
 #include <QObject>
 #include <QTimer>
 
-namespace Media
+namespace Services::Media
 {
 class Service;
 }
 
-namespace TimeElapsed
+namespace Applications::TimeElapsed
 {
 class Application : public QObject
 {
@@ -25,7 +25,7 @@ class Application : public QObject
     Q_PROPERTY(quint64 seconds READ seconds NOTIFY timeChanged)
 
   public:
-    Application(QString name, Media::Service& media, QObject* parent = nullptr);
+    Application(QString name, Services::Media::Service& media, QObject* parent = nullptr);
 
     Common::TimerConfiguration* configuration() const;
 
@@ -63,7 +63,7 @@ class Application : public QObject
     void setSeconds(const quint64 seconds);
 
     Common::TimerConfiguration* m_configuration;
-    Media::Service& m_media;
+    Services::Media::Service& m_media;
 
     // Properties for indicating the elapsed time
     quint64 m_years;
@@ -76,6 +76,6 @@ class Application : public QObject
 
     QTimer m_timer;
 };
-} // namespace TimeElapsed
+} // namespace Applications::TimeElapsed
 
 #endif // APPS_TIME_ELAPSED_APPLICATION_H

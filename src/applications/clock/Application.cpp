@@ -2,9 +2,9 @@
 #include "services/media/Service.h"
 #include <QDebug>
 #include <QSettings>
-using namespace Clock;
+using namespace Applications::Clock;
 
-Application::Application(QString name, Media::Service& media, QObject* parent)
+Application::Application(QString name, Services::Media::Service& media, QObject* parent)
     : QObject(parent),
       m_configuration(new Configuration(name, parent)),
       m_media(media)
@@ -14,7 +14,7 @@ Application::Application(QString name, Media::Service& media, QObject* parent)
             << *m_configuration;
 
     // Refresh background when media sync completes
-    connect(&m_media, &Media::Service::syncCompleted, this, [this]() {
+    connect(&m_media, &Services::Media::Service::syncCompleted, this, [this]() {
         emit m_configuration->backgroundChanged();
     });
 }

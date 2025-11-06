@@ -14,12 +14,12 @@ Item {
 
             Button {
                 text: "Shutdown"
-                onClicked: BeeBackend.HAL.system.shutdown()
+                onClicked: BeeBackend.Drivers.system.shutdown()
             }
 
             Button {
                 text: "Reboot"
-                onClicked: BeeBackend.HAL.system.reboot()
+                onClicked: BeeBackend.Drivers.system.reboot()
             }
     }
 }

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimer>
 
-namespace Notification
+namespace Services::Notification
 {
 class Item : public QObject
 {
@@ -119,6 +119,6 @@ class Item : public QObject
 
     static quint64 s_nextId; // Static member for generating unique IDs
 };
-} // namespace Notification
+} // namespace Services::Notification
 
 #endif // SERVICES_NOTIFICATION_ITEM_H

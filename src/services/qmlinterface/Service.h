@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 
-namespace QmlInterface
+namespace Services::QmlInterface
 {
 class Service : public QObject
 {
@@ -42,6 +42,6 @@ class Service : public QObject
   private:
     QStringList m_registeredObjectsNames;
 };
-} // namespace QmlInterface
+} // namespace Services::QmlInterface
 
 #endif // SERVICES_QMLINTERFACE_SERVICE_H

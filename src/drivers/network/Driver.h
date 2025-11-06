@@ -1,10 +1,10 @@
-#ifndef HAL_NETWORK_DRIVER_H
-#define HAL_NETWORK_DRIVER_H
+#ifndef DRIVERS_NETWORK_DRIVER_H
+#define DRIVERS_NETWORK_DRIVER_H
 
 #include <QObject>
 #include <QTimer>
 
-namespace Network
+namespace Drivers::Network
 {
 class Driver : public QObject
 {
@@ -41,6 +41,6 @@ class Driver : public QObject
     QString m_ipAddress;
     QString m_subnetMask;
 };
-} // namespace Network
+} // namespace Drivers::Network
 
-#endif // HAL_NETWORK_DRIVER_H
+#endif // DRIVERS_NETWORK_DRIVER_H

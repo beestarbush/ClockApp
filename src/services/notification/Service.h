@@ -4,7 +4,7 @@
 #include "Item.h"
 #include <QAbstractListModel>
 
-namespace Notification
+namespace Services::Notification
 {
 class Service : public QAbstractListModel
 {
@@ -71,6 +71,6 @@ class Service : public QAbstractListModel
     bool m_isVisible;
     Item* m_highestPriorityItem;
 };
-} // namespace Notification
+} // namespace Services::Notification
 
 #endif // SERVICES_NOTIFICATION_SERVICE_H

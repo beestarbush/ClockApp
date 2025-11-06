@@ -1,7 +1,7 @@
 #include "Driver.h"
 #include <QDebug>
 #include <QFile>
-using namespace Temperature;
+using namespace Drivers::Temperature;
 
 #ifdef PLATFORM_IS_TARGET
 const QString PROCESSOR_TEMPERATURE_INTERFACE_NAME = QStringLiteral("/sys/class/thermal/thermal_zone0/hwmon0/temp1_input");

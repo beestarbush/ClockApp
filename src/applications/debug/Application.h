@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace Debug
+namespace Applications::Debug
 {
 class Application : public QObject
 {
@@ -22,6 +22,6 @@ class Application : public QObject
   private:
     bool m_panelEnabled;
 };
-} // namespace Debug
+} // namespace Applications::Debug
 
 #endif // APPS_DEBUG_APPLICATION_H

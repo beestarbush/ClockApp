@@ -1,7 +1,7 @@
 #include "Driver.h"
 #include <QDebug>
 #include <QNetworkInterface>
-using namespace Network;
+using namespace Drivers::Network;
 
 #ifdef PLATFORM_IS_TARGET
 const QString INTERFACE_NAME = QStringLiteral("wlan0");

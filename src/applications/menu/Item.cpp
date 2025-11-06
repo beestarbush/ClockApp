@@ -1,5 +1,5 @@
 #include "Item.h"
-using namespace Menu;
+using namespace Applications::Menu;
 
 Item::Item(QString label, QObject* parent)
     : QObject(parent),

@@ -1,7 +1,7 @@
 #include "Service.h"
 #include "services/remoteapi/SerializableObject.h"
 
-#include "hal/network/Driver.h"
+#include "drivers/network/Driver.h"
 
 #include <QDebug>
 #include <QHttpMultiPart>
@@ -11,7 +11,7 @@
 #include <QSettings>
 #include <QSslSocket>
 #include <QTimer>
-using namespace RemoteApi;
+using namespace Services::RemoteApi;
 
 constexpr int NETWORK_TIMEOUT_MS = 30 * 1000; // 30 seconds
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("remote-api");
@@ -22,7 +22,7 @@ const QString PROPERTY_SERVER_URL_DEFAULT = QStringLiteral("https://bijsterbosch
 const QString PROPERTY_DEVICE_ID_KEY = QStringLiteral("device-id");
 const QString PROPERTY_DEVICE_ID_DEFAULT = QStringLiteral("SN-XXXX");
 
-Service::Service(Network::Driver& network, QObject* parent)
+Service::Service(Drivers::Network::Driver& network, QObject* parent)
     : QObject(parent),
       m_network(network),
       m_networkManager(this),
@@ -50,7 +50,7 @@ Service::Service(Network::Driver& network, QObject* parent)
     }
 
     // When network connectivity changes, retest connection if needed.
-    connect(&m_network, &Network::Driver::connectedChanged, this, [this]() {
+    connect(&m_network, &Drivers::Network::Driver::connectedChanged, this, [this]() {
         if (m_network.connected() && m_enabled && !m_serverUrl.isEmpty()) {
             testConnection();
         }

@@ -1,7 +1,7 @@
 #include "Service.h"
 #include <QDebug>
 #include <QQmlApplicationEngine>
-using namespace QmlInterface;
+using namespace Services::QmlInterface;
 
 Service::Service(QObject* parent)
     : QObject(parent)

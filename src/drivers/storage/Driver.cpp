@@ -1,6 +1,6 @@
 #include "Driver.h"
 #include <QSettings>
-using namespace Storage;
+using namespace Drivers::Storage;
 
 #ifdef PLATFORM_IS_TARGET
 const QString SETTINGS_PATH = QStringLiteral("/usr/share/");

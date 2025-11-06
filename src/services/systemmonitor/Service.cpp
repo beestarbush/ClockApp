@@ -1,21 +1,21 @@
 #include "Service.h"
+#include "drivers/system/Driver.h"
+#include "drivers/temperature/Driver.h"
 #include "git_version.h"
-#include "hal/system/Driver.h"
-#include "hal/temperature/Driver.h"
 #include "services/notification/Service.h"
 #include "services/remoteapi/DeviceStatus.h"
 #include "services/remoteapi/Service.h"
 #include "services/version/Service.h"
 
 #include <QDebug>
-using namespace SystemMonitor;
+using namespace Services::SystemMonitor;
 
 constexpr int MONITOR_INTERVAL = 10 * 1000;    // 10 seconds
 constexpr int REPORT_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 Service::Service(RemoteApi::Service& remoteApi,
-                 Temperature::Driver& temperature,
-                 System::Driver& system,
+                 Drivers::Temperature::Driver& temperature,
+                 Drivers::System::Driver& system,
                  Version::Service& version,
                  Notification::Service& notificationManager,
                  QObject* parent)

@@ -1,6 +1,7 @@
-#include "HAL.h"
+#include "Container.h"
+using namespace Drivers;
 
-HAL::HAL(QObject* parent)
+Container::Container(QObject* parent)
     : QObject(parent),
       m_storage(new Storage::Driver(this)),
       m_network(new Network::Driver(this)),

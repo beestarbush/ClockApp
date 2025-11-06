@@ -1,5 +1,5 @@
 #include "Application.h"
-using namespace Debug;
+using namespace Applications::Debug;
 
 Application::Application(QObject* parent)
     : QObject(parent),

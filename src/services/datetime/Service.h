@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTimeZone>
 
-namespace DateTime
+namespace Services::DateTime
 {
 class Service : public QObject
 {
@@ -24,6 +24,6 @@ class Service : public QObject
   private:
     QTimeZone m_timeZone;
 };
-} // namespace DateTime
+} // namespace Services::DateTime
 
 #endif // SERVICES_DATETIME_SERVICE_H

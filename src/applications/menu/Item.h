@@ -5,7 +5,7 @@
 #include <QString>
 #include <functional>
 
-namespace Menu
+namespace Applications::Menu
 {
 class Item : public QObject
 {
@@ -34,6 +34,6 @@ class Item : public QObject
     QString m_label;
     std::function<void()> m_action;
 };
-} // namespace Menu
+} // namespace Applications::Menu
 
 #endif // APPS_MENU_ITEM_H

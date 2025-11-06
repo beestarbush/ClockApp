@@ -4,7 +4,7 @@
 #include <QAbstractListModel>
 #include <QList>
 
-namespace Menu
+namespace Applications::Menu
 {
 class Item;
 
@@ -35,6 +35,6 @@ class Model : public QAbstractListModel
   private:
     QList<Item*> m_items;
 };
-} // namespace Menu
+} // namespace Applications::Menu
 
 #endif // APPS_MENU_MODEL_H

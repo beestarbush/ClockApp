@@ -1,6 +1,6 @@
 #include "Service.h"
 #include "git_version.h"
-using namespace Version;
+using namespace Services::Version;
 
 Service::Service(QObject* parent)
     : QObject(parent)

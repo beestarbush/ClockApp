@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QSettings>
-using namespace Clock;
+using namespace Applications::Clock;
 
 const QString PROPERTY_HOUR_COLOR_KEY = QStringLiteral("hour-color");
 const QColor PROPERTY_HOUR_COLOR_DEFAULT = QColor("#995000");
@@ -187,7 +187,7 @@ Configuration& Configuration::operator=(const Configuration& other)
     return *this;
 }
 
-namespace Clock
+namespace Applications::Clock
 {
 QDebug operator<<(QDebug debug, const Configuration& config)
 {
@@ -202,4 +202,4 @@ QDebug operator<<(QDebug debug, const Configuration& config)
                     << " - pendulumRodColor=" << config.pendulumRodColor() << ")";
     return debug;
 }
-} // namespace Clock
+} // namespace Applications::Clock

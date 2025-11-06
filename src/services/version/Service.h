@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace Version
+namespace Services::Version
 {
 class Service : public QObject
 {
@@ -21,6 +21,6 @@ class Service : public QObject
     QString shortCommitHash() const;
     QString dirty() const;
 };
-} // namespace Version
+} // namespace Services::Version
 
 #endif // SERVICES_VERSION_SERVICE_H

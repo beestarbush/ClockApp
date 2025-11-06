@@ -1,6 +1,6 @@
 #include "Driver.h"
 #include <QDebug>
-using namespace Screen;
+using namespace Drivers::Screen;
 #include <QFile>
 #include <QSettings>
 

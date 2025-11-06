@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "Item.h"
-using namespace Menu;
+using namespace Applications::Menu;
 
 Model::Model(QObject* parent)
     : QAbstractListModel(parent)

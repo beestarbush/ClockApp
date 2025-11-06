@@ -146,7 +146,7 @@ PanelContainer {
             property bool incrementMode: true // true: increment, false: decrement
 
             // The value you want to control
-            property real value: BeeBackend.HAL.screen.brightness
+            property real value: BeeBackend.Drivers.screen.brightness
 
             // Interpolate between Color.gray and Color.green1
             function lerpColor(a, b, t) {
@@ -177,7 +177,7 @@ PanelContainer {
                         }
                     }
 
-                    BeeBackend.HAL.screen.brightness = brightnessButton.value
+                    BeeBackend.Drivers.screen.brightness = brightnessButton.value
                 }
             }
 

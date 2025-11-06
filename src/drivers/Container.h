@@ -6,7 +6,14 @@
 #include "system/Driver.h"
 #include "temperature/Driver.h"
 
-class HAL : public QObject
+namespace Services
+{
+class Container;
+}
+
+namespace Drivers
+{
+class Container : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Network::Driver* network MEMBER m_network CONSTANT)
@@ -16,9 +23,9 @@ class HAL : public QObject
     Q_PROPERTY(Storage::Driver* storage MEMBER m_storage CONSTANT)
 
   public:
-    friend class Services;
+    friend class Services::Container;
 
-    HAL(QObject* parent = nullptr);
+    Container(QObject* parent = nullptr);
 
   private:
     Storage::Driver* m_storage;
@@ -27,3 +34,4 @@ class HAL : public QObject
     System::Driver* m_system;
     Temperature::Driver* m_temperature;
 };
+} // namespace Drivers

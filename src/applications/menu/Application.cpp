@@ -2,7 +2,7 @@
 #include "applications/clock/Application.h"
 #include "applications/countdown/Application.h"
 #include "applications/timeelapsed/Application.h"
-using namespace Menu;
+using namespace Applications::Menu;
 
 Application::Application(TimeElapsed::Application& birthdayTimer, Clock::Application& clock, Countdown::Application& countdownTimer, TimeElapsed::Application& marriedTimer, QObject* parent)
     : QObject(parent),
@@ -41,22 +41,22 @@ Application::Application(TimeElapsed::Application& birthdayTimer, Clock::Applica
     buildMenus();
 }
 
-Menu::Model* Application::main()
+Model* Application::main()
 {
     return &m_main;
 }
 
-Menu::Model* Application::settings()
+Model* Application::settings()
 {
     return &m_settings;
 }
 
-Menu::Model* Application::colors()
+Model* Application::colors()
 {
     return &m_colors;
 }
 
-Menu::Model* Application::backgrounds()
+Model* Application::backgrounds()
 {
     return &m_backgrounds;
 }

@@ -4,28 +4,28 @@
 #include <QObject>
 #include <QTimer>
 
-namespace RemoteApi
+namespace Services::RemoteApi
 {
 class Service;
 }
-namespace Version
+namespace Services::Version
 {
 class Service;
 }
-namespace Notification
+namespace Services::Notification
 {
 class Service;
 }
-namespace Temperature
+namespace Drivers::Temperature
 {
 class Driver;
 }
-namespace System
+namespace Drivers::System
 {
 class Driver;
 }
 
-namespace SystemMonitor
+namespace Services::SystemMonitor
 {
 /**
  * Service
@@ -38,27 +38,27 @@ class Service : public QObject
     Q_OBJECT
 
   public:
-    explicit Service(RemoteApi::Service& remoteApi,
-                     Temperature::Driver& temperature,
-                     System::Driver& system,
-                     Version::Service& version,
-                     Notification::Service& notificationManager,
+    explicit Service(Services::RemoteApi::Service& remoteApi,
+                     Drivers::Temperature::Driver& temperature,
+                     Drivers::System::Driver& system,
+                     Services::Version::Service& version,
+                     Services::Notification::Service& notificationManager,
                      QObject* parent = nullptr);
 
   private:
     void monitor();
     void report();
 
-    RemoteApi::Service& m_remoteApi;
-    Temperature::Driver& m_temperature;
-    System::Driver& m_system;
-    Version::Service& m_version;
-    Notification::Service& m_notificationManager;
+    Services::RemoteApi::Service& m_remoteApi;
+    Drivers::Temperature::Driver& m_temperature;
+    Drivers::System::Driver& m_system;
+    Services::Version::Service& m_version;
+    Services::Notification::Service& m_notificationManager;
 
     QTimer m_monitorTimer;
     QTimer m_reportTimer;
     bool m_isReporting;
 };
-} // namespace SystemMonitor
+} // namespace Services::SystemMonitor
 
 #endif // SERVICES_SYSTEMMONITOR_SERVICE_H

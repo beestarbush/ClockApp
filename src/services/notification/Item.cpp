@@ -1,6 +1,6 @@
 #include "Item.h"
 #include <QDateTime>
-using namespace Notification;
+using namespace Services::Notification;
 
 // Initialize static member
 quint64 Item::s_nextId = 1;

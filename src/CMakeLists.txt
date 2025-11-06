@@ -11,18 +11,18 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(clockapp
     main.cpp
     git_version.h
-    hal/HAL.cpp
-    hal/HAL.h
-    hal/network/Driver.cpp
-    hal/network/Driver.h
-    hal/screen/Driver.cpp
-    hal/screen/Driver.h
-    hal/storage/Driver.cpp
-    hal/storage/Driver.h
-    hal/system/Driver.cpp
-    hal/system/Driver.h
-    hal/temperature/Driver.cpp
-    hal/temperature/Driver.h
+    drivers/Container.cpp
+    drivers/Container.h
+    drivers/network/Driver.cpp
+    drivers/network/Driver.h
+    drivers/screen/Driver.cpp
+    drivers/screen/Driver.h
+    drivers/storage/Driver.cpp
+    drivers/storage/Driver.h
+    drivers/system/Driver.cpp
+    drivers/system/Driver.h
+    drivers/temperature/Driver.cpp
+    drivers/temperature/Driver.h
     qmlcomponents/QmlUtils.cpp
     qmlcomponents/QmlUtils.h
     qmlcomponents/RoundAnimatedImage.cpp
@@ -52,14 +52,14 @@ qt_add_executable(clockapp
     services/notification/Item.h
     services/notification/Service.cpp
     services/notification/Service.h
-    services/Services.cpp
-    services/Services.h
+    services/Container.cpp
+    services/Container.h
     applications/common/Configuration.h
     applications/common/Configuration.cpp
     applications/common/TimerConfiguration.h
     applications/common/TimerConfiguration.cpp
-    applications/Applications.cpp
-    applications/Applications.h
+    applications/Container.cpp
+    applications/Container.h
     applications/clock/Application.cpp
     applications/clock/Application.h
     applications/clock/Configuration.cpp

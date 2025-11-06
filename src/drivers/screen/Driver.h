@@ -1,9 +1,9 @@
-#ifndef HAL_SCREEN_DRIVER_H
-#define HAL_SCREEN_DRIVER_H
+#ifndef DRIVERS_SCREEN_DRIVER_H
+#define DRIVERS_SCREEN_DRIVER_H
 
 #include <QObject>
 
-namespace Screen
+namespace Drivers::Screen
 {
 class Driver : public QObject
 {
@@ -26,6 +26,6 @@ class Driver : public QObject
     void loadProperties();
     void saveProperty(const QString& key, const QVariant& value);
 };
-} // namespace Screen
+} // namespace Drivers::Screen
 
-#endif // HAL_SCREEN_DRIVER_H
+#endif // DRIVERS_SCREEN_DRIVER_H

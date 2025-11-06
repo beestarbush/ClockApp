@@ -4,15 +4,15 @@
 #include <QObject>
 #include <QString>
 
-namespace RemoteApi
+namespace Services::RemoteApi
 {
 class Service;
 }
-namespace TimeElapsed
+namespace Applications::TimeElapsed
 {
 class Application;
 }
-namespace Countdown
+namespace Applications::Countdown
 {
 class Application;
 }
@@ -47,7 +47,7 @@ struct MediaSelectionParams
     int target = -1;
 };
 
-namespace Setup
+namespace Applications::Setup
 {
 class Application : public QObject
 {
@@ -88,7 +88,7 @@ class Application : public QObject
     };
     Q_ENUM(MediaTarget)
 
-    Application(TimeElapsed::Application& marriedTimer, TimeElapsed::Application& kuikenTimer, Countdown::Application& countdownTimer, RemoteApi::Service& remoteApi, QObject* parent = nullptr);
+    Application(TimeElapsed::Application& marriedTimer, TimeElapsed::Application& kuikenTimer, Countdown::Application& countdownTimer, Services::RemoteApi::Service& remoteApi, QObject* parent = nullptr);
 
     bool isSetupComplete() const;
 
@@ -135,8 +135,8 @@ class Application : public QObject
     TimeElapsed::Application& m_marriedTimer;
     TimeElapsed::Application& m_kuikenTimer;
     Countdown::Application& m_countdownTimer;
-    RemoteApi::Service& m_remoteApi;
+    Services::RemoteApi::Service& m_remoteApi;
 };
-} // namespace Setup
+} // namespace Applications::Setup
 
 #endif // APPS_SETUP_APPLICATION_H

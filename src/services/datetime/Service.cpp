@@ -1,7 +1,7 @@
 #include "Service.h"
 #include <QDebug>
 #include <cassert>
-using namespace DateTime;
+using namespace Services::DateTime;
 
 Service::Service(QObject* parent)
     : QObject(parent),

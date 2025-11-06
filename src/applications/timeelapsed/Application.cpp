@@ -3,7 +3,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QSettings>
-using namespace TimeElapsed;
+using namespace Applications::TimeElapsed;
 
 constexpr quint64 SECONDS_IN_MINUTE = 60;
 constexpr quint64 SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60;
@@ -11,7 +11,7 @@ constexpr quint64 SECONDS_IN_A_DAY = SECONDS_IN_HOUR * 24;
 constexpr quint64 DAYS_IN_A_WEEK = 7;
 constexpr quint64 DAYS_IN_YEAR = 365;
 
-Application::Application(QString name, Media::Service& media, QObject* parent)
+Application::Application(QString name, Services::Media::Service& media, QObject* parent)
     : QObject(parent),
       m_configuration(new Common::TimerConfiguration(name, parent)),
       m_media(media),
@@ -31,7 +31,7 @@ Application::Application(QString name, Media::Service& media, QObject* parent)
     startTimer();
 
     // Refresh background when media sync completes
-    connect(&m_media, &Media::Service::syncCompleted, this, [this]() {
+    connect(&m_media, &Services::Media::Service::syncCompleted, this, [this]() {
         emit m_configuration->backgroundChanged();
     });
 

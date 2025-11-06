@@ -1,12 +1,13 @@
-#include "Applications.h"
-#include "services/Services.h"
+#include "Container.h"
+#include "services/Container.h"
+using namespace Applications;
 
 const QString CLOCK_NAME = QStringLiteral("clock");
 const QString MARRIED_TIMER_NAME = QStringLiteral("married-timer");
 const QString KUIKEN_TIMER_NAME = QStringLiteral("kuiken-timer");
 const QString COUNTDOWN_TIMER_NAME = QStringLiteral("countdown-timer");
 
-Applications::Applications(Services& services, QObject* parent)
+Container::Container(Services::Container& services, QObject* parent)
     : QObject(parent),
       m_clock(new Clock::Application(CLOCK_NAME, *services.m_media, this)),
       m_marriedTimer(new TimeElapsed::Application(MARRIED_TIMER_NAME, *services.m_media, this)),

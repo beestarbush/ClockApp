@@ -1,6 +1,6 @@
 #include "Driver.h"
 #include <QDebug>
-using namespace System;
+using namespace Drivers::System;
 
 #ifdef PLATFORM_IS_TARGET
 const QString SHUTDOWN_COMMAND = QStringLiteral("shutdown");

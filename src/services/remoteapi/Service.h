@@ -9,13 +9,13 @@
 #include <QObject>
 #include <functional>
 
-namespace Network
+namespace Drivers::Network
 {
 class Driver;
 }
 class SerializableObject;
 
-namespace RemoteApi
+namespace Services::RemoteApi
 {
 class Service : public QObject
 {
@@ -26,7 +26,7 @@ class Service : public QObject
     Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
   public:
-    explicit Service(Network::Driver& network, QObject* parent = nullptr);
+    explicit Service(Drivers::Network::Driver& network, QObject* parent = nullptr);
 
     // Properties
     bool enabled() const;
@@ -113,7 +113,7 @@ class Service : public QObject
     void handleResponse(QNetworkReply* reply);
     void setConnected(bool connected);
 
-    Network::Driver& m_network;
+    Drivers::Network::Driver& m_network;
     QNetworkAccessManager m_networkManager;
     bool m_enabled;
     QString m_serverUrl;
@@ -121,6 +121,6 @@ class Service : public QObject
     bool m_connected;
     QMap<QNetworkReply*, PendingRequest> m_pendingRequests;
 };
-} // namespace RemoteApi
+} // namespace Services::RemoteApi
 
 #endif // SERVICES_REMOTEAPI_SERVICE_H

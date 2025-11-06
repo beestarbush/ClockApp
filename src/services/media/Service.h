@@ -7,13 +7,13 @@
 #include <QStringList>
 #include <QTimer>
 
-namespace RemoteApi
+namespace Services::RemoteApi
 {
 class Service;
 }
 class MediaInfo;
 
-namespace Media
+namespace Services::Media
 {
 class Service : public QObject
 {
@@ -24,7 +24,7 @@ class Service : public QObject
     Q_PROPERTY(QString lastError READ lastError NOTIFY lastErrorChanged)
 
   public:
-    explicit Service(RemoteApi::Service& remoteApi, QObject* parent = nullptr);
+    explicit Service(Services::RemoteApi::Service& remoteApi, QObject* parent = nullptr);
 
     QStringList availableMedia() const;
     bool syncing() const;
@@ -61,7 +61,7 @@ class Service : public QObject
     QFileSystemWatcher m_fileWatcher;
     QTimer m_scanTimer;
     QTimer m_syncTimer;
-    RemoteApi::Service& m_remoteApi;
+    Services::RemoteApi::Service& m_remoteApi;
 
     bool m_syncing;
     QDateTime m_lastSyncTime;
@@ -71,6 +71,6 @@ class Service : public QObject
     QStringList m_currentServerMediaIds; // Store server media IDs for final save
     int m_activeDownloads;
 };
-} // namespace Media
+} // namespace Services::Media
 
 #endif // SERVICES_MEDIA_SERVICE_H

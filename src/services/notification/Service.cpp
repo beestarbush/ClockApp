@@ -1,6 +1,6 @@
 #include "Service.h"
 #include <QDateTime>
-using namespace Notification;
+using namespace Services::Notification;
 
 Service::Service(QObject* parent)
     : QAbstractListModel(parent),

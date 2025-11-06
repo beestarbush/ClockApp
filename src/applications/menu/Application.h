@@ -8,20 +8,20 @@
 
 #include "Item.h"
 #include "Model.h"
-namespace Clock
+namespace Applications::Clock
 {
 class Application;
 }
-namespace TimeElapsed
+namespace Applications::TimeElapsed
 {
 class Application;
 }
-namespace Countdown
+namespace Applications::Countdown
 {
 class Application;
 }
 
-namespace Menu
+namespace Applications::Menu
 {
 class Application : public QObject
 {
@@ -136,6 +136,6 @@ class Application : public QObject
     Menu::Item m_colorsItems[ColorPointerCount];
     Menu::Item m_backgroundsItems[BackgroundTargetCount];
 };
-} // namespace Menu
+} // namespace Applications::Menu
 
 #endif // APPS_MENU_APPLICATION_H

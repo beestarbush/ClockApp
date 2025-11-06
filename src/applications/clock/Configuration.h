@@ -5,7 +5,7 @@
 #include <QColor>
 #include <QDebug>
 
-namespace Clock
+namespace Applications::Clock
 {
 class Configuration : public Common::Configuration
 {
@@ -56,6 +56,6 @@ class Configuration : public Common::Configuration
     QColor m_pendulumBobColor;
     QColor m_pendulumRodColor;
 };
-} // namespace Clock
+} // namespace Applications::Clock
 
 #endif // CLOCKCONFIG_H

@@ -1,11 +1,11 @@
-#ifndef HAL_SYSTEM_DRIVER_H
-#define HAL_SYSTEM_DRIVER_H
+#ifndef DRIVERS_SYSTEM_DRIVER_H
+#define DRIVERS_SYSTEM_DRIVER_H
 
 #include <QObject>
 #include <QProcess>
 #include <QTimer>
 
-namespace System
+namespace Drivers::System
 {
 class Driver : public QObject
 {
@@ -32,6 +32,6 @@ class Driver : public QObject
     QTimer m_uptimeTimer;
     uint64_t m_uptimeSeconds;
 };
-} // namespace System
+} // namespace Drivers::System
 
-#endif // HAL_SYSTEM_DRIVER_H
+#endif // DRIVERS_SYSTEM_DRIVER_H

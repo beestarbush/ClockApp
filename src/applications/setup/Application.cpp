@@ -6,7 +6,7 @@
 #include <QDate>
 #include <QDebug>
 #include <QSettings>
-using namespace Setup;
+using namespace Applications::Setup;
 
 const QString PROPERTIES_GROUP_NAME = QStringLiteral("setup");
 const QString PROPERTY_SETUP_COMPLETE_KEY = QStringLiteral("setup-complete");
@@ -15,7 +15,7 @@ const bool PROPERTY_SETUP_COMPLETE_DEFAULT = false;
 Application::Application(TimeElapsed::Application& marriedTimer,
                          TimeElapsed::Application& kuikenTimer,
                          Countdown::Application& countdownTimer,
-                         RemoteApi::Service& remoteApi,
+                         Services::RemoteApi::Service& remoteApi,
                          QObject* parent)
     : QObject(parent),
       m_setupComplete(PROPERTY_SETUP_COMPLETE_DEFAULT),
